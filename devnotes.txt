@@ -1,0 +1,9 @@
+to add a command to mavproxy.py, need to alter the command_map, which contains the list of commands and brief description
+added blobkTrack.py to modules folder, needs to be updated with stable version from ground station
+	camera variables to store: hvsL, hsvU, blurRad, flagShowVis, capture, flagOut
+include hsvUpdate in the main loop
+
+basic camera integration complete but fails
+
+try to run image proc as a seeparate process.
+	possible cf. tcp examples on FSLtemp

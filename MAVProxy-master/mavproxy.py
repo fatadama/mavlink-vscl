@@ -26,6 +26,10 @@ import select
 from modules.lib import textconsole
 from modules.lib import mp_settings
 
+#VSCL imports
+from multiprocessing import Process, Pipe
+import cameraProcess
+
 class MPSettings(object):
     def __init__(self):
         self.vars = [ ('link', int),
