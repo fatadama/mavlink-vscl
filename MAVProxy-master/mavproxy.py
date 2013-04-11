@@ -1611,7 +1611,7 @@ def main_loop():
                     process_master(master)
 
         periodic_tasks()
-
+        
         rin = []
         for master in mpstate.mav_master:
             if master.fd is not None:

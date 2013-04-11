@@ -1,6 +1,33 @@
 import cv2, cv, numpy as np,time, pickle
 
+def nothing(args):
+    pass
+
+def settingUpdate(hsvL,hsvU,blurRad):
+    hsvL[0] = cv2.getTrackbarPos('hLower','sliders')
+    hsvL[1] = cv2.getTrackbarPos('sLower','sliders')
+    hsvL[2] = cv2.getTrackbarPos('vLower','sliders')
+    #ensure that the upper bound is greater than the lower bound:
+    hsvU[0] = np.amax(np.array([cv2.getTrackbarPos('hUpper','sliders'),hsvL[0]+1]))
+    hsvU[1] = np.amax(np.array([cv2.getTrackbarPos('sUpper','sliders'),hsvL[1]+1]))
+    hsvU[2] = np.amax(np.array([cv2.getTrackbarPos('vUpper','sliders'),hsvL[2]+1]))
+    blurRad = cv2.getTrackbarPos('blur','sliders')
+    return
+
 def runCameraProc(conn):
+    #initialize variables for HSV limits and blur radius:
+    blurRad = 3#image blur radius
+    hsvl = np.array([0,96,74])#lower HSV cutoff
+    hsvu = np.array([29,255,255])#upper HSV cutoff
+    #create trackbars for HSV limits and blur value:
+    cv2.namedWindow('sliders')
+    cv2.createTrackbar('hLower', 'sliders', hsvl[0], 255, nothing)
+    cv2.createTrackbar('sLower', 'sliders', hsvl[1], 255, nothing)
+    cv2.createTrackbar('vLower', 'sliders', hsvl[2], 255, nothing)
+    cv2.createTrackbar('hUpper', 'sliders', hsvu[0], 255, nothing)
+    cv2.createTrackbar('sUpper', 'sliders', hsvu[1], 255, nothing)
+    cv2.createTrackbar('vUpper', 'sliders', hsvu[2], 255, nothing)
+    cv2.createTrackbar('blur','sliders',blurRad,15,nothing)
     #load camera
     cv2.namedWindow('camera')#camera image
     capture = cv2.VideoCapture(0)
@@ -8,19 +35,71 @@ def runCameraProc(conn):
         print "****Error: camera not found****"
     else:
         print capture
+        flagShowVis = True
         while True:
             #read the camera image:
             ret,img = capture.read()
-            #process frames
-            #grab images and display
             if ret:
-                cv2.imshow('camera',img)
+                #update settings from sliders:
+                settingUpdate(hsvl,hsvu,blurRad)
+                #process frames
+                
+                #blur the image to reduce color noise: (5 x 5)
+                img = cv2.blur(img,(blurRad,blurRad))
+                
+                #convert image to HSV
+                hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+                #threshold the image using the HSV lower and upper bounds
+                thresh = cv2.inRange(hsv,hsvl,hsvu)
+                thresh2 = np.copy(thresh)
+                #find contours in the thresholded image:
+                contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+                
+                #pickle contours to deal with a bug in opencv 2.4.3
+                tmp = pickle.dumps(contours)
+                contours = pickle.loads(tmp)
+                
+                #get the contour with the largest area:
+                max_area = -1
+                best_cnt = np.array([])
+                cx,cy = (0,0)
+
+                #loop over the contours and find the one with the largest area:
+                for cnt in contours:
+                        area = cv2.contourArea(cnt)
+                        if area>max_area:
+                                max_area = area
+                                best_cnt = cnt
+                                
+                #check that the size of the best contour is not empty
+                if np.shape(best_cnt)[0]>0:
+                        #find the centroid of best contour
+                        M = cv2.moments(best_cnt)
+                        #check that the divisor moment is nonzero; if it is, set the location to (0,0)
+                        if M['m00']>0:
+                                cx,cy = int(M['m10']/M['m00']),int(M['m01']/M['m00'])
+                        else:
+                                cx,cy = (0,0)
+                if flagShowVis:
+                    #draw circle at contour centroid:
+                    cv2.circle(img,(cx,cy),3,(0,255,0),-1)
+                    cv2.imshow('camera',img)
+                else:
+                    cv2.circle(thresh2,(cx,cy),3,(0,255,0),-1)
+                    cv2.imshow('camera',thresh2)
+                    
             keyRet = cv2.waitKey(5)
+            #see if user hits 'ESC' in opencv windows
             if keyRet==27:
                 break
+            elif keyRet==32:
+                flagShowVis = not flagShowVis
+            #see if mavproxy sends the kill command
             if conn.poll(0.05):
                 recvVal = conn.recv()
                 if recvVal == 'kill':
                     break
+
+    cv2.destroyAllWindows()
     conn.send("cam off")        
     conn.close()
