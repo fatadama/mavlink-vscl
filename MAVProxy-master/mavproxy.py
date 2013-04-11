@@ -892,6 +892,8 @@ command_map = {
     'alias'   : (cmd_alias,    'command aliases'),
     'arm'     : (cmd_arm,      'ArduCopter arm motors'),
     'disarm'  : (cmd_disarm,   'ArduCopter disarm motors')
+    #VSCL commands:
+    'camera'  : (cmd_camera,   'enable streaming video')
     }
 
 def process_stdin(line):
