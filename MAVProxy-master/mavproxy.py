@@ -49,7 +49,9 @@ class MPSettings(object):
                       ('moddebug', int),
                       ('rc1mul', int),
                       ('rc2mul', int),
-                      ('rc4mul', int)]
+                      ('rc4mul', int),
+                      #VSCL settings:
+                      ('camFlag',int)]
         self.link = 1
         self.altreadout = 10
         self.distreadout = 200
@@ -194,7 +196,9 @@ class MPState(object):
               ('rc2mul', int, 1),
               ('rc4mul', int, 1),
               ('shownoise', int, 1),
-              ('basealt', int, 0)]
+              ('basealt', int, 0),
+              #VSCL settings default:
+              ('camFlag', int, False)]
             )
         self.status = MPStatus()
 
@@ -862,7 +866,27 @@ def import_package(name):
         mod = getattr(mod, comp)
     return mod
 
+#vscl functions:
+def cmd_camera(args):
+    mpstate.settings.camFlag = not mpstate.settings.camFlag
+    if mpstate.settings.camFlag:
+        print 'Camera enabled'
+        #run the camera streaming process and receive centroids
+        mulProcVar.camProc.start()
+    else:
+        print 'Camera disabled'
+        mulProcVar.parent_conn.send('kill')
+        print mulProcVar.parent_conn.recv()
+        #reset the camProc variable so the 'camera' command can be called again
+        mulProcVar.camProc = Process(target=cameraProcess.runCameraProc, args=(mulProcVar.child_conn,))
+        #kill the camera streaming process
 
+#vscl: class that holds the multiprocessing variables to ensure they remain in scope
+class multiProcVars(object):
+    def __init__(self):
+        self.parent_conn,self.child_conn = Pipe()
+        self.camProc = Process(target=cameraProcess.runCameraProc, args=(self.child_conn,))
+        
 command_map = {
     'switch'  : (cmd_switch,   'set RC switch (1-5), 0 disables'),
     'rc'      : (cmd_rc,       'override a RC channel value'),
@@ -891,7 +915,7 @@ command_map = {
     'module'  : (cmd_module,   'module commands'),
     'alias'   : (cmd_alias,    'command aliases'),
     'arm'     : (cmd_arm,      'ArduCopter arm motors'),
-    'disarm'  : (cmd_disarm,   'ArduCopter disarm motors')
+    'disarm'  : (cmd_disarm,   'ArduCopter disarm motors'),
     #VSCL commands:
     'camera'  : (cmd_camera,   'enable streaming video')
     }
@@ -1726,6 +1750,9 @@ if __name__ == '__main__':
     mpstate.command_map = command_map
     mpstate.continue_mode = opts.continue_mode
 
+    #VSCL: declare mulProcVar to enable the camera streaming/processing process
+    mulProcVar = multiProcVars()
+    
     if opts.speech:
         # start the speech-dispatcher early, so it doesn't inherit any ports from
         # modules/mavutil

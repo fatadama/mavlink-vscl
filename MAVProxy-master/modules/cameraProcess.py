@@ -18,5 +18,9 @@ def runCameraProc(conn):
             keyRet = cv2.waitKey(5)
             if keyRet==27:
                 break
+            if conn.poll(0.05):
+                recvVal = conn.recv()
+                if recvVal == 'kill':
+                    break
     conn.send("cam off")        
     conn.close()
