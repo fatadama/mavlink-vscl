@@ -1341,6 +1341,9 @@ def master_callback(m, master):
     elif mtype in [ "COMMAND_ACK", "MISSION_ACK" ]:
         mpstate.console.writeln("Got MAVLink msg: %s" % m)
     #VSCL: add recognition of custom telem here?
+    elif mtype == "VSCL_TEST":
+        if mpstate.settings.camFlag:
+            print m.dummy#is this the correct name?
     else:
         #mpstate.console.writeln("Got MAVLink msg: %s" % m)
         pass
@@ -1547,7 +1550,9 @@ def periodic_tasks():
         #wait a small amount
         #get [cx,cy] from camProcess
         if mulProcVar.parent_conn.poll(.01):
-            [cx,cy] = mulProcVar.parent_conn.recv()
+            connDat = mulProcVar.parent_conn.recv()
+            cx = connDat[0]
+            cy = connDat[1]
             #print for debugging:
             print time.clock(),cx,cy
             #transmit the [cx,cy] to the MAV: use a dummy value here

@@ -17,3 +17,6 @@ I believe I have editted Arduplane\GCS_Mavlink.ino to receive a VSCL MAVLink mes
 	Otherwise, perhaps I can incorporate this functionality into periodic_tasks().
 	New plan: piggyback centroid acquisition from camera streaming process into periodic_tasks. Should run at 1 Hz.
 	mavutil contains a periodic_event class that should work nicely.
+
+GCS_MAV communication achieved. MAV receives "42", returns "24", which is echo printed in the GCS console. Next step: transmit a change in bank angle to the vehicle. 
+	Have the vehicle tranmit back a 1 or something if it receives for confirmation.

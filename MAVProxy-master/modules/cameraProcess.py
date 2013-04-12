@@ -94,11 +94,16 @@ def runCameraProc(conn):
                 break
             elif keyRet==32:
                 flagShowVis = not flagShowVis
-            #see if mavproxy sends the kill command
+            #see if mavproxy sends the a command
             if conn.poll(0.05):
+                #if a command comes, process it
+                #   **.kill.** - terminate process and close all windows
+                #   **.update.** - transmit current [cx,cy] to the main process and reset the average
                 recvVal = conn.recv()
-                if recvVal == 'kill':
+                if recvVal == '**.kill.**':
                     break
+                elif recvVal == '**.update.**':
+                    conn.send([cx,cy])
 
     cv2.destroyAllWindows()
     conn.send("cam off")        
