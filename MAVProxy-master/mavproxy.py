@@ -875,7 +875,7 @@ def cmd_camera(args):
         mulProcVar.camProc.start()
     else:
         print 'Camera disabled'
-        mulProcVar.parent_conn.send('kill')
+        mulProcVar.parent_conn.send('**.kill.**')
         print mulProcVar.parent_conn.recv()
         #reset the camProc variable so the 'camera' command can be called again
         mulProcVar.camProc = Process(target=cameraProcess.runCameraProc, args=(mulProcVar.child_conn,))
@@ -1340,6 +1340,7 @@ def master_callback(m, master):
             mpstate.console.write(str(m.data), bg='red')
     elif mtype in [ "COMMAND_ACK", "MISSION_ACK" ]:
         mpstate.console.writeln("Got MAVLink msg: %s" % m)
+    #VSCL: add recognition of custom telem here?
     else:
         #mpstate.console.writeln("Got MAVLink msg: %s" % m)
         pass
@@ -1540,6 +1541,22 @@ def periodic_tasks():
     if heartbeat_check_period.trigger():
         check_link_status()
 
+    if mpstate.settings.camFlag and camCentroid_period.trigger():
+        #tell camProcess to send [cx,cy]
+        mulProcVar.parent_conn.send('**.update.**')
+        #wait a small amount
+        #get [cx,cy] from camProcess
+        if mulProcVar.parent_conn.poll(.01):
+            [cx,cy] = mulProcVar.parent_conn.recv()
+            #print for debugging:
+            print time.clock(),cx,cy
+            #transmit the [cx,cy] to the MAV: use a dummy value here
+            for master in mpstate.mav_master:
+                if master.mavlink10():
+                    master.mav.vscl_test_send(42)
+        else:
+            print 'no info received from camProcess'
+    
     set_stream_rates()
 
     if param_period.trigger():
@@ -1833,6 +1850,8 @@ Auto-detected serial ports are:
     msg_period = mavutil.periodic_event(1.0/15)
     param_period = mavutil.periodic_event(1)
     heartbeat_period = mavutil.periodic_event(1)
+    #VSCL: create camera update periodic_event at 1 Hz
+    camCentroid_period = mavutil.periodic_event(1)
     battery_period = mavutil.periodic_event(0.1)
     if mpstate.sitl_output:
         mpstate.override_period = mavutil.periodic_event(20)

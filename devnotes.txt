@@ -9,3 +9,11 @@ try to run image proc as a seeparate process.
 	possible cf. tcp examples on FSLtemp
 
 MAVlink: use message ID's starting at 200. we now know how to create new MAVlink messages. Now we must learn how to integrate them into the GS and the MAV.
+
+I believe I have editted Arduplane\GCS_Mavlink.ino to receive a VSCL MAVLink message and bounce back a 1 using the same message ID.
+	must include VSCL header files in GCS_Mavlink.h
+	Now, I must figure out how to get the GCS to transmit and receive the same message.
+	It looks like any MAVLink commands are going to be processed in mavproxy.py in function master_callback. However, I may be able to SEND it from an external process. 
+	Otherwise, perhaps I can incorporate this functionality into periodic_tasks().
+	New plan: piggyback centroid acquisition from camera streaming process into periodic_tasks. Should run at 1 Hz.
+	mavutil contains a periodic_event class that should work nicely.
