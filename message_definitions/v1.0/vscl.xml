@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<mavlink>
+	<version>3</version>
+	<!--
+    <include>ardupilotmega.xml</include>
+	-->
+	<enums>
+	</enums>
+	<messages>
+		<message id="200" name="VSCL_TEST">
+			<description>This message does nothing but cconfirm GS-to-vehicle communication w/ custom MAV commands.</description>
+			<field type="uint16_t" name="dummy">A dummy value, the MAV will echo it.</field>
+		</message>
+	</messages>
+</mavlink>

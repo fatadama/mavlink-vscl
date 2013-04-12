@@ -7,3 +7,5 @@ basic camera integration complete but fails
 
 try to run image proc as a seeparate process.
 	possible cf. tcp examples on FSLtemp
+
+MAVlink: use message ID's starting at 200. we now know how to create new MAVlink messages. Now we must learn how to integrate them into the GS and the MAV.
