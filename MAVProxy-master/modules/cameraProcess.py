@@ -1,5 +1,14 @@
 import cv2, cv, numpy as np,time, pickle
 
+#called from mavproxy when 'camera' is entered into the console.
+#when runCameraProc is called, it initializes the camera streaming window and trackbars
+#   that control the thresholding for HSV filtering. Image is HSV filtered and the largest
+#   resulting contour is centroided. A moving average of centroids is maintained until mavproxy
+#   requests an update, which should occur at 1 Hz. The average centroid is then used to
+#   look up the appropriate action in the Q-matrix.
+#
+#development progress: currently, q-matrix has not been implemented.
+
 def nothing(args):
     pass
 
@@ -19,6 +28,10 @@ def runCameraProc(conn):
     blurRad = 3#image blur radius
     hsvl = np.array([0,96,74])#lower HSV cutoff
     hsvu = np.array([29,255,255])#upper HSV cutoff
+    #numFrames: the number of frames processed in the current moving average calculation
+    numFrames = 0;
+    #cxbar, cybar: average centroid location in the frame
+    [cxbar,cybar] = [0,0]
     #create trackbars for HSV limits and blur value:
     cv2.namedWindow('sliders')
     cv2.createTrackbar('hLower', 'sliders', hsvl[0], 255, nothing)
@@ -80,6 +93,12 @@ def runCameraProc(conn):
                                 cx,cy = int(M['m10']/M['m00']),int(M['m01']/M['m00'])
                         else:
                                 cx,cy = (0,0)
+                #update the moving averages:
+                if cx>0 and cy>0:
+                    #ensure that cx>0, cy>0 in case centroid drops out
+                    numFrames = numFrames+1
+                    cxbar = (cx+cxbar*(numFrames-1))/numFrames
+                    cybar = (cy+cybar*(numFrames-1))/numFrames
                 if flagShowVis:
                     #draw circle at contour centroid:
                     cv2.circle(img,(cx,cy),3,(0,255,0),-1)
@@ -103,7 +122,13 @@ def runCameraProc(conn):
                 if recvVal == '**.kill.**':
                     break
                 elif recvVal == '**.update.**':
-                    conn.send([cx,cy])
+                    #use cxbar, cybar to compute the appropriate bank angle.
+                    #INSERT Q-MATRIX LOOKUP HERE
+                    #reset cxbar, cybar
+                    numFrames = 0
+                    [cxbar,cybar] = [0,0]
+                    #return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
+                    conn.send(2)
 
     cv2.destroyAllWindows()
     conn.send("cam off")        

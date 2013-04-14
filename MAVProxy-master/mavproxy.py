@@ -1343,7 +1343,7 @@ def master_callback(m, master):
     #VSCL: add recognition of custom telem here?
     elif mtype == "VSCL_TEST":
         if mpstate.settings.camFlag:
-            print m.dummy#is this the correct name?
+            print 'MAV bank angle: (deg) ',m.dummy#print the signal from the MAV
     else:
         #mpstate.console.writeln("Got MAVLink msg: %s" % m)
         pass
@@ -1545,20 +1545,22 @@ def periodic_tasks():
         check_link_status()
 
     if mpstate.settings.camFlag and camCentroid_period.trigger():
+		#THIS MUST BE MODIFIED TO ONLY TRIGGER IF WE ARE IN THE CORRECT FLIGHT MODE FOR TRACKING
+		#DO NOT TRANSMIT IF NOT IN FLIGHT MODE
+		#mpstate.status.flightmode: current flight mode
         #tell camProcess to send [cx,cy]
         mulProcVar.parent_conn.send('**.update.**')
         #wait a small amount
         #get [cx,cy] from camProcess
         if mulProcVar.parent_conn.poll(.01):
             connDat = mulProcVar.parent_conn.recv()
-            cx = connDat[0]
-            cy = connDat[1]
+            action = connDat
             #print for debugging:
-            print time.clock(),cx,cy
+            print time.clock(),action
             #transmit the [cx,cy] to the MAV: use a dummy value here
             for master in mpstate.mav_master:
                 if master.mavlink10():
-                    master.mav.vscl_test_send(42)
+                    master.mav.vscl_test_send(action)
         else:
             print 'no info received from camProcess'
     
