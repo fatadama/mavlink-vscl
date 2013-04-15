@@ -1544,10 +1544,10 @@ def periodic_tasks():
     if heartbeat_check_period.trigger():
         check_link_status()
 
-    if mpstate.settings.camFlag and camCentroid_period.trigger():
-		#THIS MUST BE MODIFIED TO ONLY TRIGGER IF WE ARE IN THE CORRECT FLIGHT MODE FOR TRACKING
-		#DO NOT TRANSMIT IF NOT IN FLIGHT MODE
-		#mpstate.status.flightmode: current flight mode
+    if mpstate.settings.camFlag and camCentroid_period.trigger() and mpstate.status.flightmode == "FBWB":
+	#THIS MUST BE MODIFIED TO ONLY TRIGGER IF WE ARE IN THE CORRECT FLIGHT MODE FOR TRACKING
+	#DO NOT TRANSMIT IF NOT IN FLIGHT MODE
+	#mpstate.status.flightmode: current flight mode
         #tell camProcess to send [cx,cy]
         mulProcVar.parent_conn.send('**.update.**')
         #wait a small amount
