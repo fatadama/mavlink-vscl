@@ -10,7 +10,7 @@ try to run image proc as a seeparate process.
 
 MAVlink: use message ID's starting at 200. we now know how to create new MAVlink messages. Now we must learn how to integrate them into the GS and the MAV.
 
-I believe I have editted Arduplane\GCS_Mavlink.ino to receive a VSCL MAVLink message and bounce back a 1 using the same message ID.
+I believe I have edited Arduplane\GCS_Mavlink.ino to receive a VSCL MAVLink message and bounce back a 1 using the same message ID.
 	must include VSCL header files in GCS_Mavlink.h
 	Now, I must figure out how to get the GCS to transmit and receive the same message.
 	It looks like any MAVLink commands are going to be processed in mavproxy.py in function master_callback. However, I may be able to SEND it from an external process. 
@@ -21,4 +21,10 @@ I believe I have editted Arduplane\GCS_Mavlink.ino to receive a VSCL MAVLink mes
 GCS_MAV communication achieved. MAV receives "42", returns "24", which is echo printed in the GCS console. Next step: transmit a change in bank angle to the vehicle. 
 	Have the vehicle tranmit back a 1 or something if it receives for confirmation.
 
-mpstate.status.flightmode: holds the current flight mode?
+mpstate.status.flightmode: holds the current flight mode.
+
+use ALT_HOLD_FBWCM to limit altitude (floor value) in autonomous mode?
+target airspeed is set in navigation - I tried to set it to 11 m/s, not sure
+auto-flap settings in Attitude.ino can probably be removed
+in non-manual flight modes, stabilize() is called at 50 Hz in the fast loop.
+Is the rudder just going to be idle during all of this? I guess that's what I'm hoping for...?
