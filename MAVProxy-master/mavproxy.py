@@ -876,10 +876,11 @@ def cmd_camera(args):
     else:
         print 'Camera disabled'
         mulProcVar.parent_conn.send('**.kill.**')
-        print mulProcVar.parent_conn.recv()
+        #empty the buffer
+        while (mulProcVar.parent_conn.poll(0.05)):
+            print mulProcVar.parent_conn.recv()
         #reset the camProc variable so the 'camera' command can be called again
         mulProcVar.camProc = Process(target=cameraProcess.runCameraProc, args=(mulProcVar.child_conn,))
-        #kill the camera streaming process
 
 #vscl: class that holds the multiprocessing variables to ensure they remain in scope
 class multiProcVars(object):
@@ -1545,16 +1546,22 @@ def periodic_tasks():
         check_link_status()
 
     if mpstate.settings.camFlag and camCentroid_period.trigger() and mpstate.status.flightmode == "FBWB":
-	#THIS MUST BE MODIFIED TO ONLY TRIGGER IF WE ARE IN THE CORRECT FLIGHT MODE FOR TRACKING
-	#DO NOT TRANSMIT IF NOT IN FLIGHT MODE
 	#mpstate.status.flightmode: current flight mode
         #tell camProcess to send [cx,cy]
         mulProcVar.parent_conn.send('**.update.**')
-        #wait a small amount
-        #get [cx,cy] from camProcess
-        if mulProcVar.parent_conn.poll(.01):
+        #send bank angle to camProcess, which keeps a running average:
+        #mulProcVar.parent_conn.send('**.bank.**')
+        #mulProcVar.parent_conn.send(math.degrees(mpstate.status.msgs['ATTITUDE'].roll))
+
+        #always get the most RECENT action from camProcess: use while() loop?
+        connDat = 0
+        while (mulProcVar.parent_conn.poll(.01)):
             connDat = mulProcVar.parent_conn.recv()
-            action = connDat
+        
+        #ensure buffer is empty, then transmit action
+        if not mulProcVar.parent_conn.poll(.01):
+            #connDat = mulProcVar.parent_conn.recv()
+            action = int(connDat)
             #print for debugging:
             print time.clock(),action
             #transmit the [cx,cy] to the MAV: use a dummy value here

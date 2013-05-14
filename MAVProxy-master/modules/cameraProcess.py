@@ -29,9 +29,15 @@ def runCameraProc(conn):
     hsvl = np.array([0,96,74])#lower HSV cutoff
     hsvu = np.array([29,255,255])#upper HSV cutoff
     #numFrames: the number of frames processed in the current moving average calculation
-    numFrames = 0;
+    numFrames = 0
     #cxbar, cybar: average centroid location in the frame
     [cxbar,cybar] = [0,0]
+    #numBanks: the number of bank angles received from the aircraft (degrees) for moving average calculation
+    numBanks = 0
+    #phibar: the moving average bank angle, (deg)
+    phibar = 0
+    #ACTION: the action to take. is +/-2, 0
+    action = 0
     #create trackbars for HSV limits and blur value:
     cv2.namedWindow('sliders')
     cv2.createTrackbar('hLower', 'sliders', hsvl[0], 255, nothing)
@@ -113,11 +119,12 @@ def runCameraProc(conn):
                 break
             elif keyRet==32:
                 flagShowVis = not flagShowVis
-            #see if mavproxy sends the a command
+            #see if mavproxy has sent a command
             if conn.poll(0.05):
                 #if a command comes, process it
                 #   **.kill.** - terminate process and close all windows
                 #   **.update.** - transmit current [cx,cy] to the main process and reset the average
+                #   **.bank.** - this is followed by the current MAV bank angle (deg)
                 recvVal = conn.recv()
                 if recvVal == '**.kill.**':
                     break
@@ -127,9 +134,24 @@ def runCameraProc(conn):
                     #reset cxbar, cybar
                     numFrames = 0
                     [cxbar,cybar] = [0,0]
+                    #reset phibar, numBanks
+                    numBanks = 0
+                    phibar = 0
                     #return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
-                    conn.send(2)
-
+                    print time.clock(),action,'  camProcess'
+                    conn.send(action)
+                    action = action+2
+                    if action>2:
+                        action = -2
+                elif recvVal == '**.bank.**':
+                    #read in bank angle from process:
+                    if conn.poll(0.05):
+                        #update moving average calculation
+                        numBanks = numBanks+1
+                        phi = conn.recv()
+                        phibar = (phi+phibar*(numBanks-1))/numBanks
+                    else:
+                        print 'camProcess did not receive bank angle from MAVProxy'
     cv2.destroyAllWindows()
     conn.send("cam off")        
     conn.close()
