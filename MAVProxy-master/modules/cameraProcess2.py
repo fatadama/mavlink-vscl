@@ -134,8 +134,10 @@ def runCameraProc(conn,lock):
                 if recvVal == '**.kill.**':
                     break
                 elif recvVal == '**.update.**':
-                    #use cxbar, cybar to compute the appropriate bank angle.
+                    #use cxbar, cybar, phibar to compute the appropriate bank angle.
+                    
                     #INSERT Q-MATRIX LOOKUP HERE
+                    
                     #reset cxbar, cybar
                     numFrames = 0
                     [cxbar,cybar] = [0,0]
@@ -143,7 +145,6 @@ def runCameraProc(conn,lock):
                     numBanks = 0
                     phibar = 0
                     #return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
-                    print time.clock(),action,'  camProcess'
                     conn.send(action)
                     
                     lock.release()#release the lock so main can grab the data from the pipe
@@ -156,6 +157,8 @@ def runCameraProc(conn,lock):
                     lock.acquire()#wait until main is done getting the data, then re-acquire the lock
                     
                 elif recvVal == '**.bank.**':
+                    #release lock
+                    lock.release()
                     #read in bank angle from process:
                     if conn.poll(0.05):
                         #update moving average calculation
@@ -164,6 +167,8 @@ def runCameraProc(conn,lock):
                         phibar = (phi+phibar*(numBanks-1))/numBanks
                     else:
                         print 'camProcess did not receive bank angle from MAVProxy'
+                    #acquire lock
+                    lock.acquire()
     cv2.destroyAllWindows()
     conn.send("cam off")        
     conn.close()

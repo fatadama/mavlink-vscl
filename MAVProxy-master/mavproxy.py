@@ -1554,6 +1554,19 @@ def periodic_tasks():
     if heartbeat_check_period.trigger():
         check_link_status()
 
+    #VSCL: send bank angle to camera process for q-matrix lookup
+    if mpstate.settings.camFlag and camRollAngle_period.trigger() and mpstate.status.flightmode == "FBWB":
+        #send bank angle to the camera process:
+        if mulProcVar.camOn:
+            #send bank angle to camProcess, which keeps a running average:
+            mulProcVar.parent_conn.send('**.bank.**')
+            #wait for lock
+            mulProcVar.lock.acquire()
+            #send roll angle in degrees
+            mulProcVar.parent_conn.send(math.degrees(mpstate.status.msgs['ATTITUDE'].roll))
+            #release lock
+            mulProcVar.lock.release()
+
     if mpstate.settings.camFlag and camCentroid_period.trigger() and mpstate.status.flightmode == "FBWB":
         #see if camera has been observed to be on; if not, check to see if status has changed
         if not mulProcVar.camOn:
@@ -1565,10 +1578,8 @@ def periodic_tasks():
                     #once this happens, the cameraProcess has the Lock() object
         if mulProcVar.camOn:
             #mpstate.status.flightmode: current flight mode
-            #send bank angle to camProcess, which keeps a running average:
-            #mulProcVar.parent_conn.send('**.bank.**')
-            #mulProcVar.parent_conn.send(math.degrees(mpstate.status.msgs['ATTITUDE'].roll))
-            #tell camProcess to send [cx,cy]
+         
+            #tell camProcess to send Q-learning action:
             mulProcVar.parent_conn.send('**.update.**')
 
             #always get the most RECENT action from camProcess: use lock() object. This could cause main to stop if cameraProcess crashes
@@ -1580,8 +1591,6 @@ def periodic_tasks():
                 action = int(connDat)
                 #release the lock:
                 mulProcVar.lock.release()
-                #print for debugging:
-                print time.clock(),action, '  main'
                 #transmit the [cx,cy] to the MAV:
                 for master in mpstate.mav_master:
                     if master.mavlink10():
@@ -1886,6 +1895,8 @@ Auto-detected serial ports are:
     heartbeat_period = mavutil.periodic_event(1)
     #VSCL: create camera update periodic_event at 1 Hz
     camCentroid_period = mavutil.periodic_event(1)
+    #create periodic event at 10 Hz to send current bank angle to the camera process:
+    camRollAngle_period = mavutil.periodic_event(10)
     battery_period = mavutil.periodic_event(0.1)
     if mpstate.sitl_output:
         mpstate.override_period = mavutil.periodic_event(20)

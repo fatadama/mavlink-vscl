@@ -11,7 +11,7 @@ rmdir ..\libraries\GCS_MAVLink\include\mavlink\v1.0\ardupilotmega \S \Q
 mkdir ..\libraries\GCS_MAVLink\include\mavlink\v1.0\ardupilotmega
 copy gen_out\ardupilotmega ..\libraries\GCS_MAVLink\include\mavlink\v1.0\ardupilotmega
 echo copying mavlinkv10.py to the pymavlink folder
-del \pymavlink\mavlinkv10.py
+del pymavlink\mavlinkv10.py
 copy gen_out\mavlinkv10.py pymavlink\mavlinkv10.py
 echo complete
 pause
