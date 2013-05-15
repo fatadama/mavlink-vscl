@@ -27,8 +27,8 @@ from modules.lib import textconsole
 from modules.lib import mp_settings
 
 #VSCL imports
-from multiprocessing import Process, Pipe
-import cameraProcess
+from multiprocessing import Process, Pipe, Lock
+import cameraProcess2
 
 class MPSettings(object):
     def __init__(self):
@@ -870,9 +870,9 @@ def import_package(name):
 def cmd_camera(args):
     mpstate.settings.camFlag = not mpstate.settings.camFlag
     if mpstate.settings.camFlag:
-        print 'Camera enabled'
-        #run the camera streaming process and receive centroids
+        #run the camera streaming process and receive actions
         mulProcVar.camProc.start()
+        mulProcVar.camOn = False
     else:
         print 'Camera disabled'
         mulProcVar.parent_conn.send('**.kill.**')
@@ -880,13 +880,22 @@ def cmd_camera(args):
         while (mulProcVar.parent_conn.poll(0.05)):
             print mulProcVar.parent_conn.recv()
         #reset the camProc variable so the 'camera' command can be called again
-        mulProcVar.camProc = Process(target=cameraProcess.runCameraProc, args=(mulProcVar.child_conn,))
+        mulProcVar.camProc.join()
+        mulProcVar.camProc = Process(target=cameraProcess2.runCameraProc, args=(mulProcVar.child_conn,mulProcVar.lock))
+        #reset the boolean indicating that the camera is on.
+        mulProcVar.camOn = False
 
 #vscl: class that holds the multiprocessing variables to ensure they remain in scope
 class multiProcVars(object):
     def __init__(self):
+        #pipe used for communication with cameraProcess:
         self.parent_conn,self.child_conn = Pipe()
-        self.camProc = Process(target=cameraProcess.runCameraProc, args=(self.child_conn,))
+        #lock object used to ensure synchronization:
+        self.lock = Lock()
+        #multiprocess object for cameraProcess:
+        self.camProc = Process(target=cameraProcess2.runCameraProc, args=(self.child_conn,self.lock))
+        #boolean to indicate if the camera process has started yet
+        self.camOn = False
         
 command_map = {
     'switch'  : (cmd_switch,   'set RC switch (1-5), 0 disables'),
@@ -1546,30 +1555,41 @@ def periodic_tasks():
         check_link_status()
 
     if mpstate.settings.camFlag and camCentroid_period.trigger() and mpstate.status.flightmode == "FBWB":
-	#mpstate.status.flightmode: current flight mode
-        #tell camProcess to send [cx,cy]
-        mulProcVar.parent_conn.send('**.update.**')
-        #send bank angle to camProcess, which keeps a running average:
-        #mulProcVar.parent_conn.send('**.bank.**')
-        #mulProcVar.parent_conn.send(math.degrees(mpstate.status.msgs['ATTITUDE'].roll))
+        #see if camera has been observed to be on; if not, check to see if status has changed
+        if not mulProcVar.camOn:
+            #read all data in buffer, look for "online" response from camProcess:
+            while mulProcVar.parent_conn.poll(0.05):
+                if mulProcVar.parent_conn.recv() == '**.online.**':
+                    print 'Camera enabled'
+                    mulProcVar.camOn = True
+                    #once this happens, the cameraProcess has the Lock() object
+        if mulProcVar.camOn:
+            #mpstate.status.flightmode: current flight mode
+            #send bank angle to camProcess, which keeps a running average:
+            #mulProcVar.parent_conn.send('**.bank.**')
+            #mulProcVar.parent_conn.send(math.degrees(mpstate.status.msgs['ATTITUDE'].roll))
+            #tell camProcess to send [cx,cy]
+            mulProcVar.parent_conn.send('**.update.**')
 
-        #always get the most RECENT action from camProcess: use while() loop?
-        connDat = 0
-        while (mulProcVar.parent_conn.poll(.01)):
-            connDat = mulProcVar.parent_conn.recv()
-        
-        #ensure buffer is empty, then transmit action
-        if not mulProcVar.parent_conn.poll(.01):
-            #connDat = mulProcVar.parent_conn.recv()
-            action = int(connDat)
-            #print for debugging:
-            print time.clock(),action
-            #transmit the [cx,cy] to the MAV: use a dummy value here
-            for master in mpstate.mav_master:
-                if master.mavlink10():
-                    master.mav.vscl_test_send(action)
-        else:
-            print 'no info received from camProcess'
+            #always get the most RECENT action from camProcess: use lock() object. This could cause main to stop if cameraProcess crashes
+            mulProcVar.lock.acquire()
+            
+            #ensure buffer is empty, then transmit action
+            if mulProcVar.parent_conn.poll(.01):
+                connDat = mulProcVar.parent_conn.recv()
+                action = int(connDat)
+                #release the lock:
+                mulProcVar.lock.release()
+                #print for debugging:
+                print time.clock(),action, '  main'
+                #transmit the [cx,cy] to the MAV:
+                for master in mpstate.mav_master:
+                    if master.mavlink10():
+                        master.mav.vscl_test_send(action)
+            else:
+                print 'no info received from camProcess'
+                #release the lock:
+                mulProcVar.lock.release()
     
     set_stream_rates()
 
