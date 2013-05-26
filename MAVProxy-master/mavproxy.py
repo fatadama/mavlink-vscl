@@ -1354,6 +1354,12 @@ def master_callback(m, master):
     elif mtype == "VSCL_TEST":
         if mpstate.settings.camFlag:
             print 'MAV bank angle: (deg) ',m.dummy#print the signal from the MAV
+    elif mtype == "VSCL_BUMP":
+        if mpstate.settings.camFlag:
+            if m.bumpID == 1:
+                print 'MAV adjusted airspeed by ',m.bumpval*0.01, ' m/s.'
+            if m.bumpID == 0:
+                print 'MAV adjusted altitude by ',m.bumpval*0.01, ' m.'
     else:
         #mpstate.console.writeln("Got MAVLink msg: %s" % m)
         pass
@@ -1585,20 +1591,21 @@ def periodic_tasks():
             #always get the most RECENT action from camProcess: use lock() object. This could cause main to stop if cameraProcess crashes
             mulProcVar.lock.acquire()
             
-            #ensure buffer is empty, then transmit action
-            if mulProcVar.parent_conn.poll(.01):
+            #read from cameraProcess2 until the buffer is empty.
+            connDat = 300
+            while mulProcVar.parent_conn.poll(.01):
                 connDat = mulProcVar.parent_conn.recv()
+            #if anything is read, transmit the read value:
+            if not connDat == 300:
                 action = int(connDat)
-                #release the lock:
-                mulProcVar.lock.release()
-                #transmit the [cx,cy] to the MAV:
+                #transmit the target bank angle to the MAV:
                 for master in mpstate.mav_master:
                     if master.mavlink10():
                         master.mav.vscl_test_send(action)
             else:
                 print 'no info received from camProcess'
-                #release the lock:
-                mulProcVar.lock.release()
+            #release the lock:
+            mulProcVar.lock.release()
     
     set_stream_rates()
 

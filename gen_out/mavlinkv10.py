@@ -499,6 +499,7 @@ MAVLINK_MSG_ID_DATA32 = 170
 MAVLINK_MSG_ID_DATA64 = 171
 MAVLINK_MSG_ID_DATA96 = 172
 MAVLINK_MSG_ID_VSCL_TEST = 200
+MAVLINK_MSG_ID_VSCL_BUMP = 201
 MAVLINK_MSG_ID_HEARTBEAT = 0
 MAVLINK_MSG_ID_SYS_STATUS = 1
 MAVLINK_MSG_ID_SYSTEM_TIME = 2
@@ -961,8 +962,7 @@ class MAVLink_data96_message(MAVLink_message):
 
 class MAVLink_vscl_test_message(MAVLink_message):
         '''
-        This message does nothing but confirm GS-to-vehicle
-        communication w/ custom MAV commands.
+        Command target bank angle in FBWB mode..
         '''
         def __init__(self, dummy):
                 MAVLink_message.__init__(self, MAVLINK_MSG_ID_VSCL_TEST, 'VSCL_TEST')
@@ -971,6 +971,19 @@ class MAVLink_vscl_test_message(MAVLink_message):
 
         def pack(self, mav):
                 return MAVLink_message.pack(self, mav, 87, struct.pack('<h', self.dummy))
+
+class MAVLink_vscl_bump_message(MAVLink_message):
+        '''
+        Adjust MAV target speed and altitude in FBWB mode.
+        '''
+        def __init__(self, bumpval, bumpID):
+                MAVLink_message.__init__(self, MAVLINK_MSG_ID_VSCL_BUMP, 'VSCL_BUMP')
+                self._fieldnames = ['bumpval', 'bumpID']
+                self.bumpval = bumpval
+                self.bumpID = bumpID
+
+        def pack(self, mav):
+                return MAVLink_message.pack(self, mav, 185, struct.pack('<hB', self.bumpval, self.bumpID))
 
 class MAVLink_heartbeat_message(MAVLink_message):
         '''
@@ -2609,6 +2622,7 @@ mavlink_map = {
         MAVLINK_MSG_ID_DATA64 : ( '<BB64s', MAVLink_data64_message, [0, 1, 2], 181 ),
         MAVLINK_MSG_ID_DATA96 : ( '<BB96s', MAVLink_data96_message, [0, 1, 2], 22 ),
         MAVLINK_MSG_ID_VSCL_TEST : ( '<h', MAVLink_vscl_test_message, [0], 87 ),
+        MAVLINK_MSG_ID_VSCL_BUMP : ( '<hB', MAVLink_vscl_bump_message, [0, 1], 185 ),
         MAVLINK_MSG_ID_HEARTBEAT : ( '<IBBBBB', MAVLink_heartbeat_message, [1, 2, 3, 0, 4, 5], 50 ),
         MAVLINK_MSG_ID_SYS_STATUS : ( '<IIIHHhHHHHHHb', MAVLink_sys_status_message, [0, 1, 2, 3, 4, 5, 12, 6, 7, 8, 9, 10, 11], 124 ),
         MAVLINK_MSG_ID_SYSTEM_TIME : ( '<QI', MAVLink_system_time_message, [0, 1], 137 ),
@@ -3543,10 +3557,9 @@ class MAVLink(object):
             
         def vscl_test_encode(self, dummy):
                 '''
-                This message does nothing but confirm GS-to-vehicle communication w/
-                custom MAV commands.
+                Command target bank angle in FBWB mode..
 
-                dummy                     : A dummy value, the MAV will echo it. (int16_t)
+                dummy                     : Change in target bank angle for the MAV. (int16_t)
 
                 '''
                 msg = MAVLink_vscl_test_message(dummy)
@@ -3555,13 +3568,34 @@ class MAVLink(object):
             
         def vscl_test_send(self, dummy):
                 '''
-                This message does nothing but confirm GS-to-vehicle communication w/
-                custom MAV commands.
+                Command target bank angle in FBWB mode..
 
-                dummy                     : A dummy value, the MAV will echo it. (int16_t)
+                dummy                     : Change in target bank angle for the MAV. (int16_t)
 
                 '''
                 return self.send(self.vscl_test_encode(dummy))
+            
+        def vscl_bump_encode(self, bumpval, bumpID):
+                '''
+                Adjust MAV target speed and altitude in FBWB mode.
+
+                bumpval                   : The amount by which to change value. (int16_t)
+                bumpID                    : The value to change. 0 = altitude, 1 = airspeed. (uint8_t)
+
+                '''
+                msg = MAVLink_vscl_bump_message(bumpval, bumpID)
+                msg.pack(self)
+                return msg
+            
+        def vscl_bump_send(self, bumpval, bumpID):
+                '''
+                Adjust MAV target speed and altitude in FBWB mode.
+
+                bumpval                   : The amount by which to change value. (int16_t)
+                bumpID                    : The value to change. 0 = altitude, 1 = airspeed. (uint8_t)
+
+                '''
+                return self.send(self.vscl_bump_encode(bumpval, bumpID))
             
         def heartbeat_encode(self, type, autopilot, base_mode, custom_mode, system_status, mavlink_version=3):
                 '''

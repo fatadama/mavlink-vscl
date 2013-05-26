@@ -136,16 +136,21 @@ def runCameraProc(conn,lock):
                 elif recvVal == '**.update.**':
                     #use cxbar, cybar, phibar to compute the appropriate bank angle.
                     
-                    #INSERT Q-MATRIX LOOKUP HERE
-                    
+                    #INSERT Q-MATRIX LOOKUP HERE - output is called "action"
+
+                    #round phibar to the nearest 2 degrees:
+                    phibar = int(np.floor(phibar))
+                    phibar = phibar+phibar%2
+                    #Transmit the target bank angle, which is the bank angle rounded to 2 degrees plus the actions,
+                    #return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
+                    conn.send(action+phibar)
+					
                     #reset cxbar, cybar
                     numFrames = 0
                     [cxbar,cybar] = [0,0]
                     #reset phibar, numBanks
                     numBanks = 0
                     phibar = 0
-                    #return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
-                    conn.send(action)
                     
                     lock.release()#release the lock so main can grab the data from the pipe
 
