@@ -1,4 +1,4 @@
-import cv2, cv, numpy as np,time, pickle
+import cv2, cv, numpy as np,time, pickle, binarySearch as bs
 
 #called from mavproxy when 'camera' is entered into the console.
 #when runCameraProc is called, it initializes the camera streaming window and trackbars
@@ -52,9 +52,13 @@ def runCameraProc(conn,lock):
     cv2.createTrackbar('sUpper', 'sliders', hsvu[1], 255, nothing)
     cv2.createTrackbar('vUpper', 'sliders', hsvu[2], 255, nothing)
     cv2.createTrackbar('blur','sliders',blurRad,15,nothing)
+    
     #load camera
     cv2.namedWindow('camera')#camera image
     capture = cv2.VideoCapture(0)
+    #open the Q-matrix
+    Qtable = bs.load_Q
+    
     if not capture.isOpened:
         print "****Error: camera not found****"
     else:
@@ -137,10 +141,13 @@ def runCameraProc(conn,lock):
                     #use cxbar, cybar, phibar to compute the appropriate bank angle.
                     
                     #INSERT Q-MATRIX LOOKUP HERE - output is called "action"
-
+                    
                     #round phibar to the nearest 2 degrees:
                     phibar = int(np.floor(phibar))
                     phibar = phibar+phibar%2
+                    #round cxbar and cybar to the appropriate ranges: don't know these
+                    
+                    action = bs.qFind(qTable,[cxbar,cybar,phibar])
                     #Transmit the target bank angle, which is the bank angle rounded to 2 degrees plus the actions,
                     #return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
                     conn.send(action+phibar)
@@ -153,11 +160,6 @@ def runCameraProc(conn,lock):
                     phibar = 0
                     
                     lock.release()#release the lock so main can grab the data from the pipe
-
-                    #cycle action for debugging:
-                    action = action+2
-                    if action>2:
-                        action = -2
                     
                     lock.acquire()#wait until main is done getting the data, then re-acquire the lock
                     
