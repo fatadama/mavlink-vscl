@@ -52,6 +52,10 @@ def runCameraProc(conn,lock):
     cv2.createTrackbar('sUpper', 'sliders', hsvu[1], 255, nothing)
     cv2.createTrackbar('vUpper', 'sliders', hsvu[2], 255, nothing)
     cv2.createTrackbar('blur','sliders',blurRad,15,nothing)
+    #add a new trackbar to trigger video logging on/off
+    cv2.createTrackbar('record','sliders',0,1,nothing)
+    #variable that governs if video is being written:
+    bool_writing = 0
     
     #load camera
     cv2.namedWindow('camera')#camera image
@@ -70,6 +74,7 @@ def runCameraProc(conn,lock):
             if ret:
                 #update settings from sliders:
                 settingUpdate(hsvl,hsvu,blurRad)
+                bool_writing = cv2.getTrackbarPos('record','sliders')
                 #process frames
                 
                 #blur the image to reduce color noise: (5 x 5)
