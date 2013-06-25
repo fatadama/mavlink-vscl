@@ -1,4 +1,4 @@
-import cv2, cv, numpy as np,time, pickle, binarySearch as bs
+import cv2, cv, numpy as np,time, pickle, binarySearch as bs, os
 
 #called from mavproxy when 'camera' is entered into the console.
 #when runCameraProc is called, it initializes the camera streaming window and trackbars
@@ -52,16 +52,29 @@ def runCameraProc(conn,lock):
     cv2.createTrackbar('sUpper', 'sliders', hsvu[1], 255, nothing)
     cv2.createTrackbar('vUpper', 'sliders', hsvu[2], 255, nothing)
     cv2.createTrackbar('blur','sliders',blurRad,15,nothing)
-    #add a new trackbar to trigger video logging on/off
-    cv2.createTrackbar('record','sliders',0,1,nothing)
-    #variable that governs if video is being written:
-    bool_writing = 0
     
     #load camera
     cv2.namedWindow('camera')#camera image
     capture = cv2.VideoCapture(0)
+
+    #add a new trackbar to trigger video logging on/off
+    cv2.createTrackbar('record','camera',0,1,nothing)
+    #open video writer for later use
+    i = 1
+    fname = 'rec' + str(i) +'.avi'
+    for name in os.listdir('.'):
+        if name == fname:
+            i = i+1
+            fname = 'rec' + str(i) +'.avi'
+    frsize = (int(capture.get(cv.CV_CAP_PROP_FRAME_WIDTH)),int(capture.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
+    vidWriter = cv2.VideoWriter(fname,cv.CV_FOURCC('M','J','P','G'),15,frsize)
+    print vidWriter
+    
+    #variable that governs if video is being written:
+    flag_writing = 0
+    
     #open the Q-matrix
-    Qtable = bs.load_Q
+    Qtable = bs.load_Q()
     
     if not capture.isOpened:
         print "****Error: camera not found****"
@@ -74,7 +87,7 @@ def runCameraProc(conn,lock):
             if ret:
                 #update settings from sliders:
                 settingUpdate(hsvl,hsvu,blurRad)
-                bool_writing = cv2.getTrackbarPos('record','sliders')
+                flag_writing = cv2.getTrackbarPos('record','camera')
                 #process frames
                 
                 #blur the image to reduce color noise: (5 x 5)
@@ -119,6 +132,13 @@ def runCameraProc(conn,lock):
                     numFrames = numFrames+1
                     cxbar = (cx+cxbar*(numFrames-1))/numFrames
                     cybar = (cy+cybar*(numFrames-1))/numFrames
+                #if recording, add "RECORDING" to VISIBLE image only
+                if flag_writing==1:
+                    img2 = np.copy(img)
+                    cv2.putText(img,'RECORDING',(0,25),cv2.FONT_HERSHEY_DUPLEX,1,(0,0,255),thickness=2)
+                    #write to VideoWriter
+                    cv2.drawContours(img2,best_cnt,-1,(255,0,0),2)
+                    vidWriter.write(img2)
                 if flagShowVis:
                     #draw circle at contour centroid:
                     cv2.circle(img,(cx,cy),3,(0,255,0),-1)
@@ -152,19 +172,19 @@ def runCameraProc(conn,lock):
                     phibar = phibar+phibar%2
                     #round cxbar and cybar to the appropriate ranges: don't know these
                     
-                    action = bs.qFind(qTable,[cxbar,cybar,phibar])
+                    action = bs.qFind(Qtable,[cxbar,cybar,phibar])
                     #Transmit the target bank angle, which is the bank angle rounded to 2 degrees plus the actions,
                     #return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
                     conn.send(action+phibar)
-					
+
+		    lock.release()#release the lock so main can grab the data from the pipe
+		    
                     #reset cxbar, cybar
                     numFrames = 0
                     [cxbar,cybar] = [0,0]
                     #reset phibar, numBanks
                     numBanks = 0
                     phibar = 0
-                    
-                    lock.release()#release the lock so main can grab the data from the pipe
                     
                     lock.acquire()#wait until main is done getting the data, then re-acquire the lock
                     
@@ -185,3 +205,7 @@ def runCameraProc(conn,lock):
     conn.send("cam off")        
     conn.close()
     lock.release()
+    #close recording file if still open:
+    if vidWriter.isOpened():
+        vidWriter.release()
+        #move the video file to the archive folder:

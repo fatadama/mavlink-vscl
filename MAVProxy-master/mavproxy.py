@@ -1593,7 +1593,7 @@ def periodic_tasks():
             
             #read from cameraProcess2 until the buffer is empty.
             connDat = 300
-            while mulProcVar.parent_conn.poll(.01):
+            while mulProcVar.parent_conn.poll(.02):
                 connDat = mulProcVar.parent_conn.recv()
             #if anything is read, transmit the read value:
             if not connDat == 300:
