@@ -1,0 +1,1 @@
+python mavproxy.py --master=COM7 --baudrate=115200 --console --nowait --aircraft="control_test"
