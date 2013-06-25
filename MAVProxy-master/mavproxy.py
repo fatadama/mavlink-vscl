@@ -1354,6 +1354,9 @@ def master_callback(m, master):
     elif mtype == "VSCL_TEST":
         if mpstate.settings.camFlag:
             print 'MAV bank angle: (deg) ',m.dummy#print the signal from the MAV
+        #else, we are using this message to test control update rates. Display the current time:
+        else:
+            print time.time()
     elif mtype == "VSCL_BUMP":
         if mpstate.settings.camFlag:
             if m.bumpID == 1:
