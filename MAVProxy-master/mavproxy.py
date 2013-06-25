@@ -30,6 +30,9 @@ from modules.lib import mp_settings
 from multiprocessing import Process, Pipe, Lock
 import cameraProcess2
 
+#open file for output - control update rate checking
+FID = open('logfile.txt','w')
+
 class MPSettings(object):
     def __init__(self):
         self.vars = [ ('link', int),
@@ -1357,6 +1360,8 @@ def master_callback(m, master):
         #else, we are using this message to test control update rates. Display the current time:
         else:
             print time.time()
+            FID.write(str(time.time()))
+            FID.write('\n')
     elif mtype == "VSCL_BUMP":
         if mpstate.settings.camFlag:
             if m.bumpID == 1:
