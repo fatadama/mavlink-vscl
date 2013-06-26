@@ -868,6 +868,7 @@ def import_package(name):
 
 #vscl functions:
 def cmd_camera(args):
+    #toggle the camera flag value:
     mpstate.settings.camFlag = not mpstate.settings.camFlag
     if mpstate.settings.camFlag:
         #run the camera streaming process and receive actions
@@ -884,6 +885,25 @@ def cmd_camera(args):
         mulProcVar.camProc = Process(target=cameraProcess2.runCameraProc, args=(mulProcVar.child_conn,mulProcVar.lock))
         #reset the boolean indicating that the camera is on.
         mulProcVar.camOn = False
+
+def cmd_bump(args):
+    #transmit the command to adjust target altitude/airspeed in tracking mode.
+    #Values are input in m or m/s and converted to ints automatically.
+    usage = "usage: bump <spd|alt> value"
+    if len(args)<=1:
+        print(usage)
+    elif args[0] == "spd":
+        valu = int(float(args[1])*100) #convert value to cm/s
+        for master in mpstate.mav_master:
+            if master.mavlink10():
+                master.mav.vscl_bump_send(valu,1)
+    elif args[0] == "alt":
+        valu = int(float(args[1])*100) #convert value to cm
+        for master in mpstate.mav_master:
+            if master.mavlink10():
+                master.mav.vscl_bump_send(valu,0)
+    else:
+        print usage
 
 #vscl: class that holds the multiprocessing variables to ensure they remain in scope
 class multiProcVars(object):
@@ -927,7 +947,8 @@ command_map = {
     'arm'     : (cmd_arm,      'ArduCopter arm motors'),
     'disarm'  : (cmd_disarm,   'ArduCopter disarm motors'),
     #VSCL commands:
-    'camera'  : (cmd_camera,   'enable streaming video')
+    'camera'  : (cmd_camera,   'enable streaming video'),
+    'bump'    : (cmd_bump,     'adjust tracking alt/spd')
     }
 
 def process_stdin(line):
@@ -1350,16 +1371,16 @@ def master_callback(m, master):
             mpstate.console.write(str(m.data), bg='red')
     elif mtype in [ "COMMAND_ACK", "MISSION_ACK" ]:
         mpstate.console.writeln("Got MAVLink msg: %s" % m)
-    #VSCL: add recognition of custom telem here?
+    #VSCL: recognition of custom telem here
     elif mtype == "VSCL_TEST":
         if mpstate.settings.camFlag:
-            print 'MAV bank angle: (deg) ',m.dummy#print the signal from the MAV
+            print 'MAV target bank : (deg) ',m.dummy#print the signal from the MAV
     elif mtype == "VSCL_BUMP":
         if mpstate.settings.camFlag:
             if m.bumpID == 1:
-                print 'MAV adjusted airspeed by ',m.bumpval*0.01, ' m/s.'
+                print 'MAV airspeed target: ', m.bumpval*0.01, ' m/s.'
             if m.bumpID == 0:
-                print 'MAV adjusted altitude by ',m.bumpval*0.01, ' m.'
+                print 'MAV altitude target: ', m.bumpval*0.01, ' m.'
     else:
         #mpstate.console.writeln("Got MAVLink msg: %s" % m)
         pass
@@ -1577,14 +1598,12 @@ def periodic_tasks():
         #see if camera has been observed to be on; if not, check to see if status has changed
         if not mulProcVar.camOn:
             #read all data in buffer, look for "online" response from camProcess:
-            while mulProcVar.parent_conn.poll(0.05):
+            while mulProcVar.parent_conn.poll(0.1):
                 if mulProcVar.parent_conn.recv() == '**.online.**':
                     print 'Camera enabled'
                     mulProcVar.camOn = True
                     #once this happens, the cameraProcess has the Lock() object
         if mulProcVar.camOn:
-            #mpstate.status.flightmode: current flight mode
-         
             #tell camProcess to send Q-learning action:
             mulProcVar.parent_conn.send('**.update.**')
 
@@ -1595,12 +1614,14 @@ def periodic_tasks():
             connDat = 300
             while mulProcVar.parent_conn.poll(.02):
                 connDat = mulProcVar.parent_conn.recv()
+                print connDat
             #if anything is read, transmit the read value:
             if not connDat == 300:
                 action = int(connDat)
                 #transmit the target bank angle to the MAV:
                 for master in mpstate.mav_master:
                     if master.mavlink10():
+                        print 'Sending ', action, ' (deg) to MAV'
                         master.mav.vscl_test_send(action)
             else:
                 print 'no info received from camProcess'

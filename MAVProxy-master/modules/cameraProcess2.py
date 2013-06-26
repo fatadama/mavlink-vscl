@@ -59,6 +59,7 @@ def runCameraProc(conn,lock):
 
     #add a new trackbar to trigger video logging on/off
     cv2.createTrackbar('record','camera',0,1,nothing)
+    
     #open video writer for later use
     i = 1
     fname = 'rec' + str(i) +'.avi'
@@ -112,20 +113,21 @@ def runCameraProc(conn,lock):
 
                 #loop over the contours and find the one with the largest area:
                 for cnt in contours:
-                        area = cv2.contourArea(cnt)
-                        if area>max_area:
-                                max_area = area
-                                best_cnt = cnt
-                                
+                    area = cv2.contourArea(cnt)
+                    if area>max_area:
+                            max_area = area
+                            best_cnt = cnt
+                            
                 #check that the size of the best contour is not empty
                 if np.shape(best_cnt)[0]>0:
-                        #find the centroid of best contour
-                        M = cv2.moments(best_cnt)
-                        #check that the divisor moment is nonzero; if it is, set the location to (0,0)
-                        if M['m00']>0:
-                                cx,cy = int(M['m10']/M['m00']),int(M['m01']/M['m00'])
-                        else:
-                                cx,cy = (0,0)
+                    #find the centroid of best contour
+                    M = cv2.moments(best_cnt)
+                    #check that the divisor moment is nonzero; if it is, set the location to (0,0)
+                    if M['m00']>0:
+                        cx,cy = int(M['m10']/M['m00']),int(M['m01']/M['m00'])
+                    else:
+                        cx,cy = (0,0)
+                        
                 #update the moving averages:
                 if cx>0 and cy>0:
                     #ensure that cx>0, cy>0 in case centroid drops out
@@ -144,8 +146,12 @@ def runCameraProc(conn,lock):
                     cv2.circle(img,(cx,cy),3,(0,255,0),-1)
                     cv2.imshow('camera',img)
                 else:
-                    cv2.circle(thresh2,(cx,cy),3,(0,255,0),-1)
-                    cv2.imshow('camera',thresh2)
+                    #try drawing the best contour and not showing the thresholded image
+                    cv2.circle(img,(cx,cy),3,(0,255,0),-1)
+                    cv2.drawContours(img,best_cnt,-1,(255,0,0),2)
+                    cv2.imshow('camera',img)
+                    #cv2.circle(thresh2,(cx,cy),3,(0,255,0),-1)
+                    #cv2.imshow('camera',thresh2)
                     
             keyRet = cv2.waitKey(5)
             #see if user hits 'ESC' in opencv windows
@@ -165,16 +171,15 @@ def runCameraProc(conn,lock):
                 elif recvVal == '**.update.**':
                     #use cxbar, cybar, phibar to compute the appropriate bank angle.
                     
-                    #INSERT Q-MATRIX LOOKUP HERE - output is called "action"
-                    
                     #round phibar to the nearest 2 degrees:
                     phibar = int(np.floor(phibar))
                     phibar = phibar+phibar%2
                     #round cxbar and cybar to the appropriate ranges: don't know these
-                    
+
+                    #lookup action in Q-matrix
                     action = bs.qFind(Qtable,[cxbar,cybar,phibar])
-                    #Transmit the target bank angle, which is the bank angle rounded to 2 degrees plus the actions,
-                    #return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
+                    #Transmit the target bank angle, which is the bank angle rounded to 2 degrees plus the actions;
+                    #   return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
                     conn.send(action+phibar)
 
 		    lock.release()#release the lock so main can grab the data from the pipe
@@ -187,7 +192,6 @@ def runCameraProc(conn,lock):
                     phibar = 0
                     
                     lock.acquire()#wait until main is done getting the data, then re-acquire the lock
-                    
                 elif recvVal == '**.bank.**':
                     #release lock
                     lock.release()
