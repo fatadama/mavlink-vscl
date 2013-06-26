@@ -890,7 +890,11 @@ def cmd_bump(args):
     #transmit the command to adjust target altitude/airspeed in tracking mode.
     #Values are input in m or m/s and converted to ints automatically.
     usage = "usage: bump <spd|alt> value"
-    if len(args)<=1:
+    #only bump when in tracking flight mode:
+    if not mpstate.status.flightmode == "FBWB":
+        print usage, ", tracking mode only"
+    #this function requires 2 arguments:
+    elif len(args)<=1:
         print(usage)
     elif args[0] == "spd":
         valu = int(float(args[1])*100) #convert value to cm/s
@@ -902,8 +906,9 @@ def cmd_bump(args):
         for master in mpstate.mav_master:
             if master.mavlink10():
                 master.mav.vscl_bump_send(valu,0)
+    #if command is unknown, print the usage instructions:
     else:
-        print usage
+        print usage, ", \"", args[0], "\" cmd unknown"
 
 #vscl: class that holds the multiprocessing variables to ensure they remain in scope
 class multiProcVars(object):
@@ -1614,7 +1619,6 @@ def periodic_tasks():
             connDat = 300
             while mulProcVar.parent_conn.poll(.02):
                 connDat = mulProcVar.parent_conn.recv()
-                print connDat
             #if anything is read, transmit the read value:
             if not connDat == 300:
                 action = int(connDat)
