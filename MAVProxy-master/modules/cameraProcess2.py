@@ -31,8 +31,10 @@ def runCameraProc(conn,lock):
     
     #initialize variables for HSV limits and blur radius:
     blurRad = 3#image blur radius
-    hsvl = np.array([0,96,74])#lower HSV cutoff
-    hsvu = np.array([29,255,255])#upper HSV cutoff
+    hsvl = np.array([19,17,208])#lower HSV cutoff
+    hsvu = np.array([31,143,255])#upper HSV cutoff
+    rgbLim = np.array([[122,190,219],[255,255,255]])#rgb lower/upper cutoffs - THESE ARE NOT ADJUSTABLE ON-LINE!!
+
     #numFrames: the number of frames processed in the current moving average calculation
     numFrames = 0
     #cxbar, cybar: average centroid location in the frame
@@ -51,10 +53,10 @@ def runCameraProc(conn,lock):
     cv2.createTrackbar('hUpper', 'sliders', hsvu[0], 255, nothing)
     cv2.createTrackbar('sUpper', 'sliders', hsvu[1], 255, nothing)
     cv2.createTrackbar('vUpper', 'sliders', hsvu[2], 255, nothing)
-    cv2.createTrackbar('blur','sliders',blurRad,15,nothing)
     
     #load camera
     cv2.namedWindow('camera')#camera image
+    cv2.createTrackbar('blur','camera',blurRad,15,nothing)
     capture = cv2.VideoCapture(0)
 
     #add a new trackbar to trigger video logging on/off
@@ -93,12 +95,17 @@ def runCameraProc(conn,lock):
                 
                 #blur the image to reduce color noise: (5 x 5)
                 img = cv2.blur(img,(blurRad,blurRad))
-                
+
+                #filter the image in RGB space
+                thres = cv2.inRange(img,rgbLim[0,:],rgbLim[1,:])
+
                 #convert image to HSV
                 hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
                 #threshold the image using the HSV lower and upper bounds
                 thresh = cv2.inRange(hsv,hsvl,hsvu)
-                thresh2 = np.copy(thresh)
+                ##thresh2 = np.copy(thresh)
+                #unionize the HSV and RGB thresholds:
+                thresh = thresh&thres
                 #find contours in the thresholded image:
                 contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
                 
@@ -146,12 +153,12 @@ def runCameraProc(conn,lock):
                     cv2.circle(img,(cx,cy),3,(0,255,0),-1)
                     cv2.imshow('camera',img)
                 else:
-                    #try drawing the best contour and not showing the thresholded image
+                    #draw the contours on the true color image:
                     cv2.circle(img,(cx,cy),3,(0,255,0),-1)
-                    cv2.drawContours(img,best_cnt,-1,(255,0,0),2)
+                    cv2.drawContours(img,contours,-1,(255,0,0),2)
                     cv2.imshow('camera',img)
-                    #cv2.circle(thresh2,(cx,cy),3,(0,255,0),-1)
-                    #cv2.imshow('camera',thresh2)
+                    ##cv2.circle(thresh2,(cx,cy),3,(0,255,0),-1)
+                    ##cv2.imshow('camera',thresh2)
                     
             keyRet = cv2.waitKey(5)
             #see if user hits 'ESC' in opencv windows
