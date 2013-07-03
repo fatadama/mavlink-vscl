@@ -145,8 +145,8 @@ def runCameraProc(conn,lock):
                 if cx>0 and cy>0:
                     #ensure that cx>0, cy>0 in case centroid drops out
                     numFrames = numFrames+1
-                    cxbar = (cx+cxbar*(numFrames-1))/numFrames
-                    cybar = (cy+cybar*(numFrames-1))/numFrames
+                    cxbar = (cx+cxbar*(numFrames-1.0))/numFrames
+                    cybar = (cy+cybar*(numFrames-1.0))/numFrames
                 #if recording, add "RECORDING" to VISIBLE image only
                 if flag_writing==1:
                     img2 = np.copy(img)
@@ -186,6 +186,8 @@ def runCameraProc(conn,lock):
                     break
                 elif recvVal == '**.update.**':
                     #use cxbar, cybar, phibar to compute the appropriate bank angle.
+                    #log the "raw" time and state info
+                    qLog.write(str(time.clock())+','+str(cxbar)+','+str(cybar)+','+str(phibar)+',')
                     
                     #round phibar to the nearest 2 degrees:
                     phibar = int(np.floor(phibar))
@@ -200,15 +202,22 @@ def runCameraProc(conn,lock):
                     action = bs.qFind(Qtable,[cxbar,cybar,phibar])
                     #Transmit the target bank angle, which is the bank angle rounded to 2 degrees plus the actions;
                     #   return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
+                    #check that the current state is found in the q-matrix: if not, do not change actions
                     if action == -10:
                         print 'Could not match states in Q-matrix'
                         action = 0
+                    #check that bank angle limits are not exceeded:
+                    if phibar>=30 and action==2:
+                        action = 0
+                    if phibar<=-30 and action==-2:
+                        action = 0
+                    #send the action
                     conn.send(action+phibar)
 
 		    lock.release()#release the lock so main can grab the data from the pipe
 
-                    #log the time, cxbar, cybar, phibar, and the commanded action:
-		    qLog.write(str(time.clock())+','+str(cxbar)+','+str(cybar)+','+str(phibar)+','+str(action)+'\n')
+                    #log the rounded cxbar, cybar, phibar, and the commanded action:
+		    qLog.write(str(cxbar)+','+str(cybar)+','+str(phibar)+','+str(action)+'\n')
 		    
                     #reset cxbar, cybar
                     numFrames = 0
