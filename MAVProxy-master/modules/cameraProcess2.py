@@ -45,6 +45,8 @@ def runCameraProc(conn,lock):
     phibar = 0
     #ACTION: the action to take. is +/-2, 0
     action = 0
+    #t_last: the last time a command was sent from MAVProxy. If this is more than 10? seconds, release the lock for 0.5 seconds, in case MAVProxy main() has got stuck waiting to  acquire lock.
+    t_last = time.clock()
     #create trackbars for HSV limits and blur value:
     cv2.namedWindow('sliders')
     cv2.createTrackbar('hLower', 'sliders', hsvl[0], 255, nothing)
@@ -174,6 +176,7 @@ def runCameraProc(conn,lock):
                 flagShowVis = not flagShowVis
             #see if mavproxy has sent a command
             if conn.poll(0.05):
+                t_last = time.clock()
                 #if a command comes, process it
                 #   **.kill.** - terminate process and close all windows
                 #   **.update.** - transmit current [cx,cy] to the main process and reset the average
@@ -188,17 +191,24 @@ def runCameraProc(conn,lock):
                     phibar = int(np.floor(phibar))
                     phibar = phibar+phibar%2
                     #round cxbar and cybar to the appropriate ranges: don't know these
+                    #y-axis is spaced every 24 px starting at 7
+                    cybar = int((cybar-7)/24)*24+7
+                    #x-axis every 24 px starting at 0
+                    cxbar = int(cxbar/24)*24
 
                     #lookup action in Q-matrix
                     action = bs.qFind(Qtable,[cxbar,cybar,phibar])
                     #Transmit the target bank angle, which is the bank angle rounded to 2 degrees plus the actions;
                     #   return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
+                    if action == -10:
+                        print 'Could not match states in Q-matrix'
+                        action = 0
                     conn.send(action+phibar)
 
 		    lock.release()#release the lock so main can grab the data from the pipe
 
                     #log the time, cxbar, cybar, phibar, and the commanded action:
-		    qLog.write(str(time.clock())+','+str(cxbar)+','+str(cybar)+','+str(phibar)+'\n')
+		    qLog.write(str(time.clock())+','+str(cxbar)+','+str(cybar)+','+str(phibar)+','+str(action)+'\n')
 		    
                     #reset cxbar, cybar
                     numFrames = 0
@@ -221,6 +231,11 @@ def runCameraProc(conn,lock):
                         print 'camProcess did not receive bank angle from MAVProxy'
                     #acquire lock
                     lock.acquire()
+            if ((t_last-time.clock())>10):
+                print 'camProcess releasing lock to try to restart main'
+                lock.release()
+                time.sleep(0.5)
+                lock.acquire()
     cv2.destroyAllWindows()
     conn.send("cam off")        
     conn.close()

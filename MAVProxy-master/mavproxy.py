@@ -1925,8 +1925,8 @@ Auto-detected serial ports are:
     msg_period = mavutil.periodic_event(1.0/15)
     param_period = mavutil.periodic_event(1)
     heartbeat_period = mavutil.periodic_event(1)
-    #VSCL: create camera update periodic_event at 1 Hz
-    camCentroid_period = mavutil.periodic_event(1)
+    #VSCL: create camera update periodic_event at .1 Hz to get the action FROM camera processing
+    camCentroid_period = mavutil.periodic_event(.1)
     #create periodic event at 10 Hz to send current bank angle to the camera process:
     camRollAngle_period = mavutil.periodic_event(10)
     battery_period = mavutil.periodic_event(0.1)
