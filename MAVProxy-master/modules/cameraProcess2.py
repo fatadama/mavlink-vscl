@@ -72,6 +72,10 @@ def runCameraProc(conn,lock):
     frsize = (int(capture.get(cv.CV_CAP_PROP_FRAME_WIDTH)),int(capture.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
     vidWriter = cv2.VideoWriter(fname,cv.CV_FOURCC('M','J','P','G'),15,frsize)
     print vidWriter
+    #open text log that corresponds to the video
+    vidLog = open(fname[0:-3]+'log','w')
+    #open Q-matrix log. format name is 'qLog##.log', where ## is the same as in 'fname':
+    qLog = open('qLog'+fname[3:-4]+'.log','w')
     
     #variable that governs if video is being written:
     flag_writing = 0
@@ -148,6 +152,8 @@ def runCameraProc(conn,lock):
                     #write to VideoWriter
                     cv2.drawContours(img2,best_cnt,-1,(255,0,0),2)
                     vidWriter.write(img2)
+                    #write time, centroid location to file
+                    vidLog.write(str(time.clock())+','+str(cx)+','+str(cy)+'\n')
                 if flagShowVis:
                     #draw circle at contour centroid:
                     cv2.circle(img,(cx,cy),3,(0,255,0),-1)
@@ -190,6 +196,9 @@ def runCameraProc(conn,lock):
                     conn.send(action+phibar)
 
 		    lock.release()#release the lock so main can grab the data from the pipe
+
+                    #log the time, cxbar, cybar, phibar, and the commanded action:
+		    qLog.write(str(time.clock())+','+str(cxbar)+','+str(cybar)+','+str(phibar)+'\n')
 		    
                     #reset cxbar, cybar
                     numFrames = 0
@@ -220,3 +229,7 @@ def runCameraProc(conn,lock):
     if vidWriter.isOpened():
         vidWriter.release()
         #move the video file to the archive folder:
+    #close the video log:    
+    vidLog.close()
+    #close the q-matrix log
+    qLog.close()
