@@ -500,6 +500,7 @@ MAVLINK_MSG_ID_DATA64 = 171
 MAVLINK_MSG_ID_DATA96 = 172
 MAVLINK_MSG_ID_VSCL_TEST = 200
 MAVLINK_MSG_ID_VSCL_BUMP = 201
+MAVLINK_MSG_ID_VSCL_CONTROLS = 202
 MAVLINK_MSG_ID_HEARTBEAT = 0
 MAVLINK_MSG_ID_SYS_STATUS = 1
 MAVLINK_MSG_ID_SYSTEM_TIME = 2
@@ -984,6 +985,22 @@ class MAVLink_vscl_bump_message(MAVLink_message):
 
         def pack(self, mav):
                 return MAVLink_message.pack(self, mav, 185, struct.pack('<hB', self.bumpval, self.bumpID))
+
+class MAVLink_vscl_controls_message(MAVLink_message):
+        '''
+        Send the current elevator, throttle, aileron, and rudder
+        deflections in centidegrees.
+        '''
+        def __init__(self, elev, thro, aile, rudd):
+                MAVLink_message.__init__(self, MAVLINK_MSG_ID_VSCL_CONTROLS, 'VSCL_CONTROLS')
+                self._fieldnames = ['elev', 'thro', 'aile', 'rudd']
+                self.elev = elev
+                self.thro = thro
+                self.aile = aile
+                self.rudd = rudd
+
+        def pack(self, mav):
+                return MAVLink_message.pack(self, mav, 91, struct.pack('<hhhh', self.elev, self.thro, self.aile, self.rudd))
 
 class MAVLink_heartbeat_message(MAVLink_message):
         '''
@@ -2623,6 +2640,7 @@ mavlink_map = {
         MAVLINK_MSG_ID_DATA96 : ( '<BB96s', MAVLink_data96_message, [0, 1, 2], 22 ),
         MAVLINK_MSG_ID_VSCL_TEST : ( '<h', MAVLink_vscl_test_message, [0], 87 ),
         MAVLINK_MSG_ID_VSCL_BUMP : ( '<hB', MAVLink_vscl_bump_message, [0, 1], 185 ),
+        MAVLINK_MSG_ID_VSCL_CONTROLS : ( '<hhhh', MAVLink_vscl_controls_message, [0, 1, 2, 3], 91 ),
         MAVLINK_MSG_ID_HEARTBEAT : ( '<IBBBBB', MAVLink_heartbeat_message, [1, 2, 3, 0, 4, 5], 50 ),
         MAVLINK_MSG_ID_SYS_STATUS : ( '<IIIHHhHHHHHHb', MAVLink_sys_status_message, [0, 1, 2, 3, 4, 5, 12, 6, 7, 8, 9, 10, 11], 124 ),
         MAVLINK_MSG_ID_SYSTEM_TIME : ( '<QI', MAVLink_system_time_message, [0, 1], 137 ),
@@ -3596,6 +3614,34 @@ class MAVLink(object):
 
                 '''
                 return self.send(self.vscl_bump_encode(bumpval, bumpID))
+            
+        def vscl_controls_encode(self, elev, thro, aile, rudd):
+                '''
+                Send the current elevator, throttle, aileron, and rudder deflections
+                in centidegrees.
+
+                elev                      : Elevator setting. (int16_t)
+                thro                      : Throttle setting. (int16_t)
+                aile                      : Aileron setting. (int16_t)
+                rudd                      : Rudder setting. (int16_t)
+
+                '''
+                msg = MAVLink_vscl_controls_message(elev, thro, aile, rudd)
+                msg.pack(self)
+                return msg
+            
+        def vscl_controls_send(self, elev, thro, aile, rudd):
+                '''
+                Send the current elevator, throttle, aileron, and rudder deflections
+                in centidegrees.
+
+                elev                      : Elevator setting. (int16_t)
+                thro                      : Throttle setting. (int16_t)
+                aile                      : Aileron setting. (int16_t)
+                rudd                      : Rudder setting. (int16_t)
+
+                '''
+                return self.send(self.vscl_controls_encode(elev, thro, aile, rudd))
             
         def heartbeat_encode(self, type, autopilot, base_mode, custom_mode, system_status, mavlink_version=3):
                 '''

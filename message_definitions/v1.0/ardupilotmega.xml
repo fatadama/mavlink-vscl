@@ -349,6 +349,14 @@
 		<field type="int16_t" name="bumpval">The amount by which to change value.</field>
 		<field type="uint8_t" name="bumpID">The value to change. 0 = altitude, 1 = airspeed.</field>
 	  </message>
+	  
+	  <message id="202" name="VSCL_CONTROLS">
+		<description>Send the current elevator, throttle, aileron, and rudder deflections in centidegrees.</description>
+		<field type="int16_t" name="elev">Elevator setting.</field>
+		<field type="int16_t" name="thro">Throttle setting.</field>
+		<field type="int16_t" name="aile">Aileron setting.</field>
+		<field type="int16_t" name="rudd">Rudder setting.</field>
+	  </message>
 	 
      </messages>
 </mavlink>
