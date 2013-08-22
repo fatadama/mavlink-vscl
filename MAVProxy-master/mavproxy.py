@@ -1407,8 +1407,10 @@ def master_callback(m, master):
         VSCL_FID.write(str(mpstate.status.msgs['ATTITUDE'].roll)+',')
         VSCL_FID.write(str(int(mpstate.status.msgs['GPS_RAW_INT'].cog * 0.01))+',')#gps heading
         VSCL_FID.write(str(mpstate.status.msgs['ATTITUDE'].yaw))#heading from AHRS
-        VSCL_FID.write('\n')                       
-        
+        VSCL_FID.write('\n')
+    elif mtype == "VSCL_AUTOLAND":
+        #log the autoland message
+        print 'Got autoland msg.'
     else:
         #mpstate.console.writeln("Got MAVLink msg: %s" % m)
         pass
