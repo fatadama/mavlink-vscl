@@ -357,6 +357,16 @@
 		<field type="int16_t" name="aile">Aileron setting.</field>
 		<field type="int16_t" name="rudd">Rudder setting.</field>
 	  </message>
+	  
+	  <message id="203" name="VSCL_AUTOLAND">
+		<description>Send the current autolanding controller state (reference and commanded values).</description>
+		<field type="int16_t" name="psi">Reference heading (mrad).</field>
+		<field type="int16_t" name="theta">Reference pitch (mrad).</field>
+		<field type="int16_t" name="phi">Reference bank (mrad).</field>
+		<field type="int16_t" name="elev">Elevator setting (cd).</field>
+		<field type="int16_t" name="thto">Throttle setting (pct?).</field>
+		<field type="int16_t" name="aile">Aileron setting (cd).</field>
+	  </message>
 	 
      </messages>
 </mavlink>
