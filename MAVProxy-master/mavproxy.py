@@ -31,14 +31,15 @@ from multiprocessing import Process, Pipe, Lock
 import cameraProcess2
 
 #VSCL: open a file for logging control deflections. Hopefully this is a global!
-vscl_fname = 'controlsLog'+str(1)+'.txt'
-for name in os.listdir('.'):
-    i = 1
+vscl_fname = 'controlsLog'+str(1)+'.csv'
+i = 1
+for name in os.listdir(os.getcwd()):
     if name == vscl_fname:
         i = i+1
-        fname = 'logFile'+str(i)+'.txt'
+        vscl_fname = 'controlsLog'+str(i)+'.csv'
+
 VSCL_FID = open(vscl_fname,'w')
-VSCL_FID.write('Time (s),elevator,throttle,aileron,rudder,pitch(rad),arspd(m/s?),bank(rad),hdg(deg)\n');
+VSCL_FID.write('Time (s),elevator,throttle,aileron,rudder,pitch(rad),arspd(m/s?),bank(rad),gps hdg(deg),ahrs hdg(rad)\n');
 
 class MPSettings(object):
     def __init__(self):
@@ -1404,7 +1405,8 @@ def master_callback(m, master):
         VSCL_FID.write(str(mpstate.status.msgs['ATTITUDE'].pitch)+',')
         VSCL_FID.write(str(mpstate.status.msgs['VFR_HUD'].airspeed)+',')#m/s??
         VSCL_FID.write(str(mpstate.status.msgs['ATTITUDE'].roll)+',')
-        VSCL_FID.write(str(int(mpstate.status.msgs['GPS_RAW_INT'].cog * 0.01)))#gps heading
+        VSCL_FID.write(str(int(mpstate.status.msgs['GPS_RAW_INT'].cog * 0.01))+',')#gps heading
+        VSCL_FID.write(str(mpstate.status.msgs['ATTITUDE'].yaw))#heading from AHRS
         VSCL_FID.write('\n')                       
         
     else:
@@ -1646,7 +1648,6 @@ def periodic_tasks():
             send_rc_override()
             if mpstate.status.override_counter > 0:
                 mpstate.status.override_counter -= 1
-
 
     # call optional module idle tasks. These are called at several hundred Hz
     for m in mpstate.modules:
