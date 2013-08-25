@@ -27,18 +27,18 @@ parser.add_option("--types",  default=None, help="types of messages (comma separ
 
 import mavutil
 
-if len(args) < 1:
-    print("Usage: mavlogdump.py [options] <LOGFILE>")
-    sys.exit(1)
+#filename = args[0]
+filename = raw_input("Name of the .tlog file to be ripped:\n")
+#remove the extension if present
+if filename[-4:] == 'tlog':
+    filename = filename[0:-5]
 
-filename = args[0]
-mlog = mavutil.mavlink_connection(filename, planner_format=opts.planner,
+mlog = mavutil.mavlink_connection(filename+'.tlog', planner_format=opts.planner,
                                   notimestamps=opts.notimestamps,
                                   robust_parsing=opts.robust)
 
-output = None
-if opts.output:
-    output = mavutil.mavlogfile(opts.output, write=True)
+output = filename+'.txt'
+outfile = open(filename+'.dat','w')
 
 types = opts.types
 if types is not None:
@@ -52,17 +52,21 @@ while True:
     if types is not None and m.get_type() not in types:
         continue
     last_timestamp = 0
-    if output and m.get_type() != 'BAD_DATA':
+    if m.get_type() != 'BAD_DATA':
         timestamp = getattr(m, '_timestamp', None)
         if not timestamp:
             timestamp = last_timestamp
         last_timestamp = timestamp
-        output.write(struct.pack('>Q', timestamp*1.0e6))
-        output.write(m.get_msgbuf())
+        outfile.write("%s.%02u: %s" % (
+        time.strftime("%Y-%m-%d %H:%M:%S",
+                      time.localtime(m._timestamp)),
+        int(m._timestamp*100.0)%100, m))
+        outfile.write("\n")
     if opts.quiet:
         continue
     print("%s.%02u: %s" % (
         time.strftime("%Y-%m-%d %H:%M:%S",
                       time.localtime(m._timestamp)),
         int(m._timestamp*100.0)%100, m))
+    
         
