@@ -43,7 +43,9 @@ outfile = open(filename+'.dat','w')
 types = opts.types
 if types is not None:
     types = types.split(',')
-    
+
+print "Reading tlog file:\n"
+
 while True:
     m = mlog.recv_match(condition=opts.condition, blocking=opts.follow)
     if m is None:
