@@ -37,6 +37,7 @@ for name in os.listdir(os.getcwd()):
     if name == vscl_fname:
         i = i+1
         vscl_fname = 'controlsLog'+str(i)+'.csv'
+        break
 
 VSCL_FID = open(vscl_fname,'w')
 VSCL_FID.write('Time (s),elevator,throttle,aileron,rudder,pitch(rad),arspd(m/s?),bank(rad),gps hdg(deg),ahrs hdg(rad)\n');
