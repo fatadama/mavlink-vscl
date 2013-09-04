@@ -23,11 +23,13 @@ def settingUpdate(hsvL,hsvU,blurRad):
     blurRad = cv2.getTrackbarPos('blur','sliders')
     return
 
-def runCameraProc(conn,lock):
+def runCameraProc(conn,lock,flag_testing=False):
+    #flag_testing is passed as True to skip over any connection/lock stuff
     #tell main that the process is running:
-    conn.send('**.online.**')
-    #acquire lock
-    lock.acquire()
+    if not flag_testing:
+        conn.send('**.online.**')
+        #acquire lock
+        lock.acquire()
     
     #initialize variables for HSV limits and blur radius:
     blurRad = 3#image blur radius
@@ -175,80 +177,82 @@ def runCameraProc(conn,lock):
             elif keyRet==32:
                 flagShowVis = not flagShowVis
             #see if mavproxy has sent a command
-            if conn.poll(0.05):
-                t_last = time.clock()
-                #if a command comes, process it
-                #   **.kill.** - terminate process and close all windows
-                #   **.update.** - transmit current [cx,cy] to the main process and reset the average
-                #   **.bank.** - this is followed by the current MAV bank angle (deg)
-                recvVal = conn.recv()
-                if recvVal == '**.kill.**':
-                    break
-                elif recvVal == '**.update.**':
-                    #use cxbar, cybar, phibar to compute the appropriate bank angle.
-                    #log the "raw" time and state info
-                    qLog.write(str(time.clock())+','+str(cxbar)+','+str(cybar)+','+str(phibar)+',')
-                    
-                    #round phibar to the nearest 2 degrees:
-                    phibar = int(np.floor(phibar))
-                    phibar = phibar+phibar%2
-                    #round cxbar and cybar to the appropriate ranges: don't know these
-                    #y-axis is spaced every 24 px starting at 7
-                    cybar = int((cybar-7)/24)*24+7
-                    #x-axis every 24 px starting at 0
-                    cxbar = int(cxbar/24)*24
+            if not flag_testing:
+                if conn.poll(0.05):
+                    t_last = time.clock()
+                    #if a command comes, process it
+                    #   **.kill.** - terminate process and close all windows
+                    #   **.update.** - transmit current [cx,cy] to the main process and reset the average
+                    #   **.bank.** - this is followed by the current MAV bank angle (deg)
+                    recvVal = conn.recv()
+                    if recvVal == '**.kill.**':
+                        break
+                    elif recvVal == '**.update.**':
+                        #use cxbar, cybar, phibar to compute the appropriate bank angle.
+                        #log the "raw" time and state info
+                        qLog.write(str(time.clock())+','+str(cxbar)+','+str(cybar)+','+str(phibar)+',')
+                        
+                        #round phibar to the nearest 2 degrees:
+                        phibar = int(np.floor(phibar))
+                        phibar = phibar+phibar%2
+                        #round cxbar and cybar to the appropriate ranges: don't know these
+                        #y-axis is spaced every 24 px starting at 7
+                        cybar = int((cybar-7)/24)*24+7
+                        #x-axis every 24 px starting at 0
+                        cxbar = int(cxbar/24)*24
 
-                    #lookup action in Q-matrix
-                    action = bs.qFind(Qtable,[cxbar,cybar,phibar])
-                    #Transmit the target bank angle, which is the bank angle rounded to 2 degrees plus the actions;
-                    #   return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
-                    #check that the current state is found in the q-matrix: if not, do not change actions
-                    if action == -10:
-                        print 'Could not match states in Q-matrix'
-                        action = 0
-                    #check that bank angle limits are not exceeded:
-                    if phibar>=30 and action==2:
-                        action = 0
-                    if phibar<=-30 and action==-2:
-                        action = 0
-                    #send the action
-                    conn.send(action+phibar)
+                        #lookup action in Q-matrix
+                        action = bs.qFind(Qtable,[cxbar,cybar,phibar])
+                        #Transmit the target bank angle, which is the bank angle rounded to 2 degrees plus the actions;
+                        #   return -2 (decrease bank angle),0 (do nothing),2 (increase bank angle)
+                        #check that the current state is found in the q-matrix: if not, do not change actions
+                        if action == -10:
+                            print 'Could not match states in Q-matrix'
+                            action = 0
+                        #check that bank angle limits are not exceeded:
+                        if phibar>=30 and action==2:
+                            action = 0
+                        if phibar<=-30 and action==-2:
+                            action = 0
+                        #send the action
+                        conn.send(action+phibar)
 
-		    lock.release()#release the lock so main can grab the data from the pipe
+                        lock.release()#release the lock so main can grab the data from the pipe
 
-                    #log the rounded cxbar, cybar, phibar, and the commanded action:
-		    qLog.write(str(cxbar)+','+str(cybar)+','+str(phibar)+','+str(action)+'\n')
-		    
-                    #reset cxbar, cybar
-                    numFrames = 0
-                    [cxbar,cybar] = [0,0]
-                    #reset phibar, numBanks
-                    numBanks = 0
-                    phibar = 0
-                    
-                    lock.acquire()#wait until main is done getting the data, then re-acquire the lock
-                elif recvVal == '**.bank.**':
-                    #release lock
+                        #log the rounded cxbar, cybar, phibar, and the commanded action:
+                        qLog.write(str(cxbar)+','+str(cybar)+','+str(phibar)+','+str(action)+'\n')
+                        
+                        #reset cxbar, cybar
+                        numFrames = 0
+                        [cxbar,cybar] = [0,0]
+                        #reset phibar, numBanks
+                        numBanks = 0
+                        phibar = 0
+                        
+                        lock.acquire()#wait until main is done getting the data, then re-acquire the lock
+                    elif recvVal == '**.bank.**':
+                        #release lock
+                        lock.release()
+                        #read in bank angle from process:
+                        if conn.poll(0.05):
+                            #update moving average calculation
+                            numBanks = numBanks+1
+                            phi = conn.recv()
+                            phibar = (phi+phibar*(numBanks-1))/numBanks
+                        else:
+                            print 'camProcess did not receive bank angle from MAVProxy'
+                        #acquire lock
+                        lock.acquire()
+                if ((t_last-time.clock())>10):
+                    print 'camProcess releasing lock to try to restart main'
                     lock.release()
-                    #read in bank angle from process:
-                    if conn.poll(0.05):
-                        #update moving average calculation
-                        numBanks = numBanks+1
-                        phi = conn.recv()
-                        phibar = (phi+phibar*(numBanks-1))/numBanks
-                    else:
-                        print 'camProcess did not receive bank angle from MAVProxy'
-                    #acquire lock
+                    time.sleep(0.5)
                     lock.acquire()
-            if ((t_last-time.clock())>10):
-                print 'camProcess releasing lock to try to restart main'
-                lock.release()
-                time.sleep(0.5)
-                lock.acquire()
     cv2.destroyAllWindows()
-    conn.send("cam off")        
-    conn.close()
-    lock.release()
+    if not flag_testing:
+        conn.send("cam off")        
+        conn.close()
+        lock.release()
     #close recording file if still open:
     if vidWriter.isOpened():
         vidWriter.release()
@@ -257,3 +261,6 @@ def runCameraProc(conn,lock):
     vidLog.close()
     #close the q-matrix log
     qLog.close()
+
+if __name__ == "__main__":
+    runCameraProc(True,True,True)
