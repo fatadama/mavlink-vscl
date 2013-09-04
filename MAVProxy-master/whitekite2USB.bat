@@ -1,0 +1,1 @@
+python mavproxy.py --master=COM10 --baudrate=115200 --console --nowait --aircraft="WhiteKite2"

@@ -1,0 +1,1 @@
+python mavproxy.py --master=COM4 --baudrate=57600 --console --nowait --aircraft="controlDeflections"
