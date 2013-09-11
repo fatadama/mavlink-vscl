@@ -2,6 +2,8 @@
 
 clear variables;
 
+EXCEL = 0;
+
 [filename,pathname] = uigetfile({'*.dat'});
 filename = [pathname, filename];
 fid = fopen(filename,'r+');
@@ -24,7 +26,7 @@ while ~feof(fid)
     remain = remain(3:end);
     %get the message ID
     [msg_id,remain] = strtok(remain,' ');
-    if ~strcmp(msg_id,'PARAM_VALUE')
+    if ~strcmp(msg_id,{'PARAM_VALUE','STATUSTEXT'})
        %ignore param_value messages b/c they have a string in them and that
        %sucks
         remain = remain(3:end);%cut off the ' {' chars
@@ -86,10 +88,13 @@ end
 
 %export to .mat
 save([dotname, 'mat'],'data','messages','msg_count','msg_hdrs');
-%export to xls, multisheet
-for i = 1:nummsgs
-    xlswrite([dotname,'xls'],msg_hdrs{i},messages{i},'A1');
-    for j = 1:msg_count(i)
-        xlswrite([dotname,'xls'],data{i}(j,:),messages{i},['A' num2str(j+1)]);
+if EXCEL
+    %export to xls, multisheet
+    for i = 1:nummsgs
+        xlswrite([dotname,'xls'],msg_hdrs{i},messages{i},'A1');
+        for j = 1:msg_count(i)
+            xlswrite([dotname,'xls'],data{i}(j,:),messages{i},['A' num2str(j+1)]);
+        end
     end
+
 end
