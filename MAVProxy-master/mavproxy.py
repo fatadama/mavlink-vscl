@@ -26,9 +26,6 @@ import select
 from modules.lib import textconsole
 from modules.lib import mp_settings
 
-#VSCL imports
-from multiprocessing import Process, Pipe, Lock
-
 class MPSettings(object):
     def __init__(self):
         self.vars = [ ('link', int),
@@ -260,6 +257,7 @@ def say(text, priority='important'):
     ''' http://cvs.freebsoft.org/doc/speechd/ssip.html see 4.3.1 for priorities'''
     mpstate.console.writeln(text)
     if mpstate.settings.speech:
+        pass
         import speechd
         mpstate.status.speech = speechd.SSIPClient('MAVProxy%u' % os.getpid())
         mpstate.status.speech.set_output_module('festival')
@@ -1525,16 +1523,6 @@ def periodic_tasks():
 
     if heartbeat_check_period.trigger():
         check_link_status()
-
-    if mpstate.settings.camFlag and camCentroid_period.trigger() and mpstate.status.flightmode == "FBWB":
-        #see if camera has been observed to be on; if not, check to see if status has changed
-        if not mulProcVar.camOn:
-            #read all data in buffer, look for "online" response from camProcess:
-            while mulProcVar.parent_conn.poll(0.1):
-                if mulProcVar.parent_conn.recv() == '**.online.**':
-                    print 'Camera enabled'
-                    mulProcVar.camOn = True
-                    #once this happens, the cameraProcess has the Lock() object
     
     set_stream_rates()
 
@@ -1567,6 +1555,7 @@ def periodic_tasks():
                 mpstate.status.override_counter -= 1
 
     # call optional module idle tasks. These are called at several hundred Hz
+    '''
     for m in mpstate.modules:
         if hasattr(m, 'idle_task'):
             try:
@@ -1579,6 +1568,7 @@ def periodic_tasks():
                     exc_type, exc_value, exc_traceback = sys.exc_info()
                     traceback.print_exception(exc_type, exc_value, exc_traceback,
                                               limit=2, file=sys.stdout)
+    '''
 
 
 def main_loop():
@@ -1639,6 +1629,7 @@ def main_loop():
 
             # this allow modules to register their own file descriptors
             # for the main select loop
+            '''
             if fd in mpstate.select_extra:
                 try:
                     # call the registered read function
@@ -1649,6 +1640,7 @@ def main_loop():
                         print(msg)
                     # on an exception, remove it from the select list
                     mpstate.select_extra.pop(fd)
+            '''
 
 
 
@@ -1874,6 +1866,10 @@ Auto-detected serial ports are:
     mpstate.status.thread = threading.Thread(target=main_loop)
     mpstate.status.thread.daemon = True
     mpstate.status.thread.start()
+
+    #VSCL unload the console - we don't actually want it, but the link fails without it!!
+    # I feel so good about this. I don't really, fix this if you can.
+    process_stdin('module unload console')
 
     # use main program for input. This ensures the terminal cleans
     # up on exit

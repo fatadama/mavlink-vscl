@@ -1,1 +1,0 @@
-python mavproxy.py --master=COM8 --baudrate=57600 --console --nowait --aircraft="thrustTest"
