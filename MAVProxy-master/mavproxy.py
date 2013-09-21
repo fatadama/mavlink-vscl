@@ -28,19 +28,6 @@ from modules.lib import mp_settings
 
 #VSCL imports
 from multiprocessing import Process, Pipe, Lock
-import cameraProcess2
-
-#VSCL: open a file for logging control deflections. Hopefully this is a global!
-vscl_fname = 'controlsLog'+str(1)+'.csv'
-i = 1
-for name in os.listdir(os.getcwd()):
-    if name == vscl_fname:
-        i = i+1
-        vscl_fname = 'controlsLog'+str(i)+'.csv'
-        break
-
-VSCL_FID = open(vscl_fname,'w')
-VSCL_FID.write('Time (s),elevator,throttle,aileron,rudder,pitch(rad),arspd(m/s?),bank(rad),gps hdg(deg),ahrs hdg(rad)\n');
 
 class MPSettings(object):
     def __init__(self):
@@ -877,63 +864,7 @@ def import_package(name):
     for comp in components[1:]:
         mod = getattr(mod, comp)
     return mod
-
-#vscl functions:
-def cmd_camera(args):
-    #toggle the camera flag value:
-    mpstate.settings.camFlag = not mpstate.settings.camFlag
-    if mpstate.settings.camFlag:
-        #run the camera streaming process and receive actions
-        mulProcVar.camProc.start()
-        mulProcVar.camOn = False
-    else:
-        print 'Camera disabled'
-        mulProcVar.parent_conn.send('**.kill.**')
-        #empty the buffer
-        while (mulProcVar.parent_conn.poll(0.05)):
-            print mulProcVar.parent_conn.recv()
-        #reset the camProc variable so the 'camera' command can be called again
-        mulProcVar.camProc.join()
-        mulProcVar.camProc = Process(target=cameraProcess2.runCameraProc, args=(mulProcVar.child_conn,mulProcVar.lock))
-        #reset the boolean indicating that the camera is on.
-        mulProcVar.camOn = False
-
-def cmd_bump(args):
-    #transmit the command to adjust target altitude/airspeed in tracking mode.
-    #Values are input in m or m/s and converted to ints automatically.
-    usage = "usage: bump <spd|alt> value"
-    #only bump when in tracking flight mode:
-    if not mpstate.status.flightmode == "FBWB":
-        print usage, ", tracking mode only"
-    #this function requires 2 arguments:
-    elif len(args)<=1:
-        print(usage)
-    elif args[0] == "spd":
-        valu = int(float(args[1])*100) #convert value to cm/s
-        for master in mpstate.mav_master:
-            if master.mavlink10():
-                master.mav.vscl_bump_send(valu,1)
-    elif args[0] == "alt":
-        valu = int(float(args[1])*100) #convert value to cm
-        for master in mpstate.mav_master:
-            if master.mavlink10():
-                master.mav.vscl_bump_send(valu,0)
-    #if command is unknown, print the usage instructions:
-    else:
-        print usage, ", \"", args[0], "\" cmd unknown"
-
-#vscl: class that holds the multiprocessing variables to ensure they remain in scope
-class multiProcVars(object):
-    def __init__(self):
-        #pipe used for communication with cameraProcess:
-        self.parent_conn,self.child_conn = Pipe()
-        #lock object used to ensure synchronization:
-        self.lock = Lock()
-        #multiprocess object for cameraProcess:
-        self.camProc = Process(target=cameraProcess2.runCameraProc, args=(self.child_conn,self.lock))
-        #boolean to indicate if the camera process has started yet
-        self.camOn = False
-        
+      
 command_map = {
     'switch'  : (cmd_switch,   'set RC switch (1-5), 0 disables'),
     'rc'      : (cmd_rc,       'override a RC channel value'),
@@ -962,10 +893,7 @@ command_map = {
     'module'  : (cmd_module,   'module commands'),
     'alias'   : (cmd_alias,    'command aliases'),
     'arm'     : (cmd_arm,      'ArduCopter arm motors'),
-    'disarm'  : (cmd_disarm,   'ArduCopter disarm motors'),
-    #VSCL commands:
-    'camera'  : (cmd_camera,   'enable streaming video'),
-    'bump'    : (cmd_bump,     'adjust tracking alt/spd')
+    'disarm'  : (cmd_disarm,   'ArduCopter disarm motors')
     }
 
 def process_stdin(line):
@@ -1200,6 +1128,16 @@ def master_callback(m, master):
 
     mtype = m.get_type()
 
+    # retransmit everything to the ground as it's received EXCEPT for the following messages:
+    if mtype in ['ATTITUDE','GLOBAL_POSITION_INT','RAW_IMU','WIND','SERVO_OUTPUT_RAW']:
+        #send these at 10 Hz
+        if dummy_msg_period.trigger():
+            pass
+            #dummy_master.mav.send(m)
+    else:
+        #mimic the message
+        dummy_master.mav.send(m)
+
     # and log them
     if mtype != 'BAD_DATA' and mpstate.logqueue:
         # put link number in bottom 2 bits, so we can analyse packet
@@ -1388,30 +1326,6 @@ def master_callback(m, master):
             mpstate.console.write(str(m.data), bg='red')
     elif mtype in [ "COMMAND_ACK", "MISSION_ACK" ]:
         mpstate.console.writeln("Got MAVLink msg: %s" % m)
-    #VSCL: recognition of custom telem here
-    elif mtype == "VSCL_TEST":
-        if mpstate.settings.camFlag:
-            print 'MAV target bank : (deg) ',m.dummy#print the signal from the MAV
-    elif mtype == "VSCL_BUMP":
-        if mpstate.settings.camFlag:
-            if m.bumpID == 1:
-                print 'MAV airspeed target: ', m.bumpval*0.01, ' m/s.'
-            if m.bumpID == 0:
-                print 'MAV altitude target: ', m.bumpval*0.01, ' m.'
-    elif mtype == "VSCL_CONTROLS":
-        #controls: this message transmits elevator, throttle, aileron, and rudder in that order
-        #print time, elev, throt, ail, and rudder
-        VSCL_FID.write(str(time.clock())+','+str(m.elev)+','+str(m.thro)+','+str(m.aile)+','+str(m.rudd)+',')
-        #print pitch, airspeed, bank, and heading angles in RADS
-        VSCL_FID.write(str(mpstate.status.msgs['ATTITUDE'].pitch)+',')
-        VSCL_FID.write(str(mpstate.status.msgs['VFR_HUD'].airspeed)+',')#m/s??
-        VSCL_FID.write(str(mpstate.status.msgs['ATTITUDE'].roll)+',')
-        VSCL_FID.write(str(int(mpstate.status.msgs['GPS_RAW_INT'].cog * 0.01))+',')#gps heading
-        VSCL_FID.write(str(mpstate.status.msgs['ATTITUDE'].yaw))#heading from AHRS
-        VSCL_FID.write('\n')
-    elif mtype == "VSCL_AUTOLAND":
-        #log the autoland message
-        print 'Got autoland msg.'
     else:
         #mpstate.console.writeln("Got MAVLink msg: %s" % m)
         pass
@@ -1830,9 +1744,6 @@ if __name__ == '__main__':
     mpstate.status.exit = False
     mpstate.command_map = command_map
     mpstate.continue_mode = opts.continue_mode
-
-    #VSCL: declare mulProcVar to enable the camera streaming/processing process
-    mulProcVar = multiProcVars()
     
     if opts.speech:
         # start the speech-dispatcher early, so it doesn't inherit any ports from
@@ -1881,6 +1792,11 @@ Auto-detected serial ports are:
         mpstate.mav_master.append(m)
         mpstate.status.counters['MasterIn'].append(0)
 
+    # VSCL - open the xbee link to transmit telemetry to the ground
+    dummy_port = 'COM10'
+    dummy_baud = 57600
+    dummy_master = mavutil.mavlink_connection(dummy_port,dummy_baud)
+
     # log all packets from the master, for later replay
     open_logs()
 
@@ -1914,11 +1830,8 @@ Auto-detected serial ports are:
     msg_period = mavutil.periodic_event(1.0/15)
     param_period = mavutil.periodic_event(1)
     heartbeat_period = mavutil.periodic_event(1)
-    #VSCL: create camera update periodic_event at .1 Hz to get the action FROM camera processing
-    camCentroid_period = mavutil.periodic_event(.1)
-    #create periodic event at 10 Hz to send current bank angle to the camera process:
-    camRollAngle_period = mavutil.periodic_event(10)
     battery_period = mavutil.periodic_event(0.1)
+    dummy_msg_period = mavutil.periodic_event(0.1)
     if mpstate.sitl_output:
         mpstate.override_period = mavutil.periodic_event(20)
     else:

@@ -338,35 +338,6 @@
 	    <field type="uint8_t" name="len">data length</field>
 	    <field type="uint8_t[96]" name="data">raw data</field>
 	  </message>
-	  
-	  <message id="200" name="VSCL_TEST">
-		<description>Command target bank angle in FBWB mode..</description>
-		<field type="int16_t" name="dummy">Change in target bank angle for the MAV.</field>
-	  </message>
-	  
-	  <message id="201" name="VSCL_BUMP">
-		<description>Adjust MAV target speed and altitude in FBWB mode.</description>
-		<field type="int16_t" name="bumpval">The amount by which to change value.</field>
-		<field type="uint8_t" name="bumpID">The value to change. 0 = altitude, 1 = airspeed.</field>
-	  </message>
-	  
-	  <message id="202" name="VSCL_CONTROLS">
-		<description>Send the current elevator, throttle, aileron, and rudder deflections in centidegrees.</description>
-		<field type="int16_t" name="elev">Elevator setting.</field>
-		<field type="int16_t" name="thro">Throttle setting.</field>
-		<field type="int16_t" name="aile">Aileron setting.</field>
-		<field type="int16_t" name="rudd">Rudder setting.</field>
-	  </message>
-	  
-	  <message id="203" name="VSCL_AUTOLAND">
-		<description>Send the current autolanding controller state (reference and commanded values).</description>
-		<field type="int16_t" name="psi">Reference heading (mrad).</field>
-		<field type="int16_t" name="theta">Reference pitch (mrad).</field>
-		<field type="int16_t" name="phi">Reference bank (mrad).</field>
-		<field type="int16_t" name="elev">Elevator setting (cd).</field>
-		<field type="int16_t" name="thto">Throttle setting (pct?).</field>
-		<field type="int16_t" name="aile">Aileron setting (cd).</field>
-	  </message>
 	 
      </messages>
 </mavlink>

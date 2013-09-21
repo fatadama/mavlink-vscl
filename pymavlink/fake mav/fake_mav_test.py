@@ -1,5 +1,6 @@
 import sys, os, time
 
+#add the folder with mavlink10.py in it
 #sys.path.insert(0,os.path.join(os.path.dirname(os.path.realpath(__file__)),'..'))
 sys.path.insert(0,os.path.join(os.path.dirname(os.path.realpath("fake_mav_test.py")),'..'))
 
