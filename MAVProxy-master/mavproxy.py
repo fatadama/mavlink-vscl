@@ -1132,11 +1132,11 @@ def master_callback(m, master):
     if mtype in ['ATTITUDE','GLOBAL_POSITION_INT','RAW_IMU','WIND','SERVO_OUTPUT_RAW']:
         #send these at 10 Hz
         if dummy_msg_period.trigger():
-            pass
-            #dummy_master.mav.send(m)
+            dummy_master.mav.send(m)
     else:
-        #mimic the message
-        dummy_master.mav.send(m)
+        if mtype != 'BAD_DATA':
+            #mimic the message
+            dummy_master.mav.send(m)
 
     # and log them
     if mtype != 'BAD_DATA' and mpstate.logqueue:
@@ -1793,7 +1793,7 @@ Auto-detected serial ports are:
         mpstate.status.counters['MasterIn'].append(0)
 
     # VSCL - open the xbee link to transmit telemetry to the ground
-    dummy_port = 'COM10'
+    dummy_port = 'COM16'
     dummy_baud = 57600
     dummy_master = mavutil.mavlink_connection(dummy_port,dummy_baud)
 
@@ -1831,7 +1831,7 @@ Auto-detected serial ports are:
     param_period = mavutil.periodic_event(1)
     heartbeat_period = mavutil.periodic_event(1)
     battery_period = mavutil.periodic_event(0.1)
-    dummy_msg_period = mavutil.periodic_event(0.1)
+    dummy_msg_period = mavutil.periodic_event(3)
     if mpstate.sitl_output:
         mpstate.override_period = mavutil.periodic_event(20)
     else:
