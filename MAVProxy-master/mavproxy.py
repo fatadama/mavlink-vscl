@@ -192,9 +192,7 @@ class MPState(object):
               ('rc2mul', int, 1),
               ('rc4mul', int, 1),
               ('shownoise', int, 1),
-              ('basealt', int, 0),
-              #VSCL settings default:
-              ('camFlag', int, False)]
+              ('basealt', int, 0)]
             )
         self.status = MPStatus()
 
