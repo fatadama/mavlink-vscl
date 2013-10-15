@@ -360,6 +360,7 @@
 	  
 	  <message id="203" name="VSCL_AUTOLAND">
 		<description>Send the current autolanding controller state (reference and commanded values).</description>
+		<field type="int32_t" name="time">CPU time in milliseconds.</field>
 		<field type="int16_t" name="psi">Reference heading (mrad).</field>
 		<field type="int16_t" name="theta">Reference pitch (mrad).</field>
 		<field type="int16_t" name="phi">Reference bank (mrad).</field>
