@@ -1008,10 +1008,12 @@ class MAVLink_vscl_autoland_message(MAVLink_message):
         Send the current autolanding controller state (reference and
         commanded values).
         '''
-        def __init__(self, time, psi, theta, phi, elev, thto, aile):
+        def __init__(self, time, gamm, lambd, psi, theta, phi, elev, thto, aile):
                 MAVLink_message.__init__(self, MAVLINK_MSG_ID_VSCL_AUTOLAND, 'VSCL_AUTOLAND')
-                self._fieldnames = ['time', 'psi', 'theta', 'phi', 'elev', 'thto', 'aile']
+                self._fieldnames = ['time', 'gamm', 'lambd', 'psi', 'theta', 'phi', 'elev', 'thto', 'aile']
                 self.time = time
+                self.gamm = gamm
+                self.lambd = lambd
                 self.psi = psi
                 self.theta = theta
                 self.phi = phi
@@ -1020,7 +1022,7 @@ class MAVLink_vscl_autoland_message(MAVLink_message):
                 self.aile = aile
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 189, struct.pack('<ihhhhhh', self.time, self.psi, self.theta, self.phi, self.elev, self.thto, self.aile))
+                return MAVLink_message.pack(self, mav, 163, struct.pack('<ihhhhhhhh', self.time, self.gamm, self.lambd, self.psi, self.theta, self.phi, self.elev, self.thto, self.aile))
 
 class MAVLink_heartbeat_message(MAVLink_message):
         '''
@@ -2661,7 +2663,7 @@ mavlink_map = {
         MAVLINK_MSG_ID_VSCL_TEST : ( '<h', MAVLink_vscl_test_message, [0], 87 ),
         MAVLINK_MSG_ID_VSCL_BUMP : ( '<hB', MAVLink_vscl_bump_message, [0, 1], 185 ),
         MAVLINK_MSG_ID_VSCL_CONTROLS : ( '<hhhh', MAVLink_vscl_controls_message, [0, 1, 2, 3], 91 ),
-        MAVLINK_MSG_ID_VSCL_AUTOLAND : ( '<ihhhhhh', MAVLink_vscl_autoland_message, [0, 1, 2, 3, 4, 5, 6], 189 ),
+        MAVLINK_MSG_ID_VSCL_AUTOLAND : ( '<ihhhhhhhh', MAVLink_vscl_autoland_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 163 ),
         MAVLINK_MSG_ID_HEARTBEAT : ( '<IBBBBB', MAVLink_heartbeat_message, [1, 2, 3, 0, 4, 5], 50 ),
         MAVLINK_MSG_ID_SYS_STATUS : ( '<IIIHHhHHHHHHb', MAVLink_sys_status_message, [0, 1, 2, 3, 4, 5, 12, 6, 7, 8, 9, 10, 11], 124 ),
         MAVLINK_MSG_ID_SYSTEM_TIME : ( '<QI', MAVLink_system_time_message, [0, 1], 137 ),
@@ -3664,39 +3666,43 @@ class MAVLink(object):
                 '''
                 return self.send(self.vscl_controls_encode(elev, thro, aile, rudd))
             
-        def vscl_autoland_encode(self, time, psi, theta, phi, elev, thto, aile):
+        def vscl_autoland_encode(self, time, gamm, lambd, psi, theta, phi, elev, thto, aile):
                 '''
                 Send the current autolanding controller state (reference and commanded
                 values).
 
                 time                      : CPU time in milliseconds. (int32_t)
-                psi                       : Reference heading (mrad). (int16_t)
-                theta                     : Reference pitch (mrad). (int16_t)
-                phi                       : Reference bank (mrad). (int16_t)
+                gamm                      : Reference glideslope (10-4 rad). (int16_t)
+                lambd                     : Reference localizer (10-4 rad). (int16_t)
+                psi                       : Reference heading (10-4 rad). (int16_t)
+                theta                     : Reference pitch (10-4 rad). (int16_t)
+                phi                       : Reference bank (10-4 rad). (int16_t)
                 elev                      : Elevator setting (cd). (int16_t)
                 thto                      : Throttle setting (pct?). (int16_t)
                 aile                      : Aileron setting (cd). (int16_t)
 
                 '''
-                msg = MAVLink_vscl_autoland_message(time, psi, theta, phi, elev, thto, aile)
+                msg = MAVLink_vscl_autoland_message(time, gamm, lambd, psi, theta, phi, elev, thto, aile)
                 msg.pack(self)
                 return msg
             
-        def vscl_autoland_send(self, time, psi, theta, phi, elev, thto, aile):
+        def vscl_autoland_send(self, time, gamm, lambd, psi, theta, phi, elev, thto, aile):
                 '''
                 Send the current autolanding controller state (reference and commanded
                 values).
 
                 time                      : CPU time in milliseconds. (int32_t)
-                psi                       : Reference heading (mrad). (int16_t)
-                theta                     : Reference pitch (mrad). (int16_t)
-                phi                       : Reference bank (mrad). (int16_t)
+                gamm                      : Reference glideslope (10-4 rad). (int16_t)
+                lambd                     : Reference localizer (10-4 rad). (int16_t)
+                psi                       : Reference heading (10-4 rad). (int16_t)
+                theta                     : Reference pitch (10-4 rad). (int16_t)
+                phi                       : Reference bank (10-4 rad). (int16_t)
                 elev                      : Elevator setting (cd). (int16_t)
                 thto                      : Throttle setting (pct?). (int16_t)
                 aile                      : Aileron setting (cd). (int16_t)
 
                 '''
-                return self.send(self.vscl_autoland_encode(time, psi, theta, phi, elev, thto, aile))
+                return self.send(self.vscl_autoland_encode(time, gamm, lambd, psi, theta, phi, elev, thto, aile))
             
         def heartbeat_encode(self, type, autopilot, base_mode, custom_mode, system_status, mavlink_version=3):
                 '''
