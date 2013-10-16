@@ -3,8 +3,6 @@
 clear variables;
 EXCEL = 0;
 
-EXCEL = 0;
-
 [filename,pathname] = uigetfile({'*.dat'});
 filename = [pathname, filename];
 fid = fopen(filename,'r+');
@@ -100,10 +98,6 @@ while ~feof(fid)
     end
 end
 
-<<<<<<< HEAD
-%export to .mat
-save([dotname, 'mat'],'data','messages','msg_count','msg_hdrs');
-=======
 %truncate the data vectors:
 for i = 1:nummsgs
     data{i}(msg_count(i)+1:end,:) = [];
@@ -112,7 +106,6 @@ end
 
 %export to .mat
 save([dotname, 'mat'],'data','messages','msg_count','msg_hdrs','time');
->>>>>>> 721d38b60baed8a5741de6bfbd651c913122a67e
 if EXCEL
     %export to xls, multisheet
     for i = 1:nummsgs
@@ -121,5 +114,4 @@ if EXCEL
             xlswrite([dotname,'xls'],data{i}(j,:),messages{i},['A' num2str(j+1)]);
         end
     end
-
 end
