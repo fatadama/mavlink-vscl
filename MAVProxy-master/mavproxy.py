@@ -30,18 +30,6 @@ from modules.lib import mp_settings
 from multiprocessing import Process, Pipe, Lock
 import cameraProcess2
 
-#VSCL: open a file for logging control deflections. Hopefully this is a global!
-vscl_fname = 'controlsLog'+str(1)+'.csv'
-i = 1
-for name in os.listdir(os.getcwd()):
-    if name == vscl_fname:
-        i = i+1
-        vscl_fname = 'controlsLog'+str(i)+'.csv'
-        break
-
-VSCL_FID = open(vscl_fname,'w')
-VSCL_FID.write('Time (s),elevator,throttle,aileron,rudder,pitch(rad),arspd(m/s?),bank(rad),gps hdg(deg),ahrs hdg(rad)\n');
-
 class MPSettings(object):
     def __init__(self):
         self.vars = [ ('link', int),
@@ -1400,15 +1388,8 @@ def master_callback(m, master):
                 print 'MAV altitude target: ', m.bumpval*0.01, ' m.'
     elif mtype == "VSCL_CONTROLS":
         #controls: this message transmits elevator, throttle, aileron, and rudder in that order
-        #print time, elev, throt, ail, and rudder
-        VSCL_FID.write(str(time.clock())+','+str(m.elev)+','+str(m.thro)+','+str(m.aile)+','+str(m.rudd)+',')
-        #print pitch, airspeed, bank, and heading angles in RADS
-        VSCL_FID.write(str(mpstate.status.msgs['ATTITUDE'].pitch)+',')
-        VSCL_FID.write(str(mpstate.status.msgs['VFR_HUD'].airspeed)+',')#m/s??
-        VSCL_FID.write(str(mpstate.status.msgs['ATTITUDE'].roll)+',')
-        VSCL_FID.write(str(int(mpstate.status.msgs['GPS_RAW_INT'].cog * 0.01))+',')#gps heading
-        VSCL_FID.write(str(mpstate.status.msgs['ATTITUDE'].yaw))#heading from AHRS
-        VSCL_FID.write('\n')
+        #print time, elev, throt, ail
+        pass
     elif mtype == "VSCL_AUTOLAND":
         #log the autoland message
         print 'Got autoland msg.'
