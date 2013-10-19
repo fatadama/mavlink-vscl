@@ -363,12 +363,21 @@
 		<field type="int32_t" name="time">CPU time in milliseconds.</field>
 		<field type="int32_t" name="gamm">Reference glideslope (10-4 rad).</field>
 		<field type="int32_t" name="lambd">Reference localizer (10-4 rad).</field>
-		<field type="int16_t" name="psi">Reference heading (10-4 rad).</field>
-		<field type="int16_t" name="theta">Reference pitch (10-4 rad).</field>
-		<field type="int16_t" name="phi">Reference bank (10-4 rad).</field>
-		<field type="int16_t" name="elev">Elevator setting (cd).</field>
-		<field type="int16_t" name="thto">Throttle setting (pct?).</field>
-		<field type="int16_t" name="aile">Aileron setting (cd).</field>
+		<field type="int32_t" name="psi">Reference heading (10-4 rad).</field>
+		<field type="int32_t" name="theta">Reference pitch (10-4 rad).</field>
+		<field type="int32_t" name="phi">Reference bank (10-4 rad).</field>
+		<field type="int32_t" name="elev">Elevator setting (cd).</field>
+		<field type="int32_t" name="thto">Throttle setting (pct?).</field>
+		<field type="int32_t" name="aile">Aileron setting (cd).</field>
+	  </message>
+	  
+	  <message id="204" name="DIAGNOSTIC">
+		<description>Diagnostic message for debugging purposes.</description>
+		<field type="float" name="val1">First diagnostic value.</field>
+		<field type="float" name="val2">Second diagnostic value.</field>
+		<field type="float" name="val3">Third diagnostic value.</field>
+		<field type="float" name="val4">Fourth diagnostic value.</field>
+		<field type="float" name="val5">Fifth diagnostic value.</field>
 	  </message>
 	 
      </messages>

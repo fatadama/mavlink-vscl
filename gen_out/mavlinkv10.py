@@ -502,6 +502,7 @@ MAVLINK_MSG_ID_VSCL_TEST = 200
 MAVLINK_MSG_ID_VSCL_BUMP = 201
 MAVLINK_MSG_ID_VSCL_CONTROLS = 202
 MAVLINK_MSG_ID_VSCL_AUTOLAND = 203
+MAVLINK_MSG_ID_DIAGNOSTIC = 204
 MAVLINK_MSG_ID_HEARTBEAT = 0
 MAVLINK_MSG_ID_SYS_STATUS = 1
 MAVLINK_MSG_ID_SYSTEM_TIME = 2
@@ -1022,7 +1023,23 @@ class MAVLink_vscl_autoland_message(MAVLink_message):
                 self.aile = aile
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 130, struct.pack('<iiihhhhhh', self.time, self.gamm, self.lambd, self.psi, self.theta, self.phi, self.elev, self.thto, self.aile))
+                return MAVLink_message.pack(self, mav, 105, struct.pack('<iiiiiiiii', self.time, self.gamm, self.lambd, self.psi, self.theta, self.phi, self.elev, self.thto, self.aile))
+
+class MAVLink_diagnostic_message(MAVLink_message):
+        '''
+        Diagnostic message for debugging purposes.
+        '''
+        def __init__(self, val1, val2, val3, val4, val5):
+                MAVLink_message.__init__(self, MAVLINK_MSG_ID_DIAGNOSTIC, 'DIAGNOSTIC')
+                self._fieldnames = ['val1', 'val2', 'val3', 'val4', 'val5']
+                self.val1 = val1
+                self.val2 = val2
+                self.val3 = val3
+                self.val4 = val4
+                self.val5 = val5
+
+        def pack(self, mav):
+                return MAVLink_message.pack(self, mav, 150, struct.pack('<fffff', self.val1, self.val2, self.val3, self.val4, self.val5))
 
 class MAVLink_heartbeat_message(MAVLink_message):
         '''
@@ -2663,7 +2680,8 @@ mavlink_map = {
         MAVLINK_MSG_ID_VSCL_TEST : ( '<h', MAVLink_vscl_test_message, [0], 87 ),
         MAVLINK_MSG_ID_VSCL_BUMP : ( '<hB', MAVLink_vscl_bump_message, [0, 1], 185 ),
         MAVLINK_MSG_ID_VSCL_CONTROLS : ( '<hhhh', MAVLink_vscl_controls_message, [0, 1, 2, 3], 91 ),
-        MAVLINK_MSG_ID_VSCL_AUTOLAND : ( '<iiihhhhhh', MAVLink_vscl_autoland_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 130 ),
+        MAVLINK_MSG_ID_VSCL_AUTOLAND : ( '<iiiiiiiii', MAVLink_vscl_autoland_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 105 ),
+        MAVLINK_MSG_ID_DIAGNOSTIC : ( '<fffff', MAVLink_diagnostic_message, [0, 1, 2, 3, 4], 150 ),
         MAVLINK_MSG_ID_HEARTBEAT : ( '<IBBBBB', MAVLink_heartbeat_message, [1, 2, 3, 0, 4, 5], 50 ),
         MAVLINK_MSG_ID_SYS_STATUS : ( '<IIIHHhHHHHHHb', MAVLink_sys_status_message, [0, 1, 2, 3, 4, 5, 12, 6, 7, 8, 9, 10, 11], 124 ),
         MAVLINK_MSG_ID_SYSTEM_TIME : ( '<QI', MAVLink_system_time_message, [0, 1], 137 ),
@@ -3674,12 +3692,12 @@ class MAVLink(object):
                 time                      : CPU time in milliseconds. (int32_t)
                 gamm                      : Reference glideslope (10-4 rad). (int32_t)
                 lambd                     : Reference localizer (10-4 rad). (int32_t)
-                psi                       : Reference heading (10-4 rad). (int16_t)
-                theta                     : Reference pitch (10-4 rad). (int16_t)
-                phi                       : Reference bank (10-4 rad). (int16_t)
-                elev                      : Elevator setting (cd). (int16_t)
-                thto                      : Throttle setting (pct?). (int16_t)
-                aile                      : Aileron setting (cd). (int16_t)
+                psi                       : Reference heading (10-4 rad). (int32_t)
+                theta                     : Reference pitch (10-4 rad). (int32_t)
+                phi                       : Reference bank (10-4 rad). (int32_t)
+                elev                      : Elevator setting (cd). (int32_t)
+                thto                      : Throttle setting (pct?). (int32_t)
+                aile                      : Aileron setting (cd). (int32_t)
 
                 '''
                 msg = MAVLink_vscl_autoland_message(time, gamm, lambd, psi, theta, phi, elev, thto, aile)
@@ -3694,15 +3712,43 @@ class MAVLink(object):
                 time                      : CPU time in milliseconds. (int32_t)
                 gamm                      : Reference glideslope (10-4 rad). (int32_t)
                 lambd                     : Reference localizer (10-4 rad). (int32_t)
-                psi                       : Reference heading (10-4 rad). (int16_t)
-                theta                     : Reference pitch (10-4 rad). (int16_t)
-                phi                       : Reference bank (10-4 rad). (int16_t)
-                elev                      : Elevator setting (cd). (int16_t)
-                thto                      : Throttle setting (pct?). (int16_t)
-                aile                      : Aileron setting (cd). (int16_t)
+                psi                       : Reference heading (10-4 rad). (int32_t)
+                theta                     : Reference pitch (10-4 rad). (int32_t)
+                phi                       : Reference bank (10-4 rad). (int32_t)
+                elev                      : Elevator setting (cd). (int32_t)
+                thto                      : Throttle setting (pct?). (int32_t)
+                aile                      : Aileron setting (cd). (int32_t)
 
                 '''
                 return self.send(self.vscl_autoland_encode(time, gamm, lambd, psi, theta, phi, elev, thto, aile))
+            
+        def diagnostic_encode(self, val1, val2, val3, val4, val5):
+                '''
+                Diagnostic message for debugging purposes.
+
+                val1                      : First diagnostic value. (float)
+                val2                      : Second diagnostic value. (float)
+                val3                      : Third diagnostic value. (float)
+                val4                      : Fourth diagnostic value. (float)
+                val5                      : Fifth diagnostic value. (float)
+
+                '''
+                msg = MAVLink_diagnostic_message(val1, val2, val3, val4, val5)
+                msg.pack(self)
+                return msg
+            
+        def diagnostic_send(self, val1, val2, val3, val4, val5):
+                '''
+                Diagnostic message for debugging purposes.
+
+                val1                      : First diagnostic value. (float)
+                val2                      : Second diagnostic value. (float)
+                val3                      : Third diagnostic value. (float)
+                val4                      : Fourth diagnostic value. (float)
+                val5                      : Fifth diagnostic value. (float)
+
+                '''
+                return self.send(self.diagnostic_encode(val1, val2, val3, val4, val5))
             
         def heartbeat_encode(self, type, autopilot, base_mode, custom_mode, system_status, mavlink_version=3):
                 '''
