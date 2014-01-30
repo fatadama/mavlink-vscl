@@ -1,5 +1,5 @@
 %% autoland_test_process
-
+close all;
 if ~exist('messages','var')
     clear variables;
     [filename,pathname] = uigetfile({'*.mat'});
@@ -27,7 +27,7 @@ for i = 1:length(blocks)+1
 end
 %% match attitude
 ind = find(strcmpi('ATTITUDE',messages));
-
+atttimes = data{ind}(:,1);
 attvector = matchTimes(autolandTimes,segments,data{ind}(:,1));
 
 figure;
@@ -35,19 +35,22 @@ subplot(311);
 plot(data{ind}(:,1)*.001,data{ind}(:,2)*180/pi,'-x');
 hold on;
 plot(data{ind}(attvector,1)*.001,data{ind}(attvector,2)*180/pi,'rd');
-ylabel('roll');
+set(gca,'xlim',1e-3*[min(data{ind}(:,1)) data{ind}(end,1)]);
+ylabel('roll (deg)');
 
 subplot(312);
 plot(data{ind}(:,1)*.001,data{ind}(:,3)*180/pi,'-x');
 hold on;
 plot(data{ind}(attvector,1)*.001,data{ind}(attvector,3)*180/pi,'rd');
-ylabel('pitch');
+set(gca,'xlim',1e-3*[min(data{ind}(:,1)) data{ind}(end,1)]);
+ylabel('pitch (deg)');
 
 subplot(313);
 plot(data{ind}(:,1)*.001,data{ind}(:,4)*180/pi,'-x');
 hold on;
 plot(data{ind}(attvector,1)*.001,data{ind}(attvector,4)*180/pi,'rd');
-ylabel('yaw');
+set(gca,'xlim',1e-3*[min(data{ind}(:,1)) data{ind}(end,1)]);
+ylabel('yaw (deg)');
 %% GPS 
 ind = find(strcmpi('GLOBAL_POSITION_INT',messages));
 gpsvector = matchTimes(autolandTimes,segments,data{ind}(:,1));
@@ -67,3 +70,14 @@ subplot(212);
 plot(data{ind}(:,1),data{ind}(:,2),'-x');
 hold on
 plot(data{ind}(gpsvector,1),data{ind}(gpsvector,2),'rd');
+%% airspeed
+ind = find(strcmpi('VFR_HUD',messages));
+vfrtemp = 1:length(data{ind});
+vfrtime = interp1(1:length(atttimes),atttimes,vfrtemp);
+vfrvector = matchTimes(autolandTimes,segments,vfrtime);
+
+figure;
+plot(vfrtime,data{ind}(:,1),'-x');
+hold on;
+plot(vfrtime(vfrvector),data{ind}(vfrvector,1),'rd');
+ylabel('airspeed (m/s)');
