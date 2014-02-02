@@ -1,13 +1,11 @@
 %APM flash log parser
 clear variables;
-
-fname = '2013-09-14 12-14 4.log';
 [fname,pathname] = uigetfile({'*.txt'});
 fname = [pathname, fname];
 
 fid = fopen(fname,'r+');
 
-logcount = 20;%decrement log count
+logcount = 1;%decrement log count
 
 tic;
 while ~feof(fid);
@@ -137,7 +135,7 @@ while ~feof(fid);
     
     %save .mat file
     save([pathname 'log_' num2str(logcount) '.mat']);
-    logcount = logcount - 1;
+    logcount = logcount + 1;
     toc;
 end
 fclose(fid);
@@ -147,27 +145,106 @@ fclose(fid);
 clear variables;
 close all;
 [fname,pathname] = uigetfile('*.mat');
-load(fname);
+load([pathname fname]);
 
 %convert gps time to seconds
 gps(:,1) = (gps(:,1) - gps(1,1))/1000;
 
-%figure out when we are in manual mode
-manual = [crossovers((1:ceil(length(crossovers)/2))*2-1)+1;
-    crossovers((1:length(crossovers)/2)*2) length(gps)];
-auto = [crossovers((1:length(crossovers)/2)*2)+1;
-    crossovers((2:ceil(length(crossovers)/2))*2-1)];
-manualtimes = [];
-autotimes = [];
+%process the logged modes
+manual = [];
+stab = [];
+fbwb = [];
+auto = [];
+for i = 1:modcount
+    if strfind(mod{i},'Manual')
+        if i == modcount
+            manual = [manual [crossovers(i)+1;gpscount]];
+        else
+            manual = [manual [crossovers(i)+1;crossovers(i+1)]];
+        end
+    end
+    if strfind(mod{i},'Stabilize')
+        if i == modcount
+            stab = [stab [crossovers(i)+1;gpscount]];
+        else
+            stab = [stab [crossovers(i)+1;crossovers(i+1)]];
+        end
+    end
+    if strfind(mod{i},'AUTO')
+        if i == modcount
+            auto = [auto [crossovers(i)+1;gpscount]];
+        else
+            auto = [auto [crossovers(i)+1;crossovers(i+1)]];
+        end
+    end
+    if strfind(mod{i},'FBW_B')
+        if i == modcount
+            fbwb = [fbwb [crossovers(i)+1;gpscount]];
+        else
+            fbwb = [fbwb [crossovers(i)+1;crossovers(i+1)]];
+        end
+    end
+end
+
+manualindices = [];
+autoindices = [];
+stabindices = [];
+fbwbindices = [];
 for i = 1:size(manual,2)
-    manualtimes = [manualtimes;gps(manual
-manualtimes = gps(manual,1);
-autotimes = gps(auto,1);
+    manualindices = [manualindices manual(1,i):manual(2,i)];
+end
+for i = 1:size(auto,2)
+    autoindices = [autoindices auto(1,i):auto(2,i)];
+end
+for i = 1:size(stab,2)
+    stabindices = [stabindices stab(1,i):stab(2,i)];
+end
+for i = 1:size(fbwb,2)
+    fbwbindices = [fbwbindices fbwb(1,i):fbwb(2,i)];
+end
 
 % delete any times with no gps lock
 inddel = find(gps(:,4)==0);
+for i = 1:length(manualindices)
+    if i > length(manualindices)
+        break;
+    end
+    if gps(manualindices(i),4) == 0
+        manualindices(i) = [];
+        manualindices(i+1:end) = manualindices(i+1:end)-1;
+    end
+end
+for i = 1:length(autoindices)
+    if i > length(autoindices)
+        break;
+    end
+    if gps(autoindices(i),4) == 0
+        autoindices(i) = [];
+        autoindices(i+1:end) = autoindices(i+1:end)-1;
+    end
+end
+for i = 1:length(stabindices)
+    if i > length(stabindices)
+        break;
+    end
+    if gps(stabindices(i),4) == 0
+        stabindices(i) = [];
+        stabindices(i+1:end) = stabindices(i+1:end)-1;
+    end
+end
+for i = 1:length(fbwbindices)
+    if i > length(fbwbindices)
+        break;
+    end
+    if gps(fbwbindices(i),4) == 0
+        fbwbindices(i) = [];
+        fbwbindices(i+1:end) = fbwbindices(i+1:end)-1;
+    end
+end
+
 gps(inddel,:) = [];
 
+gps(:,1) = gps(:,1) - gps(1,1);
 gpstime = gps(:,1);
 gps = gps(:,4:end);
 
@@ -183,36 +260,84 @@ att(inddel,:) = [];
 
 % convert attitude to degrees
 att = att./100;
+%gps properties
+alt = gps(:,4);
+gspeed = gps(:,6);
+ghdg = gps(:,7);
 
 % plot GPS histories
 figure;
 subplot(211);
-plot(gpstime,gps(:,2));
+plot(gpstime(manualindices),gps(manualindices,2),'bx');
+hold on;
+plot(gpstime(autoindices),gps(autoindices,2),'rd');
+plot(gpstime(stabindices),gps(stabindices,2),'gs');
+plot(gpstime(fbwbindices),gps(fbwbindices,2),'ko');
 ylabel('longitude (deg)');
 
 subplot(212);
-plot(gpstime,gps(:,1));
+plot(gpstime(manualindices),gps(manualindices,1),'bx');
+hold on;
+plot(gpstime(autoindices),gps(autoindices,1),'rd');
+plot(gpstime(stabindices),gps(stabindices,1),'gs');
+plot(gpstime(fbwbindices),gps(fbwbindices,1),'ko');
 ylabel('latitude (deg)');
+
 % plot GPS long-lat history
 figure;
-plot(gps(:,2),gps(:,1));
+plot(gps(manualindices,2),gps(manualindices,1),'bx');
+hold on;
+plot(gps(autoindices,2),gps(autoindices,1),'rd');
+plot(gps(stabindices,2),gps(stabindices,1),'gs');
+plot(gps(fbwbindices,2),gps(fbwbindices,1),'ko');
+legend('Manual','AUTO','Stabilize','FBWB');
+
 ylabel('lat');
 xlabel('long');
 
 % plot attitude histories
 figure;
 subplot(311);
-plot(gpstime,att(:,1));
+plot(gpstime(manualindices),att(manualindices,1),'bx');
+hold on;
+plot(gpstime(autoindices),att(autoindices,1),'rd');
+plot(gpstime(stabindices),att(stabindices,1),'gs');
+plot(gpstime(fbwbindices),att(fbwbindices,1),'ko');
 ylabel('roll (deg)');
 
 subplot(312);
-plot(gpstime,att(:,2));
+plot(gpstime(manualindices),att(manualindices,2),'bx');
+hold on;
+plot(gpstime(autoindices),att(autoindices,2),'rd');
+plot(gpstime(stabindices),att(stabindices,2),'gs');
+plot(gpstime(fbwbindices),att(fbwbindices,2),'ko');
 ylabel('pitch (deg)');
 
 subplot(313);
-plot(gpstime,att(:,3));
+plot(gpstime(manualindices),att(manualindices,3),'bx');
+hold on;
+plot(gpstime(autoindices),att(autoindices,3),'rd');
+plot(gpstime(stabindices),att(stabindices,3),'gs');
+plot(gpstime(fbwbindices),att(fbwbindices,3),'ko');
 ylabel('yaw (deg)');
 
+% plot ground speed
+figure;
+subplot(211);
+plot(gpstime(manualindices),gspeed(manualindices),'bx');
+hold on;
+plot(gpstime(autoindices),gspeed(autoindices),'rd');
+plot(gpstime(stabindices),gspeed(stabindices),'gs');
+plot(gpstime(fbwbindices),gspeed(fbwbindices),'ko');
+ylabel('ground speed (m/s)');
+
+subplot(212);
+plot(gpstime(manualindices),alt(manualindices),'bx');
+hold on;
+plot(gpstime(autoindices),alt(autoindices),'rd');
+plot(gpstime(stabindices),alt(stabindices),'gs');
+plot(gpstime(fbwbindices),alt(fbwbindices),'ko');
+ylabel('altitude (m)');
 % %export to .mat
 % save([fname(1:end-3) 'mat'],'gps','gpstime','time','att','ctrl','fhp','raw');
 % %export to .csv
