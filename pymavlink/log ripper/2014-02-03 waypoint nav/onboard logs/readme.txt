@@ -1,0 +1,1 @@
+log 8 is the flight where we did some waypoint nav
