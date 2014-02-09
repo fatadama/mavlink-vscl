@@ -1392,7 +1392,7 @@ def master_callback(m, master):
         pass
     elif mtype == "VSCL_AUTOLAND":
         #log the autoland message
-        print "Glideslope:" str(float(m.gamm)*.0001*180./3.14159) " deg; Azimuth: " str(float(m.lambd)*.0001*180./3.14159) " deg "
+        print "Glideslope:", float(m.gamm)*.0001*180.0/3.14159, " deg; Azimuth: ", float(m.lambd)*.0001*180.0/3.14159, " deg "
     else:
         #mpstate.console.writeln("Got MAVLink msg: %s" % m)
         pass
