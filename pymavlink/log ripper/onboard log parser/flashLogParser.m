@@ -145,6 +145,25 @@ fclose(fid);
 clear variables;
 close all;
 [fname,pathname] = uigetfile('*.mat');
+
+way_flag = 0;%flag if waypoints are associated with logs
+
+% if there is a waypoint file, load it
+if exist([pathname 'way.txt'],'file')
+    way_flag = 1;
+    fid = fopen([pathname 'way.txt']);
+    line = fgets(fid);%skip version information
+    M = fscanf(fid,'%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n');
+    M = reshape(M,12,[])';
+    lats = M(2:end,9);
+    lons = M(2:end,10);
+    alts = M(2:end,11);
+    fclose(fid);
+else
+    way_flag = 0;
+    disp('No waypoint file associated with these logs!');
+end
+
 load([pathname fname]);
 
 %convert gps time to seconds
@@ -290,6 +309,9 @@ hold on;
 plot(gps(autoindices,2),gps(autoindices,1),'rd');
 plot(gps(stabindices,2),gps(stabindices,1),'gs');
 plot(gps(fbwbindices,2),gps(fbwbindices,1),'ko');
+if way_flag
+    plot(lons,lats,'mx','markersize',12,'linewidth',2);
+end
 legend('Manual','AUTO','Stabilize','FBWB');
 
 ylabel('lat');
