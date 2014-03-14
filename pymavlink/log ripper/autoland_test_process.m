@@ -55,21 +55,38 @@ ylabel('yaw (deg)');
 ind = find(strcmpi('GLOBAL_POSITION_INT',messages));
 gpsvector = matchTimes(autolandTimes,segments,data{ind}(:,1));
 
+% turns zeros to nans
+data{ind}(data{ind}==0) = nan;
+
 figure;
-plot(data{ind}(:,3),data{ind}(:,2),'-x');
+plot(data{ind}(:,3),data{ind}(:,2)*1e-7,'-x');
 hold on;
-plot(data{ind}(gpsvector,3),data{ind}(gpsvector,2),'rd');
+plot(data{ind}(gpsvector,3),data{ind}(gpsvector,2)*1e-7,'rd');
 
 figure
-subplot(211);
-plot(data{ind}(:,1),data{ind}(:,3),'-x');
+subplot(411);
+plot(data{ind}(:,1),data{ind}(:,3)*1e-7,'-x');
 hold on
-plot(data{ind}(gpsvector,1),data{ind}(gpsvector,3),'rd');
+plot(data{ind}(gpsvector,1),data{ind}(gpsvector,3)*1e-7,'rd');
+ylabel('long (deg)');
 
-subplot(212);
-plot(data{ind}(:,1),data{ind}(:,2),'-x');
+subplot(412);
+plot(data{ind}(:,1),data{ind}(:,2)*1e-7,'-x');
 hold on
-plot(data{ind}(gpsvector,1),data{ind}(gpsvector,2),'rd');
+plot(data{ind}(gpsvector,1),data{ind}(gpsvector,2)*1e-7,'rd');
+ylabel('lat (deg)')
+
+subplot(413);
+plot(data{ind}(:,1),data{ind}(:,5)*1e-2,'-x');
+hold on
+plot(data{ind}(gpsvector,1),data{ind}(gpsvector,5)*1e-2,'rd');
+ylabel('alt (m)');
+
+subplot(414);
+plot(data{ind}(:,1),1e-2*sqrt(sum(data{ind}(:,6:7).^2,2)),'-x');
+hold on
+plot(data{ind}(gpsvector,1),1e-2*sqrt(sum(data{ind}(gpsvector,6:7).^2,2)),'rd');
+ylabel('gspd magnitude (m/s)');
 %% airspeed
 ind = find(strcmpi('VFR_HUD',messages));
 vfrtemp = 1:length(data{ind});
@@ -77,7 +94,14 @@ vfrtime = interp1(1:length(atttimes),atttimes,vfrtemp);
 vfrvector = matchTimes(autolandTimes,segments,vfrtime);
 
 figure;
+subplot(211);
 plot(vfrtime,data{ind}(:,1),'-x');
 hold on;
 plot(vfrtime(vfrvector),data{ind}(vfrvector,1),'rd');
 ylabel('airspeed (m/s)');
+
+subplot(212);
+plot(vfrtime,data{ind}(:,4),'-x');
+hold on;
+plot(vfrtime(vfrvector),data{ind}(vfrvector,4),'rd');
+ylabel('throttle (pct)');

@@ -1,0 +1,447 @@
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : <startup_ground> GROUND START}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : Demo Servos!}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : Demo Servos!}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FORMAT_VERSION, param_value : 13.0, param_type : 4, param_count : 256, param_index : 0}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SYSID_SW_TYPE, param_value : 0.0, param_type : 2, param_count : 256, param_index : 1}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SYSID_THISMAV, param_value : 1.0, param_type : 4, param_count : 256, param_index : 2}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SYSID_MYGCS, param_value : 255.0, param_type : 4, param_count : 256, param_index : 3}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : TELEM_DELAY, param_value : 0.0, param_type : 2, param_count : 256, param_index : 5}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : KFF_PTCHCOMP, param_value : 0.20000000298, param_type : 9, param_count : 256, param_index : 6}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : KFF_RDDRMIX, param_value : 0.5, param_type : 9, param_count : 256, param_index : 7}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : KFF_PTCH2THR, param_value : 0.0, param_type : 9, param_count : 256, param_index : 8}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : KFF_THR2PTCH, param_value : 0.0, param_type : 9, param_count : 256, param_index : 9}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : STICK_MIXING, param_value : 1.0, param_type : 2, param_count : 256, param_index : 11}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RUDDER_STEER, param_value : 0.0, param_type : 2, param_count : 256, param_index : 12}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : LAND_PITCH_CD, param_value : 0.0, param_type : 4, param_count : 256, param_index : 13}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : LAND_FLARE_ALT, param_value : 3.0, param_type : 9, param_count : 256, param_index : 14}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : LAND_FLARE_SEC, param_value : 2.0, param_type : 9, param_count : 256, param_index : 15}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : XTRK_GAIN_SC, param_value : 8.0, param_type : 9, param_count : 256, param_index : 16}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : XTRK_ANGLE_CD, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 17}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : XTRK_USE_WIND, param_value : 1.0, param_type : 2, param_count : 256, param_index : 18}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : XTRK_MIN_DIST, param_value : 50.0, param_type : 4, param_count : 256, param_index : 19}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ALT_MIX, param_value : 1.0, param_type : 9, param_count : 256, param_index : 20}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ALT_CTRL_ALG, param_value : 0.0, param_type : 2, param_count : 256, param_index : 21}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ALT_OFFSET, param_value : 0.0, param_type : 4, param_count : 256, param_index : 22}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : CMD_TOTAL, param_value : 5.0, param_type : 2, param_count : 256, param_index : 23}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : CMD_INDEX, param_value : 0.0, param_type : 2, param_count : 256, param_index : 24}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : WP_RADIUS, param_value : 35.0, param_type : 4, param_count : 256, param_index : 25}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : WP_LOITER_RAD, param_value : 27.0, param_type : 4, param_count : 256, param_index : 26}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FENCE_ACTION, param_value : 0.0, param_type : 2, param_count : 256, param_index : 27}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FENCE_TOTAL, param_value : 0.0, param_type : 2, param_count : 256, param_index : 28}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FENCE_CHANNEL, param_value : 0.0, param_type : 2, param_count : 256, param_index : 29}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FENCE_MINALT, param_value : 0.0, param_type : 4, param_count : 256, param_index : 30}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FENCE_MAXALT, param_value : 0.0, param_type : 4, param_count : 256, param_index : 31}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ARSPD_FBW_MIN, param_value : 6.0, param_type : 4, param_count : 256, param_index : 32}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ARSPD_FBW_MAX, param_value : 22.0, param_type : 4, param_count : 256, param_index : 33}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FBWB_ELEV_REV, param_value : 0.0, param_type : 2, param_count : 256, param_index : 34}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : THR_MIN, param_value : 0.0, param_type : 2, param_count : 256, param_index : 35}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : THR_MAX, param_value : 65.0, param_type : 2, param_count : 256, param_index : 36}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : THR_SLEWRATE, param_value : 0.0, param_type : 2, param_count : 256, param_index : 37}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : THR_SUPP_MAN, param_value : 0.0, param_type : 2, param_count : 256, param_index : 38}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : THR_PASS_STAB, param_value : 0.0, param_type : 2, param_count : 256, param_index : 39}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : THR_FAILSAFE, param_value : 1.0, param_type : 2, param_count : 256, param_index : 40}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : THR_FS_VALUE, param_value : 950.0, param_type : 4, param_count : 256, param_index : 41}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : Demo Servos!}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : TRIM_THROTTLE, param_value : 40.0, param_type : 2, param_count : 256, param_index : 42}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : THROTTLE_NUDGE, param_value : 1.0, param_type : 2, param_count : 256, param_index : 43}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FS_LONG_ACTN, param_value : 0.0, param_type : 2, param_count : 256, param_index : 45}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FS_GCS_ENABL, param_value : 0.0, param_type : 2, param_count : 256, param_index : 46}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FLTMODE_CH, param_value : 8.0, param_type : 2, param_count : 256, param_index : 47}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FLTMODE1, param_value : 6.0, param_type : 2, param_count : 256, param_index : 48}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FLTMODE2, param_value : 6.0, param_type : 2, param_count : 256, param_index : 49}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FLTMODE3, param_value : 10.0, param_type : 2, param_count : 256, param_index : 50}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FLTMODE4, param_value : 10.0, param_type : 2, param_count : 256, param_index : 51}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FLTMODE5, param_value : 0.0, param_type : 2, param_count : 256, param_index : 52}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FLTMODE6, param_value : 0.0, param_type : 2, param_count : 256, param_index : 53}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : LIM_ROLL_CD, param_value : 2500.0, param_type : 4, param_count : 256, param_index : 54}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : LIM_PITCH_MAX, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 55}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : LIM_PITCH_MIN, param_value : -2500.0, param_type : 4, param_count : 256, param_index : 56}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : TRIM_AUTO, param_value : 1.0, param_type : 2, param_count : 256, param_index : 57}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ELEVON_MIXING, param_value : 0.0, param_type : 2, param_count : 256, param_index : 58}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ELEVON_REVERSE, param_value : 0.0, param_type : 2, param_count : 256, param_index : 59}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ELEVON_CH1_REV, param_value : 0.0, param_type : 2, param_count : 256, param_index : 60}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ELEVON_CH2_REV, param_value : 0.0, param_type : 2, param_count : 256, param_index : 61}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SYS_NUM_RESETS, param_value : 974.0, param_type : 4, param_count : 256, param_index : 62}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : LOG_BITMASK, param_value : 334.0, param_type : 4, param_count : 256, param_index : 63}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RST_SWITCH_CH, param_value : 0.0, param_type : 2, param_count : 256, param_index : 64}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RST_MISSION_CH, param_value : 0.0, param_type : 2, param_count : 256, param_index : 65}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : TRIM_ARSPD_CM, param_value : 1200.0, param_type : 6, param_count : 256, param_index : 66}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SCALING_SPEED, param_value : 15.0, param_type : 9, param_count : 256, param_index : 67}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MIN_GNDSPD_CM, param_value : 0.0, param_type : 6, param_count : 256, param_index : 68}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : TRIM_PITCH_CD, param_value : 0.0, param_type : 4, param_count : 256, param_index : 69}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ALT_HOLD_RTL, param_value : 9997.0, param_type : 6, param_count : 256, param_index : 70}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ALT_HOLD_FBWCM, param_value : 0.0, param_type : 4, param_count : 256, param_index : 71}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MAG_ENABLE, param_value : 0.0, param_type : 2, param_count : 256, param_index : 72}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FLAP_1_PERCNT, param_value : 0.0, param_type : 2, param_count : 256, param_index : 73}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FLAP_1_SPEED, param_value : -1.0, param_type : 2, param_count : 256, param_index : 74}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FLAP_2_PERCNT, param_value : 0.0, param_type : 2, param_count : 256, param_index : 75}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : FLAP_2_SPEED, param_value : -1.0, param_type : 2, param_count : 256, param_index : 76}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : BATT_MONITOR, param_value : 1.0, param_type : 2, param_count : 256, param_index : 77}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : AMP_PER_VOLT, param_value : 27.3199996948, param_type : 9, param_count : 256, param_index : 79}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : AMP_OFFSET, param_value : 0.0, param_type : 9, param_count : 256, param_index : 80}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : INPUT_VOLTS, param_value : 4.67999982834, param_type : 9, param_count : 256, param_index : 81}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : BATT_CAPACITY, param_value : 1760.0, param_type : 6, param_count : 256, param_index : 82}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : BATT_VOLT_PIN, param_value : 1.0, param_type : 2, param_count : 256, param_index : 83}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : BATT_CURR_PIN, param_value : 2.0, param_type : 2, param_count : 256, param_index : 84}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RSSI_PIN, param_value : -1.0, param_type : 2, param_count : 256, param_index : 85}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : INVERTEDFLT_CH, param_value : 0.0, param_type : 2, param_count : 256, param_index : 86}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : GND_ABS_PRESS, param_value : 102079.117188, param_type : 9, param_count : 256, param_index : 87}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : GND_TEMP, param_value : 25.8653621674, param_type : 9, param_count : 256, param_index : 88}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : CAM_TRIGG_TYPE, param_value : 0.0, param_type : 2, param_count : 256, param_index : 89}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC1_TRIM, param_value : 1494.0, param_type : 4, param_count : 256, param_index : 91}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC1_MAX, param_value : 1870.0, param_type : 4, param_count : 256, param_index : 92}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC1_DZ, param_value : 30.0, param_type : 4, param_count : 256, param_index : 94}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC2_MIN, param_value : 1178.0, param_type : 4, param_count : 256, param_index : 95}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC2_TRIM, param_value : 1455.0, param_type : 4, param_count : 256, param_index : 96}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC2_MAX, param_value : 1954.0, param_type : 4, param_count : 256, param_index : 97}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC2_REV, param_value : -1.0, param_type : 2, param_count : 256, param_index : 98}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC2_DZ, param_value : 30.0, param_type : 4, param_count : 256, param_index : 99}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC3_MIN, param_value : 1175.0, param_type : 4, param_count : 256, param_index : 100}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC3_TRIM, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 101}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC3_MAX, param_value : 1991.0, param_type : 4, param_count : 256, param_index : 102}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC3_REV, param_value : 1.0, param_type : 2, param_count : 256, param_index : 103}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC4_MIN, param_value : 1281.0, param_type : 4, param_count : 256, param_index : 105}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC4_TRIM, param_value : 1499.0, param_type : 4, param_count : 256, param_index : 106}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC4_MAX, param_value : 1996.0, param_type : 4, param_count : 256, param_index : 107}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC4_REV, param_value : -1.0, param_type : 2, param_count : 256, param_index : 108}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC4_DZ, param_value : 30.0, param_type : 4, param_count : 256, param_index : 109}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC5_MIN, param_value : 1300.0, param_type : 4, param_count : 256, param_index : 110}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC5_TRIM, param_value : 1494.0, param_type : 4, param_count : 256, param_index : 111}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 2, text : Beginning INS calibration; do not move plane}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC5_MAX, param_value : 1870.0, param_type : 4, param_count : 256, param_index : 112}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC5_REV, param_value : 1.0, param_type : 2, param_count : 256, param_index : 113}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC5_DZ, param_value : 0.0, param_type : 4, param_count : 256, param_index : 114}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC5_FUNCTION, param_value : 18.0, param_type : 2, param_count : 256, param_index : 115}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC6_MIN, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 116}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC6_TRIM, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 117}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC6_MAX, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 118}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC6_REV, param_value : 1.0, param_type : 2, param_count : 256, param_index : 119}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC6_DZ, param_value : 0.0, param_type : 4, param_count : 256, param_index : 120}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC6_FUNCTION, param_value : 0.0, param_type : 2, param_count : 256, param_index : 121}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC7_MIN, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 122}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC7_TRIM, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 123}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC7_MAX, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 124}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC7_REV, param_value : 1.0, param_type : 2, param_count : 256, param_index : 125}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC7_DZ, param_value : 0.0, param_type : 4, param_count : 256, param_index : 126}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC7_FUNCTION, param_value : 0.0, param_type : 2, param_count : 256, param_index : 127}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC8_MIN, param_value : 1148.0, param_type : 4, param_count : 256, param_index : 128}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC8_TRIM, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 129}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC8_MAX, param_value : 1854.0, param_type : 4, param_count : 256, param_index : 130}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC8_REV, param_value : 1.0, param_type : 2, param_count : 256, param_index : 131}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC8_DZ, param_value : 0.0, param_type : 4, param_count : 256, param_index : 132}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC8_FUNCTION, param_value : 0.0, param_type : 2, param_count : 256, param_index : 133}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC9_MIN, param_value : 1100.0, param_type : 4, param_count : 256, param_index : 134}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC9_TRIM, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 135}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC9_MAX, param_value : 1900.0, param_type : 4, param_count : 256, param_index : 136}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC9_REV, param_value : 1.0, param_type : 2, param_count : 256, param_index : 137}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC9_DZ, param_value : 0.0, param_type : 4, param_count : 256, param_index : 138}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC9_FUNCTION, param_value : 0.0, param_type : 2, param_count : 256, param_index : 139}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC10_MIN, param_value : 1100.0, param_type : 4, param_count : 256, param_index : 140}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC10_TRIM, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 141}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC10_MAX, param_value : 1900.0, param_type : 4, param_count : 256, param_index : 142}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC10_REV, param_value : 1.0, param_type : 2, param_count : 256, param_index : 143}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC10_DZ, param_value : 0.0, param_type : 4, param_count : 256, param_index : 144}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC10_FUNCTION, param_value : 0.0, param_type : 2, param_count : 256, param_index : 145}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC11_MIN, param_value : 1100.0, param_type : 4, param_count : 256, param_index : 146}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC11_TRIM, param_value : 1500.0, param_type : 4, param_count : 256, param_index : 147}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC11_MAX, param_value : 1900.0, param_type : 4, param_count : 256, param_index : 148}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC11_REV, param_value : 1.0, param_type : 2, param_count : 256, param_index : 149}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC11_DZ, param_value : 0.0, param_type : 4, param_count : 256, param_index : 150}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RC11_FUNCTION, param_value : 0.0, param_type : 2, param_count : 256, param_index : 151}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : HDNG2RLL_P, param_value : 0.5, param_type : 9, param_count : 256, param_index : 152}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : HDNG2RLL_D, param_value : 0.10000000149, param_type : 9, param_count : 256, param_index : 154}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : HDNG2RLL_IMAX, param_value : 500.0, param_type : 4, param_count : 256, param_index : 155}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ARSP2PTCH_P, param_value : 0.649999976158, param_type : 9, param_count : 256, param_index : 156}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ARSP2PTCH_I, param_value : 0.10000000149, param_type : 9, param_count : 256, param_index : 157}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ARSP2PTCH_D, param_value : 0.0, param_type : 9, param_count : 256, param_index : 158}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ARSP2PTCH_IMAX, param_value : 500.0, param_type : 4, param_count : 256, param_index : 159}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ENRGY2THR_P, param_value : 0.300000011921, param_type : 9, param_count : 256, param_index : 160}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RLL2SRV_P, param_value : 0.550000011921, param_type : 9, param_count : 256, param_index : 172}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RLL2SRV_I, param_value : 0.125, param_type : 9, param_count : 256, param_index : 173}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RLL2SRV_D, param_value : 0.0, param_type : 9, param_count : 256, param_index : 174}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : RLL2SRV_IMAX, param_value : 500.0, param_type : 4, param_count : 256, param_index : 175}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : PTCH2SRV_P, param_value : 0.600000023842, param_type : 9, param_count : 256, param_index : 176}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : PTCH2SRV_I, param_value : 0.0, param_type : 9, param_count : 256, param_index : 177}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : PTCH2SRV_D, param_value : 0.0, param_type : 9, param_count : 256, param_index : 178}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : PTCH2SRV_IMAX, param_value : 500.0, param_type : 4, param_count : 256, param_index : 179}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : YW2SRV_P, param_value : 0.0, param_type : 9, param_count : 256, param_index : 180}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : YW2SRV_I, param_value : 0.0, param_type : 9, param_count : 256, param_index : 181}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : YW2SRV_D, param_value : 0.0, param_type : 9, param_count : 256, param_index : 182}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : YW2SRV_IMAX, param_value : 0.0, param_type : 4, param_count : 256, param_index : 183}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : COMPASS_OFS_X, param_value : -75.4570007324, param_type : 9, param_count : 256, param_index : 184}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : COMPASS_OFS_Y, param_value : -22.2490005493, param_type : 9, param_count : 256, param_index : 185}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : COMPASS_OFS_Z, param_value : 59.6949996948, param_type : 9, param_count : 256, param_index : 186}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : COMPASS_DEC, param_value : 0.0, param_type : 9, param_count : 256, param_index : 187}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : COMPASS_LEARN, param_value : 1.0, param_type : 2, param_count : 256, param_index : 188}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : COMPASS_USE, param_value : 1.0, param_type : 2, param_count : 256, param_index : 189}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : COMPASS_AUTODEC, param_value : 1.0, param_type : 2, param_count : 256, param_index : 190}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR0_RAW_SENS, param_value : 4.0, param_type : 4, param_count : 256, param_index : 191}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR0_EXT_STAT, param_value : 4.0, param_type : 4, param_count : 256, param_index : 192}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR0_RC_CHAN, param_value : 4.0, param_type : 4, param_count : 256, param_index : 193}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR0_RAW_CTRL, param_value : 4.0, param_type : 4, param_count : 256, param_index : 194}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR0_POSITION, param_value : 4.0, param_type : 4, param_count : 256, param_index : 195}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR0_EXTRA1, param_value : 4.0, param_type : 4, param_count : 256, param_index : 196}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR0_EXTRA2, param_value : 4.0, param_type : 4, param_count : 256, param_index : 197}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR0_EXTRA3, param_value : 4.0, param_type : 4, param_count : 256, param_index : 198}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR0_PARAMS, param_value : 50.0, param_type : 4, param_count : 256, param_index : 199}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR3_RAW_SENS, param_value : 3.0, param_type : 4, param_count : 256, param_index : 200}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR3_EXT_STAT, param_value : 1.0, param_type : 4, param_count : 256, param_index : 201}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR3_RC_CHAN, param_value : 3.0, param_type : 4, param_count : 256, param_index : 202}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR3_RAW_CTRL, param_value : 0.0, param_type : 4, param_count : 256, param_index : 203}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR3_POSITION, param_value : 3.0, param_type : 4, param_count : 256, param_index : 204}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR3_EXTRA1, param_value : 10.0, param_type : 4, param_count : 256, param_index : 205}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR3_EXTRA2, param_value : 10.0, param_type : 4, param_count : 256, param_index : 206}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR3_EXTRA3, param_value : 0.0, param_type : 4, param_count : 256, param_index : 207}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : SR3_PARAMS, param_value : 0.0, param_type : 4, param_count : 256, param_index : 208}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : INS_PRODUCT_ID, param_value : 88.0, param_type : 4, param_count : 256, param_index : 209}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : INS_ACCSCAL_X, param_value : 1.0, param_type : 9, param_count : 256, param_index : 210}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : INS_ACCSCAL_Y, param_value : 1.0, param_type : 9, param_count : 256, param_index : 211}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : INS_ACCSCAL_Z, param_value : 1.0, param_type : 9, param_count : 256, param_index : 212}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : INS_ACCOFFS_X, param_value : 0.578966796398, param_type : 9, param_count : 256, param_index : 213}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : INS_ACCOFFS_Z, param_value : 0.367346763611, param_type : 9, param_count : 256, param_index : 215}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : INS_GYROFFS_X, param_value : 0.0, param_type : 9, param_count : 256, param_index : 216}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : INS_GYROFFS_Y, param_value : 0.0, param_type : 9, param_count : 256, param_index : 217}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : INS_GYROFFS_Z, param_value : 0.0, param_type : 9, param_count : 256, param_index : 218}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : INS_MPU6K_FILTER, param_value : 0.0, param_type : 2, param_count : 256, param_index : 219}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : AHRS_GPS_GAIN, param_value : 1.0, param_type : 9, param_count : 256, param_index : 220}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : AHRS_GPS_USE, param_value : 1.0, param_type : 2, param_count : 256, param_index : 221}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : AHRS_YAW_P, param_value : 0.40000000596, param_type : 9, param_count : 256, param_index : 222}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : AHRS_RP_P, param_value : 0.40000000596, param_type : 9, param_count : 256, param_index : 223}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : AHRS_WIND_MAX, param_value : 0.0, param_type : 2, param_count : 256, param_index : 224}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : AHRS_BARO_USE, param_value : 0.0, param_type : 2, param_count : 256, param_index : 225}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : AHRS_TRIM_X, param_value : 0.0, param_type : 9, param_count : 256, param_index : 226}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : AHRS_TRIM_Y, param_value : 0.0, param_type : 9, param_count : 256, param_index : 227}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : AHRS_TRIM_Z, param_value : 0.0, param_type : 9, param_count : 256, param_index : 228}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ARSPD_ENABLE, param_value : 1.0, param_type : 2, param_count : 256, param_index : 229}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ARSPD_USE, param_value : 1.0, param_type : 2, param_count : 256, param_index : 230}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ARSPD_OFFSET, param_value : 2083.48291016, param_type : 9, param_count : 256, param_index : 231}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : ARSPD_RATIO, param_value : 1.99360001087, param_type : 9, param_count : 256, param_index : 232}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_MODE, param_value : 0.0, param_type : 2, param_count : 256, param_index : 233}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_RETRACT_X, param_value : 0.0, param_type : 9, param_count : 256, param_index : 234}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_RETRACT_Y, param_value : 0.0, param_type : 9, param_count : 256, param_index : 235}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_RETRACT_Z, param_value : 0.0, param_type : 9, param_count : 256, param_index : 236}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_NEUTRAL_X, param_value : 0.0, param_type : 9, param_count : 256, param_index : 237}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_NEUTRAL_Y, param_value : 0.0, param_type : 9, param_count : 256, param_index : 238}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_NEUTRAL_Z, param_value : 0.0, param_type : 9, param_count : 256, param_index : 239}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_CONTROL_X, param_value : 0.0, param_type : 9, param_count : 256, param_index : 240}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_CONTROL_Y, param_value : 0.0, param_type : 9, param_count : 256, param_index : 241}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_CONTROL_Z, param_value : 0.0, param_type : 9, param_count : 256, param_index : 242}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_STAB_ROLL, param_value : 0.0, param_type : 2, param_count : 256, param_index : 243}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_STAB_TILT, param_value : 0.0, param_type : 2, param_count : 256, param_index : 244}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_STAB_PAN, param_value : 0.0, param_type : 2, param_count : 256, param_index : 245}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_RC_IN_ROLL, param_value : 0.0, param_type : 2, param_count : 256, param_index : 246}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_ANGMIN_ROL, param_value : -4500.0, param_type : 4, param_count : 256, param_index : 247}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_ANGMAX_ROL, param_value : 4500.0, param_type : 4, param_count : 256, param_index : 248}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_ANGMIN_TIL, param_value : -4500.0, param_type : 4, param_count : 256, param_index : 250}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_ANGMAX_TIL, param_value : 4500.0, param_type : 4, param_count : 256, param_index : 251}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_RC_IN_PAN, param_value : 0.0, param_type : 2, param_count : 256, param_index : 252}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_ANGMIN_PAN, param_value : -4500.0, param_type : 4, param_count : 256, param_index : 253}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_ANGMAX_PAN, param_value : 4500.0, param_type : 4, param_count : 256, param_index : 254}
+1969-12-31 18:00:00.00: PARAM_VALUE {param_id : MNT_JSTICK_SPD, param_value : 0.0, param_type : 2, param_count : 256, param_index : 255}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: MISSION_ACK {target_system : 255, target_component : 0, type : 0}
+1969-12-31 18:00:00.00: MISSION_REQUEST {target_system : 0, target_component : 0, seq : 0}
+1969-12-31 18:00:00.00: MISSION_REQUEST {target_system : 0, target_component : 0, seq : 1}
+1969-12-31 18:00:00.00: MISSION_REQUEST {target_system : 0, target_component : 0, seq : 2}
+1969-12-31 18:00:00.00: MISSION_REQUEST {target_system : 0, target_component : 0, seq : 3}
+1969-12-31 18:00:00.00: MISSION_REQUEST {target_system : 0, target_component : 0, seq : 4}
+1969-12-31 18:00:00.00: MISSION_REQUEST {target_system : 0, target_component : 0, seq : 5}
+1969-12-31 18:00:00.00: MISSION_ACK {target_system : 255, target_component : 0, type : 0}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : flight plan received}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : Initialising APM...}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : Initialising APM...}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : Calibrating barometer}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : barometer calibration complete}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : zero airspeed calibrated}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : Demo Servos!}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : Initialising APM...}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : Demo Servos!}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: STATUSTEXT {severity : 1, text : Demo Servos!}
+1969-12-31 18:00:00.00: HEARTBEAT {type : 1, autopilot : 3, base_mode : 1, custom_mode : 16, system_status : 2, mavlink_version : 3}
+1969-12-31 18:00:00.00: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:00.00: RAW_IMU {time_usec : 22711892, xacc : 0, yacc : 0, zacc : -999, xgyro : 0, ygyro : 0, zgyro : 0, xmag : 0, ymag : 0, zmag : 0}
+1969-12-31 18:00:22.71: SCALED_PRESSURE {time_boot_ms : 22712, press_abs : 1020.76000977, press_diff : -0.023593749851, temperature : 261}
+1969-12-31 18:00:22.71: SENSOR_OFFSETS {mag_ofs_x : -75, mag_ofs_y : -22, mag_ofs_z : 59, mag_declination : 0.0, raw_press : 7478840, raw_temp : 8916651, gyro_cal_x : -0.0156067814678, gyro_cal_y : -0.023709481582, gyro_cal_z : 0.0299683660269, accel_cal_x : 0.581445813179, accel_cal_y : 2.14354848862, accel_cal_z : 0.361553192139}
+1969-12-31 18:00:22.71: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 0, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:22.71: MEMINFO {brkval : 6593, freemem : 1591}
+1969-12-31 18:00:22.71: MISSION_CURRENT {seq : 0}
+1969-12-31 18:00:22.71: GPS_RAW_INT {time_usec : 0, fix_type : 0, lat : 0, lon : 0, alt : 0, eph : 0, epv : 65535, vel : 0, cog : 0, satellites_visible : 0}
+1969-12-31 18:00:22.71: GLOBAL_POSITION_INT {time_boot_ms : 22715, lat : 0, lon : 0, alt : 0, relative_alt : 0, vx : 0, vy : 0, vz : 0, hdg : 0}
+1969-12-31 18:00:22.71: RC_CHANNELS_SCALED {time_boot_ms : 22716, port : 0, chan1_scaled : -3228, chan2_scaled : 2860, chan3_scaled : -14975, chan4_scaled : 3893, chan5_scaled : 0, chan6_scaled : 0, chan7_scaled : 0, chan8_scaled : 0, rssi : 0}
+1969-12-31 18:00:22.71: SERVO_OUTPUT_RAW {time_usec : 22717528, port : 0, servo1_raw : 1493, servo2_raw : 1455, servo3_raw : 972, servo4_raw : 1499, servo5_raw : 1494, servo6_raw : 1500, servo7_raw : 1500, servo8_raw : 1500}
+1969-12-31 18:00:22.71: RC_CHANNELS_RAW {time_boot_ms : 22717, port : 0, chan1_raw : 1493, chan2_raw : 1455, chan3_raw : 972, chan4_raw : 1499, chan5_raw : 1494, chan6_raw : 1499, chan7_raw : 1499, chan8_raw : 1919, rssi : 0}
+1969-12-31 18:00:22.72: ATTITUDE {time_boot_ms : 22721, roll : 0.0, pitch : 0.0, yaw : 0.0, rollspeed : 0.0, pitchspeed : 0.0, yawspeed : 0.0}
+1969-12-31 18:00:22.72: VFR_HUD {airspeed : 0.0, groundspeed : 0.0, heading : 0, throttle : 0, alt : 0.0, climb : 0.0}
+1969-12-31 18:00:22.72: AHRS {omegaIx : 0.0, omegaIy : 0.0, omegaIz : 0.0, accel_weight : 0.0, renorm_val : 0.0, error_rp : 0.0, error_yaw : 0.0}
+1969-12-31 18:00:22.72: WIND {direction : 0.0, speed : 0.0, speed_z : 0.0}
+1969-12-31 18:00:22.72: RAW_IMU {time_usec : 22961904, xacc : 0, yacc : 0, zacc : -998, xgyro : 0, ygyro : 0, zgyro : 0, xmag : 0, ymag : 0, zmag : 0}
+1969-12-31 18:00:22.96: SCALED_PRESSURE {time_boot_ms : 22962, press_abs : 1020.7800293, press_diff : -0.00359375006519, temperature : 262}
+1969-12-31 18:00:22.96: SENSOR_OFFSETS {mag_ofs_x : -75, mag_ofs_y : -22, mag_ofs_z : 59, mag_declination : 0.0, raw_press : 7478525, raw_temp : 8917893, gyro_cal_x : -0.0156067814678, gyro_cal_y : -0.023709481582, gyro_cal_z : 0.0299683660269, accel_cal_x : 0.581445813179, accel_cal_y : 2.14354848862, accel_cal_z : 0.361553192139}
+1969-12-31 18:00:22.96: SYS_STATUS {onboard_control_sensors_present : 4294966283, onboard_control_sensors_enabled : 11, onboard_control_sensors_health : 4294966283, load : 250, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:22.96: MEMINFO {brkval : 6593, freemem : 1591}
+1969-12-31 18:00:22.96: MISSION_CURRENT {seq : 0}
+1969-12-31 18:00:22.96: GPS_RAW_INT {time_usec : 0, fix_type : 0, lat : 0, lon : 0, alt : 0, eph : 0, epv : 65535, vel : 0, cog : 0, satellites_visible : 0}
+1969-12-31 18:00:22.96: GLOBAL_POSITION_INT {time_boot_ms : 22965, lat : 0, lon : 0, alt : 0, relative_alt : 4150, vx : 0, vy : 0, vz : 0, hdg : 0}
+1969-12-31 18:00:22.96: RC_CHANNELS_SCALED {time_boot_ms : 22966, port : 0, chan1_scaled : -3192, chan2_scaled : 2860, chan3_scaled : -14950, chan4_scaled : 3893, chan5_scaled : 0, chan6_scaled : 0, chan7_scaled : 0, chan8_scaled : 0, rssi : 0}
+1969-12-31 18:00:22.96: SERVO_OUTPUT_RAW {time_usec : 22967532, port : 0, servo1_raw : 1494, servo2_raw : 1455, servo3_raw : 973, servo4_raw : 1499, servo5_raw : 1494, servo6_raw : 1500, servo7_raw : 1500, servo8_raw : 1500}
+1969-12-31 18:00:22.96: RC_CHANNELS_RAW {time_boot_ms : 22968, port : 0, chan1_raw : 1494, chan2_raw : 1455, chan3_raw : 973, chan4_raw : 1499, chan5_raw : 1494, chan6_raw : 1499, chan7_raw : 1499, chan8_raw : 1918, rssi : 0}
+1969-12-31 18:00:22.97: ATTITUDE {time_boot_ms : 22977, roll : 8.69379000505e-05, pitch : 1.39152507472e-05, yaw : 1.95724242076e-05, rollspeed : 0.000114932248835, pitchspeed : 0.000328953668941, yawspeed : 0.000893991789781}
+1969-12-31 18:00:22.97: VFR_HUD {airspeed : 0.228444769979, groundspeed : 0.0, heading : 0, throttle : 0, alt : 4.15000009537, climb : 0.0}
+1969-12-31 18:00:22.97: AHRS {omegaIx : 0.0, omegaIy : 0.0, omegaIz : 0.0, accel_weight : 0.0, renorm_val : 0.0, error_rp : 0.00148413865827, error_yaw : 0.0}
+1969-12-31 18:00:22.97: HWSTATUS {Vcc : 5006, I2Cerr : 0}
+1969-12-31 18:00:22.97: WIND {direction : 0.0, speed : 0.0, speed_z : 0.0}
+1969-12-31 18:00:22.97: RAW_IMU {time_usec : 23222344, xacc : 0, yacc : 0, zacc : -1002, xgyro : 0, ygyro : 0, zgyro : 0, xmag : 0, ymag : 0, zmag : 0}
+1969-12-31 18:00:23.22: SCALED_PRESSURE {time_boot_ms : 23222, press_abs : 1020.7800293, press_diff : -0.00359375006519, temperature : 262}
+1969-12-31 18:00:23.22: SENSOR_OFFSETS {mag_ofs_x : -75, mag_ofs_y : -22, mag_ofs_z : 59, mag_declination : 0.0, raw_press : 7478406, raw_temp : 8918302, gyro_cal_x : -0.0156067814678, gyro_cal_y : -0.023709481582, gyro_cal_z : 0.0299683660269, accel_cal_x : 0.581445813179, accel_cal_y : 2.14354848862, accel_cal_z : 0.361553192139}
+1969-12-31 18:00:23.22: SYS_STATUS {onboard_control_sensors_present : 4294966315, onboard_control_sensors_enabled : 43, onboard_control_sensors_health : 4294966315, load : 238, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:23.22: RC_CHANNELS_SCALED {time_boot_ms : 23226, port : 0, chan1_scaled : -3228, chan2_scaled : 2860, chan3_scaled : -14950, chan4_scaled : 3893, chan5_scaled : 0, chan6_scaled : 0, chan7_scaled : 0, chan8_scaled : 0, rssi : 0}
+1969-12-31 18:00:23.22: SERVO_OUTPUT_RAW {time_usec : 23228032, port : 0, servo1_raw : 1493, servo2_raw : 1455, servo3_raw : 973, servo4_raw : 1499, servo5_raw : 1493, servo6_raw : 1500, servo7_raw : 1500, servo8_raw : 1500}
+1969-12-31 18:00:23.22: RC_CHANNELS_RAW {time_boot_ms : 23228, port : 0, chan1_raw : 1493, chan2_raw : 1455, chan3_raw : 973, chan4_raw : 1499, chan5_raw : 1493, chan6_raw : 1499, chan7_raw : 1499, chan8_raw : 1918, rssi : 0}
+1969-12-31 18:00:23.23: ATTITUDE {time_boot_ms : 23237, roll : 0.00015656882897, pitch : 0.000118226023915, yaw : 1.78896134457e-05, rollspeed : 6.57763448544e-05, pitchspeed : 0.000267705996521, yawspeed : 0.000893927528523}
+1969-12-31 18:00:23.23: AHRS {omegaIx : 0.0, omegaIy : 0.0, omegaIz : 0.0, accel_weight : 0.0, renorm_val : 0.0, error_rp : 0.00119573727716, error_yaw : 0.0}
+1969-12-31 18:00:23.23: HWSTATUS {Vcc : 5006, I2Cerr : 0}
+1969-12-31 18:00:23.23: WIND {direction : 0.0, speed : 0.0, speed_z : 0.0}
+1969-12-31 18:00:23.23: RAW_IMU {time_usec : 23480816, xacc : 2, yacc : 0, zacc : -997, xgyro : 0, ygyro : 2, zgyro : 0, xmag : 0, ymag : 0, zmag : 0}
+1969-12-31 18:00:23.48: SCALED_PRESSURE {time_boot_ms : 23481, press_abs : 1020.77001953, press_diff : -0.0135937500745, temperature : 262}
+1969-12-31 18:00:23.48: SENSOR_OFFSETS {mag_ofs_x : -75, mag_ofs_y : -22, mag_ofs_z : 59, mag_declination : 0.0, raw_press : 7478349, raw_temp : 8918448, gyro_cal_x : -0.0156067814678, gyro_cal_y : -0.023709481582, gyro_cal_z : 0.0299683660269, accel_cal_x : 0.581445813179, accel_cal_y : 2.14354848862, accel_cal_z : 0.361553192139}
+1969-12-31 18:00:23.48: SYS_STATUS {onboard_control_sensors_present : 4294966315, onboard_control_sensors_enabled : 43, onboard_control_sensors_health : 4294966315, load : 285, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:23.48: MEMINFO {brkval : 6593, freemem : 1591}
+1969-12-31 18:00:23.48: MISSION_CURRENT {seq : 0}
+1969-12-31 18:00:23.40: GLOBAL_POSITION_INT {time_boot_ms : 23401, lat : 306324130, lon : -964817530, alt : 71400, relative_alt : -9810, vx : 0, vy : 0, vz : 0, hdg : 0}
+1969-12-31 18:00:23.48: RC_CHANNELS_SCALED {time_boot_ms : 23485, port : 0, chan1_scaled : -3192, chan2_scaled : 2860, chan3_scaled : -14950, chan4_scaled : 3893, chan5_scaled : 0, chan6_scaled : 0, chan7_scaled : 0, chan8_scaled : 0, rssi : 0}
+1969-12-31 18:00:23.48: SERVO_OUTPUT_RAW {time_usec : 23486356, port : 0, servo1_raw : 1494, servo2_raw : 1455, servo3_raw : 973, servo4_raw : 1499, servo5_raw : 1494, servo6_raw : 1500, servo7_raw : 1500, servo8_raw : 1500}
+1969-12-31 18:00:23.48: RC_CHANNELS_RAW {time_boot_ms : 23486, port : 0, chan1_raw : 1494, chan2_raw : 1455, chan3_raw : 973, chan4_raw : 1499, chan5_raw : 1494, chan6_raw : 1499, chan7_raw : 1499, chan8_raw : 1918, rssi : 0}
+1969-12-31 18:00:23.49: ATTITUDE {time_boot_ms : 23497, roll : 7.82982806413e-06, pitch : 9.24677005969e-05, yaw : -2.63543552137e-05, rollspeed : -0.000926390523091, pitchspeed : 0.00222524022684, yawspeed : -0.000170204308233}
+1969-12-31 18:00:23.49: VFR_HUD {airspeed : 0.569261789322, groundspeed : 0.0, heading : 0, throttle : 0, alt : -9.81000041962, climb : 0.0}
+1969-12-31 18:00:23.49: AHRS {omegaIx : 0.0, omegaIy : 0.0, omegaIz : 0.0, accel_weight : 0.0, renorm_val : 0.0, error_rp : 0.00150976376608, error_yaw : 0.0}
+1969-12-31 18:00:23.49: HWSTATUS {Vcc : 5006, I2Cerr : 0}
+1969-12-31 18:00:23.49: WIND {direction : 0.0, speed : 0.0, speed_z : 0.0}
+1969-12-31 18:00:23.49: HEARTBEAT {type : 1, autopilot : 3, base_mode : 193, custom_mode : 0, system_status : 4, mavlink_version : 3}
+1969-12-31 18:00:23.49: RAW_IMU {time_usec : 23740600, xacc : 0, yacc : 0, zacc : -1001, xgyro : 0, ygyro : 2, zgyro : 0, xmag : 0, ymag : 0, zmag : 0}
+1969-12-31 18:00:23.74: SCALED_PRESSURE {time_boot_ms : 23740, press_abs : 1020.77001953, press_diff : -0.0135937500745, temperature : 262}
+1969-12-31 18:00:23.74: SENSOR_OFFSETS {mag_ofs_x : -75, mag_ofs_y : -22, mag_ofs_z : 59, mag_declination : 0.0, raw_press : 7478315, raw_temp : 8918570, gyro_cal_x : -0.0156067814678, gyro_cal_y : -0.023709481582, gyro_cal_z : 0.0299683660269, accel_cal_x : 0.581445813179, accel_cal_y : 2.14354848862, accel_cal_z : 0.361553192139}
+1969-12-31 18:00:23.74: SYS_STATUS {onboard_control_sensors_present : 4294966315, onboard_control_sensors_enabled : 43, onboard_control_sensors_health : 4294966315, load : 150, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:23.74: MEMINFO {brkval : 6593, freemem : 1591}
+1969-12-31 18:00:23.74: MISSION_CURRENT {seq : 0}
+1969-12-31 18:00:23.60: GLOBAL_POSITION_INT {time_boot_ms : 23601, lat : 306324130, lon : -964817530, alt : 71400, relative_alt : -10040, vx : 0, vy : 0, vz : 0, hdg : 0}
+1969-12-31 18:00:23.74: RC_CHANNELS_SCALED {time_boot_ms : 23744, port : 0, chan1_scaled : -3228, chan2_scaled : 2860, chan3_scaled : -14950, chan4_scaled : 3893, chan5_scaled : 0, chan6_scaled : 0, chan7_scaled : 0, chan8_scaled : 0, rssi : 0}
+1969-12-31 18:00:23.74: SERVO_OUTPUT_RAW {time_usec : 23746332, port : 0, servo1_raw : 1493, servo2_raw : 1455, servo3_raw : 973, servo4_raw : 1499, servo5_raw : 1493, servo6_raw : 1500, servo7_raw : 1500, servo8_raw : 1500}
+1969-12-31 18:00:23.74: RC_CHANNELS_RAW {time_boot_ms : 23746, port : 0, chan1_raw : 1494, chan2_raw : 1455, chan3_raw : 973, chan4_raw : 1499, chan5_raw : 1493, chan6_raw : 1499, chan7_raw : 1499, chan8_raw : 1918, rssi : 0}
+1969-12-31 18:00:23.75: ATTITUDE {time_boot_ms : 23756, roll : -0.000101757519587, pitch : -6.73490649206e-05, yaw : 1.44978967e-05, rollspeed : -0.000719935225789, pitchspeed : 0.00245639914647, yawspeed : 0.000893976946827}
+1969-12-31 18:00:23.75: VFR_HUD {airspeed : 0.195256784558, groundspeed : 0.0, heading : 0, throttle : 0, alt : 4.88000011444, climb : 0.0}
+1969-12-31 18:00:23.75: AHRS {omegaIx : 0.0, omegaIy : 0.0, omegaIz : 0.0, accel_weight : 0.0, renorm_val : 0.0, error_rp : 0.00091192277614, error_yaw : 0.0}
+1969-12-31 18:00:23.75: HWSTATUS {Vcc : 5006, I2Cerr : 0}
+1969-12-31 18:00:23.75: WIND {direction : 0.0, speed : 0.0, speed_z : 0.0}
+1969-12-31 18:00:23.75: STATUSTEXT {severity : 1, text : init home}
+1969-12-31 18:00:23.75: STATUSTEXT {severity : 1, text : gps alt: 7140}
+1969-12-31 18:00:23.75: RAW_IMU {time_usec : 24180288, xacc : -1, yacc : 1, zacc : -998, xgyro : 0, ygyro : 0, zgyro : 0, xmag : 0, ymag : 0, zmag : 0}
+1969-12-31 18:00:24.18: SCALED_PRESSURE {time_boot_ms : 24180, press_abs : 1020.7800293, press_diff : -0.00359375006519, temperature : 262}
+1969-12-31 18:00:24.18: SENSOR_OFFSETS {mag_ofs_x : -75, mag_ofs_y : -22, mag_ofs_z : 59, mag_declination : 0.0, raw_press : 7478289, raw_temp : 8918749, gyro_cal_x : -0.0156067814678, gyro_cal_y : -0.023709481582, gyro_cal_z : 0.0299683660269, accel_cal_x : 0.581445813179, accel_cal_y : 2.14354848862, accel_cal_z : 0.361553192139}
+1969-12-31 18:00:24.18: SYS_STATUS {onboard_control_sensors_present : 4294966315, onboard_control_sensors_enabled : 43, onboard_control_sensors_health : 4294966315, load : 200, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:24.18: MEMINFO {brkval : 6593, freemem : 1591}
+1969-12-31 18:00:24.18: MISSION_CURRENT {seq : 0}
+1969-12-31 18:00:23.95: GLOBAL_POSITION_INT {time_boot_ms : 23951, lat : 306324130, lon : -964817530, alt : 71400, relative_alt : 0, vx : 0, vy : 0, vz : 0, hdg : 0}
+1969-12-31 18:00:24.18: RC_CHANNELS_SCALED {time_boot_ms : 24184, port : 0, chan1_scaled : -3228, chan2_scaled : 2860, chan3_scaled : -14950, chan4_scaled : 3893, chan5_scaled : 0, chan6_scaled : 0, chan7_scaled : 0, chan8_scaled : 0, rssi : 0}
+1969-12-31 18:00:24.18: SERVO_OUTPUT_RAW {time_usec : 24185844, port : 0, servo1_raw : 1493, servo2_raw : 1455, servo3_raw : 973, servo4_raw : 1499, servo5_raw : 1493, servo6_raw : 1500, servo7_raw : 1500, servo8_raw : 1500}
+1969-12-31 18:00:24.18: RC_CHANNELS_RAW {time_boot_ms : 24185, port : 0, chan1_raw : 1493, chan2_raw : 1455, chan3_raw : 973, chan4_raw : 1499, chan5_raw : 1493, chan6_raw : 1499, chan7_raw : 1499, chan8_raw : 1918, rssi : 0}
+1969-12-31 18:00:24.19: ATTITUDE {time_boot_ms : 24197, roll : -0.00025628352887, pitch : -0.000150978681631, yaw : -0.000102868689282, rollspeed : 0.000298982718959, pitchspeed : 0.000125717269839, yawspeed : -0.000170223385794}
+1969-12-31 18:00:24.19: VFR_HUD {airspeed : 0.190169990063, groundspeed : 0.0, heading : 0, throttle : 0, alt : 71.4000015259, climb : -0.00150767667219}
+1969-12-31 18:00:24.19: AHRS {omegaIx : 0.0, omegaIy : 0.0, omegaIz : 0.0, accel_weight : 0.0, renorm_val : 0.0, error_rp : 0.00110757444054, error_yaw : 0.0}
+1969-12-31 18:00:24.19: HWSTATUS {Vcc : 5006, I2Cerr : 0}
+1969-12-31 18:00:24.19: WIND {direction : 0.0, speed : 0.0, speed_z : 0.0}
+1969-12-31 18:00:24.19: RAW_IMU {time_usec : 24440132, xacc : 0, yacc : 0, zacc : -999, xgyro : -2, ygyro : 0, zgyro : 0, xmag : 0, ymag : 0, zmag : 0}
+1969-12-31 18:00:24.44: SCALED_PRESSURE {time_boot_ms : 24440, press_abs : 1020.77001953, press_diff : -0.0135937500745, temperature : 262}
+1969-12-31 18:00:24.44: SENSOR_OFFSETS {mag_ofs_x : -75, mag_ofs_y : -22, mag_ofs_z : 59, mag_declination : 0.0, raw_press : 7478234, raw_temp : 8918850, gyro_cal_x : -0.0156067814678, gyro_cal_y : -0.023709481582, gyro_cal_z : 0.0299683660269, accel_cal_x : 0.581445813179, accel_cal_y : 2.14354848862, accel_cal_z : 0.361553192139}
+1969-12-31 18:00:24.44: SYS_STATUS {onboard_control_sensors_present : 4294966315, onboard_control_sensors_enabled : 43, onboard_control_sensors_health : 4294966315, load : 263, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:24.44: MEMINFO {brkval : 6593, freemem : 1591}
+1969-12-31 18:00:24.44: MISSION_CURRENT {seq : 0}
+1969-12-31 18:00:24.38: GLOBAL_POSITION_INT {time_boot_ms : 24380, lat : 306324130, lon : -964817530, alt : 71400, relative_alt : 20, vx : 0, vy : 0, vz : 0, hdg : 0}
+1969-12-31 18:00:24.44: RC_CHANNELS_SCALED {time_boot_ms : 24443, port : 0, chan1_scaled : -3228, chan2_scaled : 2835, chan3_scaled : -14950, chan4_scaled : 3893, chan5_scaled : 0, chan6_scaled : 0, chan7_scaled : 0, chan8_scaled : 0, rssi : 0}
+1969-12-31 18:00:24.44: SERVO_OUTPUT_RAW {time_usec : 24445704, port : 0, servo1_raw : 1493, servo2_raw : 1456, servo3_raw : 973, servo4_raw : 1499, servo5_raw : 1494, servo6_raw : 1500, servo7_raw : 1500, servo8_raw : 1500}
+1969-12-31 18:00:24.44: RC_CHANNELS_RAW {time_boot_ms : 24445, port : 0, chan1_raw : 1493, chan2_raw : 1455, chan3_raw : 973, chan4_raw : 1499, chan5_raw : 1494, chan6_raw : 1499, chan7_raw : 1499, chan8_raw : 1918, rssi : 0}
+1969-12-31 18:00:24.44: AHRS {omegaIx : 0.0, omegaIy : 0.0, omegaIz : 0.0, accel_weight : 0.0, renorm_val : 0.0, error_rp : 0.000974450143985, error_yaw : 0.0}
+1969-12-31 18:00:24.44: HWSTATUS {Vcc : 5006, I2Cerr : 0}
+1969-12-31 18:00:24.44: WIND {direction : 0.0, speed : 0.0, speed_z : 0.0}
+1969-12-31 18:00:24.44: RAW_IMU {time_usec : 24699876, xacc : -2, yacc : 0, zacc : -1000, xgyro : 2, ygyro : 0, zgyro : 0, xmag : 0, ymag : 0, zmag : 0}
+1969-12-31 18:00:24.69: SCALED_PRESSURE {time_boot_ms : 24699, press_abs : 1020.77001953, press_diff : -0.0135937500745, temperature : 262}
+1969-12-31 18:00:24.69: SENSOR_OFFSETS {mag_ofs_x : -75, mag_ofs_y : -22, mag_ofs_z : 59, mag_declination : 0.0, raw_press : 7478190, raw_temp : 8918992, gyro_cal_x : -0.0156067814678, gyro_cal_y : -0.023709481582, gyro_cal_z : 0.0299683660269, accel_cal_x : 0.581445813179, accel_cal_y : 2.14354848862, accel_cal_z : 0.361553192139}
+1969-12-31 18:00:24.69: SYS_STATUS {onboard_control_sensors_present : 4294966315, onboard_control_sensors_enabled : 43, onboard_control_sensors_health : 4294966315, load : 157, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:24.69: MEMINFO {brkval : 6593, freemem : 1591}
+1969-12-31 18:00:24.69: MISSION_CURRENT {seq : 0}
+1969-12-31 18:00:24.58: GLOBAL_POSITION_INT {time_boot_ms : 24580, lat : 306324130, lon : -964817530, alt : 71400, relative_alt : 20, vx : 0, vy : 0, vz : 0, hdg : 35999}
+1969-12-31 18:00:24.70: RC_CHANNELS_SCALED {time_boot_ms : 24704, port : 0, chan1_scaled : -3228, chan2_scaled : 2860, chan3_scaled : -14975, chan4_scaled : 3893, chan5_scaled : 0, chan6_scaled : 0, chan7_scaled : 0, chan8_scaled : 0, rssi : 0}
+1969-12-31 18:00:24.70: SERVO_OUTPUT_RAW {time_usec : 24705452, port : 0, servo1_raw : 1493, servo2_raw : 1455, servo3_raw : 972, servo4_raw : 1499, servo5_raw : 1493, servo6_raw : 1500, servo7_raw : 1500, servo8_raw : 1500}
+1969-12-31 18:00:24.70: RC_CHANNELS_RAW {time_boot_ms : 24706, port : 0, chan1_raw : 1493, chan2_raw : 1455, chan3_raw : 972, chan4_raw : 1499, chan5_raw : 1494, chan6_raw : 1499, chan7_raw : 1499, chan8_raw : 1918, rssi : 0}
+1969-12-31 18:00:24.71: ATTITUDE {time_boot_ms : 24716, roll : -0.00110565731302, pitch : -0.000513056584168, yaw : -0.000233534257859, rollspeed : 0.00241641048342, pitchspeed : -0.0007007457898, yawspeed : 0.000894216820598}
+1969-12-31 18:00:24.71: AHRS {omegaIx : 0.0, omegaIy : 0.0, omegaIz : 0.0, accel_weight : 0.0, renorm_val : 0.0, error_rp : 0.001062556752, error_yaw : 0.0}
+1969-12-31 18:00:24.71: HWSTATUS {Vcc : 5006, I2Cerr : 0}
+1969-12-31 18:00:24.71: WIND {direction : 0.0, speed : 0.0, speed_z : 0.0}
+1969-12-31 18:00:24.71: HEARTBEAT {type : 1, autopilot : 3, base_mode : 193, custom_mode : 0, system_status : 4, mavlink_version : 3}
+1969-12-31 18:00:24.71: RAW_IMU {time_usec : 24960304, xacc : -1, yacc : 0, zacc : -998, xgyro : -5, ygyro : -5, zgyro : -1, xmag : 0, ymag : 0, zmag : 0}
+1969-12-31 18:00:24.96: SCALED_PRESSURE {time_boot_ms : 24961, press_abs : 1020.7800293, press_diff : -0.00359375006519, temperature : 262}
+1969-12-31 18:00:24.96: SENSOR_OFFSETS {mag_ofs_x : -75, mag_ofs_y : -22, mag_ofs_z : 59, mag_declination : 0.0, raw_press : 7478174, raw_temp : 8919118, gyro_cal_x : -0.0156067814678, gyro_cal_y : -0.023709481582, gyro_cal_z : 0.0299683660269, accel_cal_x : 0.581445813179, accel_cal_y : 2.14354848862, accel_cal_z : 0.361553192139}
+1969-12-31 18:00:24.96: SYS_STATUS {onboard_control_sensors_present : 4294966315, onboard_control_sensors_enabled : 43, onboard_control_sensors_health : 4294966315, load : 300, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:24.96: MEMINFO {brkval : 6593, freemem : 1591}
+1969-12-31 18:00:24.96: MISSION_CURRENT {seq : 0}
+1969-12-31 18:00:24.77: GLOBAL_POSITION_INT {time_boot_ms : 24779, lat : 306324130, lon : -964817530, alt : 71400, relative_alt : 0, vx : 0, vy : 0, vz : 0, hdg : 35999}
+1969-12-31 18:00:24.96: RC_CHANNELS_SCALED {time_boot_ms : 24964, port : 0, chan1_scaled : -3192, chan2_scaled : 2835, chan3_scaled : -14950, chan4_scaled : 3893, chan5_scaled : 0, chan6_scaled : 0, chan7_scaled : 0, chan8_scaled : 0, rssi : 0}
+1969-12-31 18:00:24.96: SERVO_OUTPUT_RAW {time_usec : 24965916, port : 0, servo1_raw : 1494, servo2_raw : 1456, servo3_raw : 973, servo4_raw : 1499, servo5_raw : 1494, servo6_raw : 1500, servo7_raw : 1500, servo8_raw : 1500}
+1969-12-31 18:00:24.96: RC_CHANNELS_RAW {time_boot_ms : 24966, port : 0, chan1_raw : 1494, chan2_raw : 1456, chan3_raw : 973, chan4_raw : 1499, chan5_raw : 1494, chan6_raw : 1499, chan7_raw : 1499, chan8_raw : 1918, rssi : 0}
+1969-12-31 18:00:24.97: ATTITUDE {time_boot_ms : 24976, roll : -0.00134628172964, pitch : -0.000488069548737, yaw : -0.000256402767263, rollspeed : -0.00594187621027, pitchspeed : -0.0048595154658, yawspeed : -0.00123414804693}
+1969-12-31 18:00:24.97: VFR_HUD {airspeed : 0.546934247017, groundspeed : 0.0, heading : 359, throttle : 0, alt : 71.4000015259, climb : -0.117402240634}
+1969-12-31 18:00:24.97: AHRS {omegaIx : 0.0, omegaIy : 0.0, omegaIz : 0.0, accel_weight : 0.0, renorm_val : 0.0, error_rp : 0.00077877874719, error_yaw : 0.0}
+1969-12-31 18:00:24.97: HWSTATUS {Vcc : 5006, I2Cerr : 0}
+1969-12-31 18:00:24.97: WIND {direction : 0.0, speed : 0.0, speed_z : 0.0}
+1969-12-31 18:00:24.97: RAW_IMU {time_usec : 25219512, xacc : 0, yacc : 1, zacc : -999, xgyro : -1, ygyro : -2, zgyro : 0, xmag : 0, ymag : 0, zmag : 0}
+1969-12-31 18:00:25.22: SCALED_PRESSURE {time_boot_ms : 25220, press_abs : 1020.76000977, press_diff : -0.023593749851, temperature : 262}
+1969-12-31 18:00:25.22: SENSOR_OFFSETS {mag_ofs_x : -75, mag_ofs_y : -22, mag_ofs_z : 59, mag_declination : 0.0, raw_press : 7478115, raw_temp : 8919097, gyro_cal_x : -0.0156067814678, gyro_cal_y : -0.023709481582, gyro_cal_z : 0.0299683660269, accel_cal_x : 0.581445813179, accel_cal_y : 2.14354848862, accel_cal_z : 0.361553192139}
+1969-12-31 18:00:25.22: SYS_STATUS {onboard_control_sensors_present : 4294966315, onboard_control_sensors_enabled : 43, onboard_control_sensors_health : 4294966315, load : 238, voltage_battery : 10080, current_battery : -1, battery_remaining : -1, drop_rate_comm : 0, errors_comm : 0, errors_count1 : 0, errors_count2 : 0, errors_count3 : 0, errors_count4 : 0}
+1969-12-31 18:00:25.22: MEMINFO {brkval : 6593, freemem : 1591}
+1969-12-31 18:00:25.22: MISSION_CURRENT {seq : 0}
+1969-12-31 18:00:25.18: GLOBAL_POSITION_INT {time_boot_ms : 25180, lat : 306324130, lon : -964817530, alt : 71390, relative_alt : 50, vx : 0, vy : 0, vz : 0, hdg : 35999}
+1969-12-31 18:00:25.22: RC_CHANNELS_SCALED {time_boot_ms : 25224, port : 0, chan1_scaled : -3228, chan2_scaled : 2835, chan3_scaled : -14975, chan4_scaled : 3893, chan5_scaled : 0, chan6_scaled : 0, chan7_scaled : 0, chan8_scaled : 0, rssi : 0}
+1969-12-31 18:00:25.22: SERVO_OUTPUT_RAW {time_usec : 25225140, port : 0, servo1_raw : 1493, servo2_raw : 1456, servo3_raw : 972, servo4_raw : 1499, servo5_raw : 1494, servo6_raw : 1500, servo7_raw : 1500, servo8_raw : 1500}
+1969-12-31 18:00:25.22: RC_CHANNELS_RAW {time_boot_ms : 25225, port : 0, chan1_raw : 1493, chan2_raw : 1455, chan3_raw : 973, chan4_raw : 1499, chan5_raw : 1494, chan6_raw : 1499, chan7_raw : 1499, chan8_raw : 1918, rssi : 0}
+1969-12-31 18:00:25.23: ATTITUDE {time_boot_ms : 25236, roll : -0.00192605145276, pitch : -0.000539068481885, yaw : -0.000300526822684, rollspeed : -0.00169894634746, pitchspeed : -0.00286398106255, yawspeed : -0.00017002504319}
+1969-12-31 18:00:25.23: VFR_HUD {airspeed : 0.409218221903, groundspeed : 0.0, heading : 359, throttle : 0, alt : 71.4599990845, climb : 0.262700200081}
+1969-12-31 18:00:25.23: AHRS {omegaIx : 0.0, omegaIy : 0.0, omegaIz : 0.0, accel_weight : 0.0, renorm_val : 0.0, error_rp : 0.00105834915303, error_yaw : 0.0}
+1969-12-31 18:00:25.23: HWSTATUS {Vcc : 5006, I2Cerr : 0}

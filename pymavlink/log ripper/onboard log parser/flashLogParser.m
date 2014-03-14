@@ -306,13 +306,14 @@ ylabel('latitude (deg)');
 figure;
 plot(gps(manualindices,2),gps(manualindices,1),'bx');
 hold on;
+plot(gps(fbwbindices,2),gps(fbwbindices,1),'ko');
 plot(gps(autoindices,2),gps(autoindices,1),'rd');
 plot(gps(stabindices,2),gps(stabindices,1),'gs');
-plot(gps(fbwbindices,2),gps(fbwbindices,1),'ko');
+
 if way_flag
     plot(lons,lats,'mx','markersize',12,'linewidth',2);
 end
-legend('Manual','AUTO','Stabilize','FBWB');
+legend('Manual','FBWB','AUTO','Stabilize');
 
 ylabel('lat');
 xlabel('long');
