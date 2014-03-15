@@ -105,3 +105,26 @@ plot(vfrtime,data{ind}(:,4),'-x');
 hold on;
 plot(vfrtime(vfrvector),data{ind}(vfrvector,4),'rd');
 ylabel('throttle (pct)');
+%% rc history
+ind = find(strcmpi('SERVO_OUTPUT_RAW',messages));
+
+rctimes = data{ind}(:,1)*1e-3;
+rcvector = matchTimes(autolandTimes,segments,rctimes);
+
+subplot(311);
+plot(rctimes*1e-3,data{ind}(:,3))
+hold on
+plot(rctimes(rcvector)*1e-3,data{ind}(rcvector,3),'rd')
+ylabel('\delta_a (PWM)');
+
+subplot(312);
+plot(data{ind}(:,1)*1e-6,data{ind}(:,4))
+hold on
+plot(rctimes(rcvector)*1e-3,data{ind}(rcvector,4),'rd')
+ylabel('\delta_e (PWM)');
+
+subplot(313);
+plot(data{ind}(:,1)*1e-6,data{ind}(:,5))
+hold on
+plot(rctimes(rcvector)*1e-3,data{ind}(rcvector,5),'rd')
+ylabel('\delta_t (PWM)');

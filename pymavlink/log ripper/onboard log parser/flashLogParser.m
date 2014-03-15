@@ -346,7 +346,7 @@ ylabel('yaw (deg)');
 
 % plot ground speed
 figure;
-subplot(211);
+subplot(311);
 plot(gpstime(manualindices),gspeed(manualindices),'bx');
 hold on;
 plot(gpstime(autoindices),gspeed(autoindices),'rd');
@@ -354,13 +354,22 @@ plot(gpstime(stabindices),gspeed(stabindices),'gs');
 plot(gpstime(fbwbindices),gspeed(fbwbindices),'ko');
 ylabel('ground speed (m/s)');
 
-subplot(212);
+subplot(312);
 plot(gpstime(manualindices),alt(manualindices),'bx');
 hold on;
 plot(gpstime(autoindices),alt(autoindices),'rd');
 plot(gpstime(stabindices),alt(stabindices),'gs');
 plot(gpstime(fbwbindices),alt(fbwbindices),'ko');
 ylabel('altitude (m)');
+%plot descent rate
+subplot(313);
+plot(gpstime(manualindices(1:end-1)),diff(alt(manualindices))./diff(gpstime(manualindices)),'bx');
+hold on;
+plot(gpstime(autoindices(1:end-1)),diff(alt(autoindices))./diff(gpstime(autoindices)),'rd');
+plot(gpstime(stabindices(1:end-1)),diff(alt(stabindices))./diff(gpstime(stabindices)),'gs');
+plot(gpstime(fbwbindices(1:end-1)),diff(alt(fbwbindices))./diff(gpstime(fbwbindices)),'ko');
+ylabel('hdot (m/s)');
+
 % %export to .mat
 % save([fname(1:end-3) 'mat'],'gps','gpstime','time','att','ctrl','fhp','raw');
 % %export to .csv
