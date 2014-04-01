@@ -28,3 +28,19 @@ target airspeed is set in navigation - I tried to set it to 11 m/s, not sure
 auto-flap settings in Attitude.ino can probably be removed
 in non-manual flight modes, stabilize() is called at 50 Hz in the fast loop.
 Is the rudder just going to be idle during all of this? I guess that's what I'm hoping for...?
+
+
+
+
+*---------------------------*
+We want to modify this ground station to facilitate autolanding.
+I envision a new "autoland" command that would automatically command a sequence of waypoints, then switch on the autolanding mode after the last waypoint.
+Things that MAVProxy alerady does: load waypoints from file, allow groundside to transmit waypoints up.
+Things that I do not currently believe are implemented: a way to verify that the vehicle has reached a waypoint, triggering the next one.
+	* there is a verify_nav_wp() command that the vehicle can use to confirm it has reached a waypoint - do not know how this is triggered
+
+* Edit: there is a way to pre-load commands in the autopilot itself via EEPROM. This could be promising - can I pre-load a sequence of waypoints?
+
+* The simplest way to do this is probably to store the desired waypoints in a file and upload them manually via MAVProxy, then maually engage the automatic landing. 
+What I do not know is how MAVProxy handles waypoints... but presumambly I can transmit them and then get the vehicle to navigate to them.
+THIS MEANS WE NEED THE MAP TO WORK or would really like to have it, a little silly otherwise.
