@@ -1,0 +1,1 @@
+python mavproxy.py --master=COM12 --baudrate=115200 --console --nowait --aircraft="bixler"

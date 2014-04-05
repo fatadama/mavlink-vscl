@@ -9,6 +9,9 @@ import cv2, cv, numpy as np,time, pickle, binarySearch as bs, os
 #
 #development progress: currently, q-matrix has not been implemented.
 
+#set to 1 for debugging only, no q-lookup
+DEBUG = 0
+
 def nothing(args):
     pass
 
@@ -32,7 +35,7 @@ def runCameraProc(conn,lock,flag_testing=False):
         lock.acquire()
     
     #initialize variables for HSV limits and blur radius:
-    blurRad = 3#image blur radius
+    blurRad = 5#image blur radius
     hsvl = np.array([19,17,208])#lower HSV cutoff
     hsvu = np.array([31,143,255])#upper HSV cutoff
     rgbLim = np.array([[122,190,219],[255,255,255]])#rgb lower/upper cutoffs - THESE ARE NOT ADJUSTABLE ON-LINE!!
@@ -74,7 +77,7 @@ def runCameraProc(conn,lock,flag_testing=False):
             i = i+1
             fname = 'rec' + str(i) +'.avi'
     frsize = (int(capture.get(cv.CV_CAP_PROP_FRAME_WIDTH)),int(capture.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
-    vidWriter = cv2.VideoWriter(fname,cv.CV_FOURCC('M','J','P','G'),15,frsize)
+    vidWriter = cv2.VideoWriter(fname,cv.CV_FOURCC('M','J','P','G'),20,frsize)
     print vidWriter
     #open text log that corresponds to the video
     vidLog = open(fname[0:-3]+'log','w')
@@ -99,50 +102,53 @@ def runCameraProc(conn,lock,flag_testing=False):
                 #update settings from sliders:
                 settingUpdate(hsvl,hsvu,blurRad)
                 flag_writing = cv2.getTrackbarPos('record','camera')
+                if not DEBUG:
                 #process frames
-                
-                #blur the image to reduce color noise: (5 x 5)
-                img = cv2.blur(img,(blurRad,blurRad))
+                    
+                    #blur the image to reduce color noise: (5 x 5)
+                    img = cv2.blur(img,(blurRad,blurRad))
 
-                #filter the image in RGB space
-                thres = cv2.inRange(img,rgbLim[0,:],rgbLim[1,:])
+                    #filter the image in RGB space
+                    thres = cv2.inRange(img,rgbLim[0,:],rgbLim[1,:])
 
-                #convert image to HSV
-                hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
-                #threshold the image using the HSV lower and upper bounds
-                thresh = cv2.inRange(hsv,hsvl,hsvu)
-                ##thresh2 = np.copy(thresh)
-                #unionize the HSV and RGB thresholds:
-                thresh = thresh&thres
-                #find contours in the thresholded image:
-                contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
-                
-                #pickle contours to deal with a bug in opencv 2.4.3
-                tmp = pickle.dumps(contours)
-                contours = pickle.loads(tmp)
-                
-                #get the contour with the largest area:
-                max_area = -1
-                best_cnt = np.array([])
-                cx,cy = (0,0)
+                    #convert image to HSV
+                    hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+                    #threshold the image using the HSV lower and upper bounds
+                    thresh = cv2.inRange(hsv,hsvl,hsvu)
+                    ##thresh2 = np.copy(thresh)
+                    #unionize the HSV and RGB thresholds:
+                    thresh = thresh&thres
+                    #find contours in the thresholded image:
+                    contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+                    
+                    #pickle contours to deal with a bug in opencv 2.4.3
+                    tmp = pickle.dumps(contours)
+                    contours = pickle.loads(tmp)
+                    
+                    #get the contour with the largest area:
+                    max_area = -1
+                    best_cnt = np.array([])
+                    cx,cy = (0,0)
 
-                #loop over the contours and find the one with the largest area:
-                for cnt in contours:
-                    area = cv2.contourArea(cnt)
-                    if area>max_area:
-                            max_area = area
-                            best_cnt = cnt
-                            
-                #check that the size of the best contour is not empty
-                if np.shape(best_cnt)[0]>0:
-                    #find the centroid of best contour
-                    M = cv2.moments(best_cnt)
-                    #check that the divisor moment is nonzero; if it is, set the location to (0,0)
-                    if M['m00']>0:
-                        cx,cy = int(M['m10']/M['m00']),int(M['m01']/M['m00'])
-                    else:
-                        cx,cy = (0,0)
-                        
+                    #loop over the contours and find the one with the largest area:
+                    for cnt in contours:
+                        area = cv2.contourArea(cnt)
+                        if area>max_area:
+                                max_area = area
+                                best_cnt = cnt
+                                
+                    #check that the size of the best contour is not empty
+                    if np.shape(best_cnt)[0]>0:
+                        #find the centroid of best contour
+                        M = cv2.moments(best_cnt)
+                        #check that the divisor moment is nonzero; if it is, set the location to (0,0)
+                        if M['m00']>0:
+                            cx,cy = int(M['m10']/M['m00']),int(M['m01']/M['m00'])
+                        else:
+                            cx,cy = (0,0)
+                else:
+                    cx,cy = (0,0)
+                    
                 #update the moving averages:
                 if cx>0 and cy>0:
                     #ensure that cx>0, cy>0 in case centroid drops out

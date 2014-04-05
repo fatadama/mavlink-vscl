@@ -1621,7 +1621,9 @@ def periodic_tasks():
                 connDat = mulProcVar.parent_conn.recv()
             #if anything is read, transmit the read value:
             if not connDat == 300:
-                action = int(connDat)
+                #action = int(connDat)
+                # DEBUGGING: action is zero, no change in bank
+                action = 0
                 #transmit the target bank angle to the MAV:
                 for master in mpstate.mav_master:
                     if master.mavlink10():
