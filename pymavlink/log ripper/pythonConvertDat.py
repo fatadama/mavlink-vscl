@@ -59,12 +59,11 @@ def main(fid):
                     msg_ids.append(msg_id)
                     msg_len.append(0)
                     data.append(dataStruct(msg_id,dta))
-                    
-                    
                     msg_id_count += 1
     return data
             
 FLAGON = True
+# set to True to write out roll/pitch/yaw attitude history
 
 fname = raw_input("File name of telemetry .dat file:")
 # verify that file exists
@@ -84,9 +83,13 @@ if FLAGON:
     data = main(fid)
     # write out roll history
     fidout = open('rollOutput.txt','w')
+    fidout.write('time(msec)\troll(rad)\tpitch(rad)\tyaw(rad)\n')
     indRoll = msgIndex('ATTITUDE',data)
     for i in range(data[indRoll].datalen):
-        fidout.write(str(data[indRoll].data[i][0]) + '\t' + str(data[indRoll].data[i][1]) + '\n')
+        fidout.write(str(data[indRoll].data[i][0]))
+        for j in range(3):
+            fidout.write('\t' + str(data[indRoll].data[i][j+1]))
+        fidout.write('\n')
     print "Wrote history to rollOutput.txt"
     fidout.close()
     fid.close()
