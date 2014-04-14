@@ -144,14 +144,14 @@ fclose(fid);
 %% process data
 clear variables;
 close all;
-[fname,pathname] = uigetfile('*.mat');
+[fname2,pathname2] = uigetfile('*.mat');
 
 way_flag = 0;%flag if waypoints are associated with logs
 
 % if there is a waypoint file, load it
-if exist([pathname 'way.txt'],'file')
+if exist([pathname2 'way.txt'],'file')
     way_flag = 1;
-    fid = fopen([pathname 'way.txt']);
+    fid = fopen([pathname2 'way.txt']);
     line = fgets(fid);%skip version information
     M = fscanf(fid,'%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n');
     M = reshape(M,12,[])';
@@ -164,7 +164,7 @@ else
     disp('No waypoint file associated with these logs!');
 end
 
-load([pathname fname]);
+load([pathname2 fname2]);
 
 %convert gps time to seconds
 gps(:,1) = (gps(:,1) - gps(1,1))/1000;
@@ -267,6 +267,9 @@ gps(:,1) = gps(:,1) - gps(1,1);
 gpstime = gps(:,1);
 gps = gps(:,4:end);
 
+% fix redundancies in GPS history:
+gpstime(2:2:end-1) = gpstime(3:2:end) - 0.1;
+
 %trim vectors to match gps length: gps is at 10 Hz, attitude at 10 Hz
 if attcount<gpscount
     %extend the data vectors
@@ -287,6 +290,13 @@ ghdg = gps(:,7);
 % plot GPS histories
 figure;
 subplot(211);
+
+LAT0 = 30.6325694444444;
+LONG0 = -96.4818833333333;
+X = -d2r*6378100*(gps(:,1)-LAT0);
+Y = -d2r*6378100*(gps(:,2)-LONG0);
+Z = -alt + min(alt(alt>60));
+
 plot(gpstime(manualindices),gps(manualindices,2),'bx');
 hold on;
 plot(gpstime(autoindices),gps(autoindices,2),'rd');
@@ -362,6 +372,8 @@ plot(gpstime(stabindices),alt(stabindices),'gs');
 plot(gpstime(fbwbindices),alt(fbwbindices),'ko');
 ylabel('altitude (m)');
 %plot descent rate
+hdot = diff(alt)./diff(gpstime);
+
 subplot(313);
 plot(gpstime(manualindices(1:end-1)),diff(alt(manualindices))./diff(gpstime(manualindices)),'bx');
 hold on;
@@ -370,22 +382,50 @@ plot(gpstime(stabindices(1:end-1)),diff(alt(stabindices))./diff(gpstime(stabindi
 plot(gpstime(fbwbindices(1:end-1)),diff(alt(fbwbindices))./diff(gpstime(fbwbindices)),'ko');
 ylabel('hdot (m/s)');
 
-% %export to .mat
-% save([fname(1:end-3) 'mat'],'gps','gpstime','time','att','ctrl','fhp','raw');
-% %export to .csv
-% 
-% fid = fopen([fname(1:end-3) 'csv'],'wt');
-% fprintf(fid,'time (sec),psensor0 (psi),psensor1 (psi),psensor2 (psi),psensor3(psi),temperature (C),humidity (%%?),roll (centidegrees),pitch(centidegrees),yaw(centidegrees),elevator (radio),throttle(radio),aileron(radio),rudder(radio),gyro x (rad/s?),gyro y (rad/s),gyro z (rad/s),accel x (m/s2),accel y (m/s2), accel z (m/s2)\n');
-% for i = 1:length(time)
-%     fprintf(fid,'%g,',[time(i) fhp(i,:) att(i,:) ctrl(i,:) raw(i,:)]);
-%     fprintf(fid,'\n');
-% end
-% fclose(fid);
-% 
-% fid = fopen([fname(1:end-4) '_gps.csv'],'wt');
-% fprintf(fid,'time (sec), lat (deg), long (deg), 0, altitude (fusion) (m), gps alt (m), ground speed (m/s), heading (deg)\n');
-% for i = 1:length(gpstime)
-%     fprintf(fid,'%g,',[gpstime(i) gps(i,:)]);
-%     fprintf(fid,'\n');
-% end
-% fclose(fid);
+%% segment flight into segments with FBWB on:
+indLast = find(diff(fbwbindices) > 1);%indLast(i) is the last index of the ith automatic segment
+
+hflare = 15+4;
+htarget = 15;
+
+for i = 1:length(indLast)+1
+   %plot Z-X position history
+   if i == 1
+       if isempty(indLast)
+           ind = fbwbindices;
+       else
+           ind = fbwbindices(1:indLast(i));
+       end
+   else if i == length(indLast)+1
+           ind = fbwbindices(indLast(i-1)+1:end);
+       else
+           ind = fbwbindices(indLast(i-1)+1:indLast(i));
+       end
+   end
+   
+   figure;
+   subplot(211);
+   plot(X(ind),-Z(ind));
+   hold on;
+   plot([X(ind(1)) X(ind(end))],hflare*[1 1],'m--','linewidth',2);
+   plot([X(ind(1)) X(ind(end))],htarget*[1 1],'k-','linewidth',2);
+   grid on;
+   ylabel('altitude (m)');
+   xlabel('X (m)');
+   %plot descent rate
+   subplot(212);
+   plot(gpstime(ind(1:end-1)),hdot(ind(1:end-1)));
+   hdotsmooth = filter([1 1 1 1 1]*0.2,1,hdot(ind(1:end-1)));
+   hold on;
+   plot(gpstime(ind(1:end-1)),hdotsmooth,'r--','linewidth',2);
+   % reference
+   href = 0.4*(Z(ind(1:end-1)) + htarget);
+   href(-Z(ind(1:end-1)) > hflare) = NaN;
+   plot(gpstime(ind(1:end-1)),href,'b-d','linewidth',2);
+   legend('first order difference','five term moving avg','reference','location','southwest');
+   grid on;
+   ylabel('descent rate (m/s)');
+   xlabel('time (sec)');
+   
+   set(gcf,'position',[625 250 675 725]);
+end

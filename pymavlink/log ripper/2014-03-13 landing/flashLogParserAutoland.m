@@ -1,13 +1,14 @@
-%   the rest of this is old and needs to be modified    %
+% process automatic landing data file
 %% process data
 clear variables;
 close all;
 load log_17.mat;
 
-land = 1;%1 or 2 for first or second landing
+land = 2;%1 or 2 for first or second landing
 
 LAT0 = 30.6325694444444;
-LONG0 = -96.4819777777778;
+%LONG0 = -96.4819777777778;
+LONG0 = -96.4818833333333;
 
 way_flag = 0;%flag if waypoints are associated with logs
 
@@ -222,21 +223,89 @@ plot(gpstime(stabindices),alt(stabindices),'gs');
 plot(gpstime(fbwbindices),alt(fbwbindices),'ko');
 ylabel('altitude (m)');
 %plot descent rate
+hdot = diff(alt)./diff(gpstime);
+
 subplot(313);
-plot(gpstime(manualindices(1:end-1)),diff(alt(manualindices))./diff(gpstime(manualindices)),'bx');
+plot(gpstime(manualindices(1:end-1)),hdot(manualindices(1:end-1)),'bx');
 hold on;
-plot(gpstime(autoindices(1:end-1)),diff(alt(autoindices))./diff(gpstime(autoindices)),'rd');
-plot(gpstime(stabindices(1:end-1)),diff(alt(stabindices))./diff(gpstime(stabindices)),'gs');
-plot(gpstime(fbwbindices(1:end-1)),diff(alt(fbwbindices))./diff(gpstime(fbwbindices)),'ko');
+plot(gpstime(autoindices(1:end-1)),hdot(autoindices(1:end-1)),'rd');
+plot(gpstime(stabindices(1:end-1)),hdot(stabindices(1:end-1)),'gs');
+plot(gpstime(fbwbindices(1:end-1)),hdot(fbwbindices(1:end-1)),'ko');
 ylabel('hdot (m/s)');
 
+%% plot glideslope and flare performance
+EXPORT = 1;% set to 1 to save figures
+
+%  correct gps duplicate times
+gpstime(2:2:end-1) = gpstime(3:2:end) - 0.1;
+hdot = diff(alt)./diff(gpstime);
+
 figure;
-subplot(211);
-plot(-d2r*6378100*(gps(fbwbindices,1)-LAT0),alt(fbwbindices),'k-o');
+subplot(121);
+X = -d2r*6378100*(gps(:,1)-LAT0);
+Y = -d2r*6378100*(gps(:,2)-LONG0);
+Z = -alt + min(alt(alt>60));
+Zref = tand(5)*X;
+plot(X(fbwbindices),-Z(fbwbindices),'k-o');
+hold on;
+% plot glideslope
+plot(X(fbwbindices),-Zref(fbwbindices),'r--');
+grid on;
 ylabel('altitude (m)');
 xlabel('X-position (m)');
+set(gca,'ylim',[0 get(gca,'ylim')*[0;1]]);
 
-subplot(212);
-plot(-d2r*6378100*(gps(fbwbindices,2)-LONG0),-d2r*6378100*(gps(fbwbindices,1)-LAT0),'ko');
+subplot(122);
+plot(Y(fbwbindices),X(fbwbindices),'ko');
+%plot runway center and 5 meter target
+hold on;
+plot([0 0],[min(X(fbwbindices)) max(X(fbwbindices))],'b-');
+plot([-5 -5],[min(X(fbwbindices)) max(X(fbwbindices))],'r--');
+plot([5 5],[min(X(fbwbindices)) max(X(fbwbindices))],'r--');
+grid on;
 xlabel('Y-position (m)');
 ylabel('X-position (m)');
+
+ha = axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0 1],'Box','off','Visible','off','Units','normalized', 'clipping' , 'off');
+
+text(0.5, 1,['\bf Approach position history for landing ' num2str(land)],'HorizontalAlignment','center','VerticalAlignment', 'top','fontsize',12)
+
+set(gcf,'position',[400 525 900 450]);
+
+if EXPORT
+    export_fig(['landing_' num2str(land) '_approach'],'-png','-transparent','-a1');
+end
+
+% plot flare performance
+flareind = find(-Zref(fbwbindices) <= 4);
+figure;
+subplot(121);
+plot(X(fbwbindices(flareind)),-Z(fbwbindices(flareind)),'k-o');
+grid on;
+ylabel('altitude (m)');
+xlabel('X position (m)');
+
+subplot(122);
+plot(gpstime(fbwbindices(flareind(1:end-1))),hdot(fbwbindices(flareind(1:end-1))),'k-o');
+grid on;
+
+hdotsmooth = filter([1 1 1 1 1]*0.2,1,hdot(fbwbindices(flareind(1:end-1))));
+hold on;
+plot(gpstime(fbwbindices(flareind(1:end-1))),hdotsmooth,'r--','linewidth',2);
+%plot the reference
+%tau = -0.4
+plot(gpstime(fbwbindices(flareind)),0.4*Z(fbwbindices(flareind)),'b-d');
+legend('first order difference','smoothed descent rate','reference descent rate','location','south');
+
+ylabel('descent rate (m/s)');
+xlabel('time (sec)');
+
+ha = axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0 1],'Box','off','Visible','off','Units','normalized', 'clipping' , 'off');
+
+text(0.5, 1,['\bf Flare performance for landing ' num2str(land)],'HorizontalAlignment','center','VerticalAlignment', 'top','fontsize',12)
+
+set(gcf,'position',[400 525 900 450]);
+
+if EXPORT
+    export_fig(['landing_' num2str(land) '_flare'],'-png','-transparent','-a1');
+end
